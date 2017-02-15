@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -82,7 +83,7 @@ public class UploadSongDialog extends DialogFragment {
                         // using advanced api to get link line
                         try {
                             String downloadInfoLink = "https://www.youtubeinmp3.com/download/?video=" + userLink;
-                            System.out.println("The fucking link is: " + downloadInfoLink);
+                            System.out.println("The link is: " + downloadInfoLink);
 
                             /*
                             URLConnection downloadInfoConnection = downloadInfoLink.openConnection();
@@ -98,10 +99,6 @@ public class UploadSongDialog extends DialogFragment {
                             */
 
                             // use jsoup to find the download link
-                            /*
-                            NOTE TO SELF:
-                            All of this is really sketch atm, needs a better way to convert youtube to MP3. But for now, it works.
-                             */
                             Document doc = Jsoup.connect(downloadInfoLink)
                                     .header("Accept-Encoding", "gzip, deflate")
                                     .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
@@ -116,6 +113,7 @@ public class UploadSongDialog extends DialogFragment {
                             Element musicLinkElement = doc.getElementById("download");
                             downloadMusicLink = "https://youtubeinmp3.com" + musicLinkElement.attr("href");
                             System.out.println("Final Download Link: " + downloadMusicLink);
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -141,11 +139,15 @@ public class UploadSongDialog extends DialogFragment {
                         DownloadManager youtubeConvertManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
                         youtubeConvertManager.enqueue(youtubeConvertRequest);
 
+                        /*
+
+                        REPLACING WITH DATABASES:
+
                         // create a config file for the music file
                         String fileName = songName + ".txt";
                         String fileLoc = getActivity().getApplicationContext().getDir("DivertioInfoFiles ", Context.MODE_PRIVATE).getAbsolutePath();
                         File musicInfoFile = new File(fileLoc, fileName);
-                        String musicFilePath = Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName;
+
                         try {
 
                             // write all the stuff, only works with this type of writer for some reason
@@ -159,8 +161,22 @@ public class UploadSongDialog extends DialogFragment {
                             e.printStackTrace();
                         }
 
+                        */
+
+                        // update database
+                        String musicFilePath = Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName;
+                        SongDBHandler db = new SongDBHandler(getActivity());
+                        try {
+                            SongData songData = new SongData(songName, musicFilePath);
+                            db.addSongData(songData);
+                            System.out.println("Successfully updated database.");
+                        } catch (Exception e) {
+                            System.out.println("Database update failure.");
+                        }
+
                         // reset the song list view
                         ((MainActivity) getActivity()).setSongListView();
+
                     } else {
                         System.out.println("Could not connect to bing.com?");
                         replaceDialogWithFailure();

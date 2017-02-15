@@ -7,7 +7,7 @@
         jumboMode="true"
         optimize="true"
         revision="24.0.3"
-        sha1="7916e551b0ec2c3db27f0b6099cc2be138367ec3">
+        sha1="9a4f0b4152624b74a83ff36eb4dd4b141c4c8592">
         <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_ab0126d49b3a07606b7f1f3c46bebb05fa5e99b3/classes.dex" />
     </item>
     <item
@@ -250,7 +250,7 @@
         jumboMode="true"
         optimize="true"
         revision="24.0.3"
-        sha1="e019d077b57b331765957759727e1586e2a80092">
+        sha1="2cf3ab018d14107db79132af33f28608f9664218">
         <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_9b9cb346219f67886aa8e141101e566f4d05b1f6/classes.dex" />
     </item>
     <item
