@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class CreatePlaylistDialog extends DialogFragment {
 
     private View createPlaylistView;
+    private View createPlaylistTitle;
     private ArrayList<String> songInfoTemp;
     private ArrayList<Integer> selectedSongs;
 
@@ -34,34 +35,36 @@ public class CreatePlaylistDialog extends DialogFragment {
         AlertDialog.Builder createPlaylistBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         createPlaylistView = inflater.inflate(R.layout.create_playlist_dialog, null);
+        createPlaylistTitle = inflater.inflate(R.layout.create_playlist_title, null);
         createPlaylistBuilder
-            .setView(createPlaylistView)
-            .setMultiChoiceItems(songList, null, new DialogInterface.OnMultiChoiceClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
-                    if (isChecked) {
-                        selectedSongs.add(position);
-                        System.out.println("Adding position " + position);
-                    } else if (selectedSongs.contains(position)) {
-                        selectedSongs.remove(Integer.valueOf(position));
-                        System.out.println("Removing position " + position);
+                .setView(createPlaylistView)
+                .setCustomTitle(createPlaylistTitle)
+                .setMultiChoiceItems(songList, null, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
+                        if (isChecked) {
+                            selectedSongs.add(position);
+                            System.out.println("Adding position " + position);
+                        } else if (selectedSongs.contains(position)) {
+                            selectedSongs.remove(Integer.valueOf(position));
+                            System.out.println("Removing position " + position);
+                        }
                     }
-                }
-            })
-            .setPositiveButton(R.string.create_playlist_confirm, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int which) {
-                    for (int i = 0; i < selectedSongs.size(); i++) {
+                })
+                .setPositiveButton(R.string.create_playlist_confirm, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        for (int i = 0; i < selectedSongs.size(); i++) {
 
+                        }
                     }
-                }
-            })
-            .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int which) {
-                    System.out.println("Canceled creation...");
-                }
-            });
+                })
+                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        System.out.println("Canceled creation...");
+                    }
+                });
 
         return createPlaylistBuilder.create();
     }

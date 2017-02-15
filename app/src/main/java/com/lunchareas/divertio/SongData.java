@@ -4,7 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class SongData implements Parcelable {
+public class SongData {
 
     private String songName;
     private String songPath;
@@ -64,41 +64,6 @@ public class SongData implements Parcelable {
     public void setSongIcon(Drawable icon) {
         this.songIcon = icon;
     }
-
-    protected SongData(Parcel in) {
-        songName = in.readString();
-        songPath = in.readString();
-        songArtist = in.readString();
-        songDuration = in.readInt();
-        songIcon = (Drawable) in.readValue(Drawable.class.getClassLoader());
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(songName);
-        dest.writeString(songPath);
-        dest.writeString(songArtist);
-        dest.writeInt(songDuration);
-        dest.writeValue(songIcon);
-    }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<SongData> CREATOR = new Parcelable.Creator<SongData>() {
-        @Override
-        public SongData createFromParcel(Parcel in) {
-            return new SongData(in);
-        }
-
-        @Override
-        public SongData[] newArray(int size) {
-            return new SongData[size];
-        }
-    };
 }
 
 /*

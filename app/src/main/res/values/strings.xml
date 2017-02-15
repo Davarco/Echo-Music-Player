@@ -27,6 +27,7 @@
     <string name="delete_confirm">Delete</string>
 
     <string name="create_playlist_title">Playlist Name:</string>
+    <string name="create_playlist_songlist_title">Song List:</string>
     <string name="create_playlist_hint">Name</string>
     <string name="create_playlist_confirm">Create</string>
 
