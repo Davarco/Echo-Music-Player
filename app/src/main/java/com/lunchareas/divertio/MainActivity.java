@@ -118,13 +118,13 @@ public class MainActivity extends AppCompatActivity {
         drawerOpen = false;
 
         // create directory for files if it does not exist
-        File musicFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "LucheraMusicFiles");
+        File musicFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Divertio");
         if (!musicFolder.exists()) {
             musicFolder.mkdir();
         }
 
         // create directory for file info if it does not exist
-        File musicInfoFolder = new File(getApplicationContext().getFilesDir(), "LucheraMusicInfoFiles");
+        File musicInfoFolder = new File(getApplicationContext().getFilesDir(), "DivertioInfoFiles");
         if (!musicInfoFolder.exists()) {
             musicInfoFolder.mkdir();
         }
@@ -371,7 +371,7 @@ public class MainActivity extends AppCompatActivity {
 
         // get the directory and print out debug info
         System.out.println("Reached getting the song list!");
-        File musicInfoFolder = getApplicationContext().getDir("LucheraMusicInfoFiles", Context.MODE_PRIVATE);
+        File musicInfoFolder = getApplicationContext().getDir("DivertioInfoFiles", Context.MODE_PRIVATE);
         File musicInfoLister = musicInfoFolder.getAbsoluteFile();
         for (String strFile: musicInfoLister.list()) {
             System.out.println("Name of file in music files: " + strFile);
@@ -395,7 +395,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void cleanMusicFileDir() {
-        File musicInfoFolder = getApplicationContext().getDir("LucheraMusicInfoFiles", Context.MODE_PRIVATE);
+        File musicInfoFolder = getApplicationContext().getDir("DivertioInfoFiles", Context.MODE_PRIVATE);
         File musicInfoLister = musicInfoFolder.getAbsoluteFile();
         for (File strFile: musicInfoLister.listFiles()) {
             strFile.delete();

@@ -102,11 +102,11 @@ public class PlayMusicService extends Service {
         }
     }
 
-    public static Thread getMusicUpdaterThread() {
+    public Thread getMusicUpdaterThread() {
         return musicUpdaterThread;
     }
 
-    public static void setMusicUpdaterThread (Thread t) {
+    public void setMusicUpdaterThread (Thread t) {
         musicUpdaterThread = t;
     }
 

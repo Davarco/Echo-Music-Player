@@ -66,7 +66,7 @@ public class PlaylistActivity extends AppCompatActivity {
         songInfoList = new ArrayList<>();
         Bundle b = getIntent().getExtras();
         songInfoList = (ArrayList<SongData>) b.getSerializable("SONGDATA");
-        System.out.println(songInfoList.toString());
+        System.out.println(songInfoList);
 
         // song bar
         am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);

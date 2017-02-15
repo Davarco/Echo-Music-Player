@@ -137,15 +137,15 @@ public class UploadSongDialog extends DialogFragment {
                         }
 
                         // download into music files directory
-                        youtubeConvertRequest.setDestinationInExternalPublicDir("/LucheraMusicFiles", songFileName);
+                        youtubeConvertRequest.setDestinationInExternalPublicDir("/Divertio", songFileName);
                         DownloadManager youtubeConvertManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
                         youtubeConvertManager.enqueue(youtubeConvertRequest);
 
                         // create a config file for the music file
                         String fileName = songName + ".txt";
-                        String fileLoc = getActivity().getApplicationContext().getDir("LucheraMusicInfoFiles", Context.MODE_PRIVATE).getAbsolutePath();
+                        String fileLoc = getActivity().getApplicationContext().getDir("DivertioInfoFiles ", Context.MODE_PRIVATE).getAbsolutePath();
                         File musicInfoFile = new File(fileLoc, fileName);
-                        String musicFilePath = Environment.getExternalStorageDirectory().getPath() + "/LucheraMusicFiles/" + songFileName;
+                        String musicFilePath = Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName;
                         try {
 
                             // write all the stuff, only works with this type of writer for some reason

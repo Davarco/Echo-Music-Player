@@ -54,8 +54,8 @@ public class DeleteSongDialog extends DialogFragment {
 
                         // get file name to delete and open both dir with music files
                         String songName = songInfoTemp.get(selectedSongs.get(i));
-                        File musicFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "LucheraMusicFiles");
-                        File musicInfoFolder = getActivity().getApplicationContext().getDir("LucheraMusicInfoFiles", Context.MODE_PRIVATE);
+                        File musicFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Divertio");
+                        File musicInfoFolder = getActivity().getApplicationContext().getDir("DivertioInfoFiles", Context.MODE_PRIVATE);
                         File musicInfoLister = musicInfoFolder.getAbsoluteFile();
 
                         // find the mp3 file and delete it
