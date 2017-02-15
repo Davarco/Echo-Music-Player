@@ -54,7 +54,7 @@ public class UploadSongDialog extends DialogFragment {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
 
-                    //check internet connection status
+                    // check internet connection status
                     Thread checkConnectionThread = new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -68,119 +68,8 @@ public class UploadSongDialog extends DialogFragment {
                         System.out.println("Couldn't wait for connection thread.");
                     }
 
-                    // only go ahead if there is internet
-                    if (internetConnectionStatus) {
-
-                        // get song name and link
-                        songNameInput = (EditText) uploadDialogView.findViewById(R.id.dialog_upload_name);
-                        userLinkInput = (EditText) uploadDialogView.findViewById(R.id.dialog_upload_link);
-                        String songName = songNameInput.getText().toString().trim();
-                        String userLink = userLinkInput.getText().toString().trim();
-                        String downloadMusicLink = "";
-                        String songFileName = songName + ".mp3";
-                        System.out.println("Inserted link is " + userLink + ".");
-
-                        // using advanced api to get link line
-                        try {
-                            String downloadInfoLink = "https://www.youtubeinmp3.com/download/?video=" + userLink;
-                            System.out.println("The link is: " + downloadInfoLink);
-
-                            /*
-                            URLConnection downloadInfoConnection = downloadInfoLink.openConnection();
-                            System.out.println("Link to download info: " + downloadInfoLink);
-                            BufferedReader in = new BufferedReader(new InputStreamReader(downloadInfoConnection.getInputStream(), "UTF-8"));
-                            String inputLine;
-                            for (int idx = 0; idx < 100; idx++) {
-                                inputLine = in.readLine();
-                                System.out.println("Line: " + inputLine);
-                            }
-
-                            in.close();
-                            */
-
-                            // use jsoup to find the download link
-                            Document doc = Jsoup.connect(downloadInfoLink)
-                                    .header("Accept-Encoding", "gzip, deflate")
-                                    .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
-                                    .maxBodySize(0)
-                                    .timeout(6000)
-                                    .get();
-                            if (doc == null) {
-                                System.out.println("The doc is empty.");
-                            } else {
-                                System.out.println("The doc is not empty.");
-                            }
-                            Element musicLinkElement = doc.getElementById("download");
-                            downloadMusicLink = "https://youtubeinmp3.com" + musicLinkElement.attr("href");
-                            System.out.println("Final Download Link: " + downloadMusicLink);
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        // replace with error dialog if this fails
-                        DownloadManager.Request youtubeConvertRequest;
-                        try {
-                            // insert link into api and setup download
-                            youtubeConvertRequest = new DownloadManager.Request(Uri.parse(downloadMusicLink));
-                            youtubeConvertRequest.setDescription("Converting and downloading...");
-                            youtubeConvertRequest.setTitle(songFileName + " Download");
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                                youtubeConvertRequest.allowScanningByMediaScanner();
-                                youtubeConvertRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                            }
-                        } catch (Exception e) {
-                            replaceDialogWithFailure();
-                            return;
-                        }
-
-                        // download into music files directory
-                        youtubeConvertRequest.setDestinationInExternalPublicDir("/Divertio", songFileName);
-                        DownloadManager youtubeConvertManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
-                        youtubeConvertManager.enqueue(youtubeConvertRequest);
-
-                        /*
-
-                        REPLACING WITH DATABASES:
-
-                        // create a config file for the music file
-                        String fileName = songName + ".txt";
-                        String fileLoc = getActivity().getApplicationContext().getDir("DivertioInfoFiles ", Context.MODE_PRIVATE).getAbsolutePath();
-                        File musicInfoFile = new File(fileLoc, fileName);
-
-                        try {
-
-                            // write all the stuff, only works with this type of writer for some reason
-                            FileWriter fw = new FileWriter(musicInfoFile);
-                            fw.write(songName + "\n");
-                            fw.write(musicFilePath + "\n");
-                            fw.flush();
-                            fw.close();
-                            System.out.println("DATA PRINTED TO INFO FILE:\n" + songName + "\n" + musicFilePath + "\n" + "File Location: " + fileLoc + "\n");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        */
-
-                        // update database
-                        String musicFilePath = Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName;
-                        SongDBHandler db = new SongDBHandler(getActivity());
-                        try {
-                            SongData songData = new SongData(songName, musicFilePath);
-                            db.addSongData(songData);
-                            System.out.println("Successfully updated database.");
-                        } catch (Exception e) {
-                            System.out.println("Database update failure.");
-                        }
-
-                        // reset the song list view
-                        ((MainActivity) getActivity()).setSongListView();
-
-                    } else {
-                        System.out.println("Could not connect to bing.com?");
-                        replaceDialogWithFailure();
-                    }
+                    // run the download procedure
+                    executeDialogDownload();
                 }
             })
             .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
@@ -222,5 +111,109 @@ public class UploadSongDialog extends DialogFragment {
 
     private void replaceDialogWithFailure() {
         ((MainActivity)getActivity()).replaceDialogWithFailure(this);
+    }
+
+    private void executeDialogDownload() {
+
+        // only go ahead if there is internet
+        if (internetConnectionStatus) {
+
+            // get song name and link
+            songNameInput = (EditText) uploadDialogView.findViewById(R.id.dialog_upload_name);
+            userLinkInput = (EditText) uploadDialogView.findViewById(R.id.dialog_upload_link);
+            String songName = songNameInput.getText().toString().trim();
+            String userLink = userLinkInput.getText().toString().trim();
+            String downloadMusicLink = "";
+            String songFileName = songName + ".mp3";
+            System.out.println("Inserted link is " + userLink + ".");
+
+            // using advanced api to get link line
+            try {
+                String downloadInfoLink = "https://www.youtubeinmp3.com/download/?video=" + userLink;
+                System.out.println("The link is: " + downloadInfoLink);
+
+                // use jsoup to find the download link
+                Document doc = Jsoup.connect(downloadInfoLink)
+                        .header("Accept-Encoding", "gzip, deflate")
+                        .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
+                        .maxBodySize(0)
+                        .timeout(6000)
+                        .get();
+                if (doc == null) {
+                    System.out.println("The doc is empty.");
+                } else {
+                    System.out.println("The doc is not empty.");
+                }
+                Element musicLinkElement = doc.getElementById("download");
+                downloadMusicLink = "https://youtubeinmp3.com" + musicLinkElement.attr("href");
+                System.out.println("Final Download Link: " + downloadMusicLink);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // replace with error dialog if this fails
+            DownloadManager.Request youtubeConvertRequest;
+            try {
+                // insert link into api and setup download
+                youtubeConvertRequest = new DownloadManager.Request(Uri.parse(downloadMusicLink));
+                youtubeConvertRequest.setDescription("Converting and downloading...");
+                youtubeConvertRequest.setTitle(songFileName + " Download");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    youtubeConvertRequest.allowScanningByMediaScanner();
+                    youtubeConvertRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                }
+            } catch (Exception e) {
+                replaceDialogWithFailure();
+                return;
+            }
+
+            // download into music files directory
+            youtubeConvertRequest.setDestinationInExternalPublicDir("/Divertio", songFileName);
+            DownloadManager youtubeConvertManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+            youtubeConvertManager.enqueue(youtubeConvertRequest);
+
+                        /*
+
+                        REPLACING WITH DATABASES:
+
+                        // create a config file for the music file
+                        String fileName = songName + ".txt";
+                        String fileLoc = getActivity().getApplicationContext().getDir("DivertioInfoFiles ", Context.MODE_PRIVATE).getAbsolutePath();
+                        File musicInfoFile = new File(fileLoc, fileName);
+
+                        try {
+
+                            // write all the stuff, only works with this type of writer for some reason
+                            FileWriter fw = new FileWriter(musicInfoFile);
+                            fw.write(songName + "\n");
+                            fw.write(musicFilePath + "\n");
+                            fw.flush();
+                            fw.close();
+                            System.out.println("DATA PRINTED TO INFO FILE:\n" + songName + "\n" + musicFilePath + "\n" + "File Location: " + fileLoc + "\n");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        */
+
+            // update database
+            String musicFilePath = Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName;
+            SongDBHandler db = new SongDBHandler(getActivity());
+            try {
+                SongData songData = new SongData(songName, musicFilePath);
+                db.addSongData(songData);
+                System.out.println("Successfully updated database.");
+            } catch (Exception e) {
+                System.out.println("Database update failure.");
+            }
+
+            // reset the song list view
+            ((MainActivity) getActivity()).setSongListView();
+
+        } else {
+            System.out.println("Could not connect to website?");
+            replaceDialogWithFailure();
+        }
     }
 }

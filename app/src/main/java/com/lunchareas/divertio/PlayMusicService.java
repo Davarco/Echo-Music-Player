@@ -15,9 +15,9 @@ public class PlayMusicService extends Service {
 
     private Bundle intentCmd;
     public static MediaPlayer mp = null;
-    public static final String PLAYMUSIC_RESULT = "com.lunchareas.musicapp.backend.PlayMusicService.REQUEST_PROCESSED";
-    public static final String PLAYMUSIC_POSITION = "com.lunchareas.musicapp.backend.PlayMusicService.POSITION";
-    public static final String PLAYMUSIC_DURATION = "com.lunchareas.musicapp.backend.PlayMusicService.DURATION";
+    public static final String PLAYMUSIC_RESULT = "REQUEST_PROCESSED";
+    public static final String PLAYMUSIC_POSITION = "POSITION";
+    public static final String PLAYMUSIC_DURATION = "DURATION";
 
     // set up broadcaster to activity to update progress bar
     private LocalBroadcastManager musicUpdater;
@@ -61,11 +61,11 @@ public class PlayMusicService extends Service {
             if (intentCmd.containsKey("CREATE")) {
                 System.out.println("Create Key: " + intentCmd.getString("CREATE"));
                 initMusicPlayer(intentCmd.getString("CREATE"));
-                musicUpdaterThread.start();
                 mp.start();
+                musicUpdaterThread.start();
             } else if (intentCmd.containsKey("START") && mp != null) {
-                musicUpdaterThread.start();
                 mp.start();
+                musicUpdaterThread.start();
             } else if (intentCmd.containsKey("PAUSE") && mp != null) {
                 mp.pause();
             } else if (intentCmd.containsKey("CHANGE") && mp != null) {

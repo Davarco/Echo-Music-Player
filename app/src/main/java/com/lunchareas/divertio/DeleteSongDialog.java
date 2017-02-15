@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public class DeleteSongDialog extends DialogFragment {
 
+    private ArrayList<SongData> songInfoList;
     private ArrayList<Integer> selectedSongs;
     private ArrayList<String> songInfoTemp;
 
@@ -21,7 +22,7 @@ public class DeleteSongDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         // get the list of songs to pick from
-        ArrayList<SongData> songInfoList = ((MainActivity)getActivity()).getSongInfoList();
+        songInfoList = ((MainActivity)getActivity()).getSongInfoList();
         songInfoTemp = new ArrayList<>();
         for (int i = 0; i < songInfoList.size(); i++) {
             songInfoTemp.add(songInfoList.get(i).getSongName());
@@ -52,39 +53,11 @@ public class DeleteSongDialog extends DialogFragment {
                 public void onClick(DialogInterface dialogInterface, int which) {
                     for (int i = 0; i < selectedSongs.size(); i++) {
 
-                        // get file name to delete and open both dir with music files
-                        String songName = songInfoTemp.get(selectedSongs.get(i));
-                        File musicFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Divertio");
-                        File musicInfoFolder = getActivity().getApplicationContext().getDir("DivertioInfoFiles", Context.MODE_PRIVATE);
-                        File musicInfoLister = musicInfoFolder.getAbsoluteFile();
-
-                        // find the mp3 file and delete it
-                        System.out.println("Looking for song: " + songName);
-                        for (File songFile: musicFolder.listFiles()) {
-                            System.out.println("File name: " + songFile.getName());
-                            if (songFile.getName().equals(songName+".mp3")) {
-                                System.out.println("Found file!");
-                                if (songFile.delete()) {
-                                    System.out.println("Deleted file successfully!");
-                                } else {
-                                    System.out.println("File deletion was unsuccessful!");
-                                }
-                            }
-                        }
-
-                        // find the config file and delete it
-                        System.out.println("Looking for song file: " + songName);
-                        for (File songInfoFile: musicInfoLister.listFiles()) {
-                            System.out.println("Info file name: " + songInfoFile.getName());
-                            if (songInfoFile.getName().equals(songName+".txt")) {
-                                System.out.println("Found file!");
-                                if (songInfoFile.delete()) {
-                                    System.out.println("Deleted file successfully!");
-                                } else {
-                                    System.out.println("File deletion was unsuccessful!");
-                                }
-                            }
-                        }
+                        // delete from database
+                        SongData songData = songInfoList.get(selectedSongs.get(i));
+                        SongDBHandler db = new SongDBHandler(getActivity());
+                        new File(db.getSongData(songData.getSongName()).getSongPath()).delete();
+                        db.deleteSongData(songData);
                     }
                     ((MainActivity)getActivity()).setSongListView();
                 }

@@ -366,42 +366,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void getSongList() {
 
-        // clear out song info list in case new upload comes
-        songInfoList.clear();
-
-        // get the directory and print out debug info
-        System.out.println("Reached getting the song list!");
-        File musicInfoFolder = getApplicationContext().getDir("DivertioInfoFiles", Context.MODE_PRIVATE);
-        File musicInfoLister = musicInfoFolder.getAbsoluteFile();
-        for (String strFile: musicInfoLister.list()) {
-            System.out.println("Name of file in music files: " + strFile);
-        }
-
-        // set the info to song data
-        for (File musicInfoFile: musicInfoLister.listFiles()) {
-            try {
-                BufferedReader br = new BufferedReader(new FileReader(musicInfoFile));
-                System.out.println("Name of file: " + musicInfoFile.getName());
-                String songName = br.readLine();
-                String songPath = br.readLine();
-                SongData songFileData = new SongData(songName, songPath);
-                songInfoList.add(songFileData);
-                System.out.println("Data for \"" + songName + "\"\n" + "Song Path: " + songPath);
-                br.close();
-            } catch (Exception e) {
-                System.out.println("File not found!");
-            }
-        }
-    }
-
-    public void cleanMusicFileDir() {
-        File musicInfoFolder = getApplicationContext().getDir("DivertioInfoFiles", Context.MODE_PRIVATE);
-        File musicInfoLister = musicInfoFolder.getAbsoluteFile();
-        for (File strFile: musicInfoLister.listFiles()) {
-            strFile.delete();
-        }
-
-        musicInfoFolder.delete();
+        // get database and song list
+        SongDBHandler db = new SongDBHandler(this);
+        songInfoList = (ArrayList) db.getSongDataList();
     }
 
     // not going to use for now, but could be useful later on
