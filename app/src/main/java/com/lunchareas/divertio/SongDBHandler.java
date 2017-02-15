@@ -10,6 +10,7 @@ import android.view.ContextThemeWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class SongDBHandler extends SQLiteOpenHelper {
 
@@ -92,4 +93,32 @@ public class SongDBHandler extends SQLiteOpenHelper {
         db.close();
         return songDataList;
     }
+
+    // in order for this to be used, a new song data must be created
+    public int updateSongData(SongData songData) {
+
+        // get table data
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        // Update data
+        values.put(KEY_NAME, songData.getSongName());
+        values.put(KEY_PATH, songData.getSongPath());
+        return db.update(TABLE_SONGS, values, KEY_NAME + " = ?", new String[]{String.valueOf(songData.getSongName())});
+    }
+
+    // in order for this to be used, a new song data must be created
+    public void deleteSongData(SongData songData) {
+
+        // get table data
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // delete the found element
+        db.delete(TABLE_SONGS, KEY_NAME + " = ?", new String[]{ songData.getSongName() });
+        db.close();
+    }
+
+    /*
+    TODO: Implement the above with names.
+     */
 }
