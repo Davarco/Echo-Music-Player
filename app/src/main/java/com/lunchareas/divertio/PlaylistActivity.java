@@ -58,14 +58,11 @@ public class PlaylistActivity extends AppCompatActivity {
         setContentView(R.layout.activity_playlist);
         Toolbar mainBar = (Toolbar)findViewById(R.id.header_bar);
         setSupportActionBar(mainBar);
+        this.setTitle("Playlists");
 
-        //IGNORE: stop the thread and music service
-        //stopService(new Intent(PlaylistActivity.this, PlayMusicService.class));
-
-        // song info from main activity
-        songInfoList = new ArrayList<>();
-        Bundle b = getIntent().getExtras();
-        songInfoList = (ArrayList<SongData>) b.getSerializable("SONGDATA");
+        // get song info
+        SongDBHandler db = new SongDBHandler(this);
+        songInfoList = (ArrayList) db.getSongDataList();
         System.out.println(songInfoList);
 
         // song bar
@@ -90,7 +87,7 @@ public class PlaylistActivity extends AppCompatActivity {
         menuList = (ListView) findViewById(R.id.menu_drawer_list);
         menuItemArr = new String[]{"Songs", "Playlists", "Bluetooth", "Settings"};
         menuList.setAdapter(new ArrayAdapter<>(this, R.layout.menu_drawer_list_item, menuItemArr));
-        //menuDrawer.closeDrawer(GravityCompat.START);
+        menuDrawer.closeDrawers();
         drawerOpen = false;
 
         menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -189,6 +186,8 @@ public class PlaylistActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         LocalBroadcastManager.getInstance(this).registerReceiver((songBroadcastReceiver), new IntentFilter(PlayMusicService.PLAYMUSIC_RESULT));
+        System.out.println("Running playlist start!");
+        menuDrawer.closeDrawers();
     }
 
     @Override

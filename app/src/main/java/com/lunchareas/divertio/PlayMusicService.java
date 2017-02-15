@@ -13,11 +13,12 @@ import android.support.v4.content.LocalBroadcastManager;
 
 public class PlayMusicService extends Service {
 
-    private Bundle intentCmd;
-    public static MediaPlayer mp = null;
     public static final String PLAYMUSIC_RESULT = "REQUEST_PROCESSED";
     public static final String PLAYMUSIC_POSITION = "POSITION";
     public static final String PLAYMUSIC_DURATION = "DURATION";
+
+    private Bundle intentCmd;
+    private static MediaPlayer mp = null;
 
     // set up broadcaster to activity to update progress bar
     private LocalBroadcastManager musicUpdater;

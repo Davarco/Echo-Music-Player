@@ -31,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     private final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 501;
+    public static final String MUSIC_DIR_NAME = "Divertio";
 
     private int currentPosition;
     private ArrayList<SongData> songInfoList;
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar mainBar = (Toolbar)findViewById(R.id.header_bar);
         setSupportActionBar(mainBar);
+        this.setTitle("Divertio");
 
         // external storage permissions
         if (Build.VERSION.SDK_INT < 23) {
@@ -114,19 +116,13 @@ public class MainActivity extends AppCompatActivity {
         menuList = (ListView) findViewById(R.id.menu_drawer_list);
         menuItemArr = new String[]{"Songs", "Playlists", "Bluetooth", "Settings"};
         menuList.setAdapter(new ArrayAdapter<>(this, R.layout.menu_drawer_list_item, menuItemArr));
-        //menuDrawer.closeDrawer(GravityCompat.START);
+        menuDrawer.closeDrawers();
         drawerOpen = false;
 
         // create directory for files if it does not exist
-        File musicFolder = new File(Environment.getExternalStorageDirectory() + File.separator + "Divertio");
+        File musicFolder = new File(Environment.getExternalStorageDirectory() + File.separator + MUSIC_DIR_NAME);
         if (!musicFolder.exists()) {
             musicFolder.mkdir();
-        }
-
-        // create directory for file info if it does not exist
-        File musicInfoFolder = new File(getApplicationContext().getFilesDir(), "DivertioInfoFiles");
-        if (!musicInfoFolder.exists()) {
-            musicInfoFolder.mkdir();
         }
 
         menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -242,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        System.out.println("Destroying activity!");
+        System.out.println("Destroying activity main!");
     }
 
     // for broadcast managing from play_red music service
@@ -250,6 +246,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         LocalBroadcastManager.getInstance(this).registerReceiver((songBroadcastReceiver), new IntentFilter(PlayMusicService.PLAYMUSIC_RESULT));
+        System.out.println("Running main start!");
+        menuDrawer.closeDrawers();
     }
 
     @Override
@@ -304,10 +302,7 @@ public class MainActivity extends AppCompatActivity {
             }
             case 1: {
                 System.out.println("Starting new activity - playlist.");
-                Bundle b = new Bundle();
-                b.putParcelableArrayList("SONGDATA", songInfoList);
                 Intent i = new Intent(this, PlaylistActivity.class);
-                i.putExtras(b);
                 startActivity(i);
                 break;
             }
