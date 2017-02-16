@@ -23,6 +23,10 @@ public class SongDBHandler extends SQLiteOpenHelper {
     private static final String KEY_NAME = "name";
     private static final String KEY_PATH = "path";
 
+    // numbers correspond to keys
+    private static final int KEY_NAME_IDX = 0;
+    private static final int KEY_PATH_IDX = 1;
+
     public SongDBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -63,7 +67,7 @@ public class SongDBHandler extends SQLiteOpenHelper {
         // search through database
         if (cursor != null) {
             cursor.moveToFirst();
-            SongData songData = new SongData(cursor.getString(0), cursor.getString(1));
+            SongData songData = new SongData(cursor.getString(KEY_NAME_IDX), cursor.getString(KEY_PATH_IDX));
             db.close();
             return songData;
         } else {
@@ -85,7 +89,7 @@ public class SongDBHandler extends SQLiteOpenHelper {
         // go through database and all to list
         if (cursor.moveToFirst()) {
             do {
-                SongData songData = new SongData(cursor.getString(0), cursor.getString(1));
+                SongData songData = new SongData(cursor.getString(KEY_NAME_IDX), cursor.getString(KEY_PATH_IDX));
                 songDataList.add(songData);
             } while (cursor.moveToNext());
         }
