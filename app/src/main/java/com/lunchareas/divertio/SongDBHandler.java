@@ -105,7 +105,7 @@ public class SongDBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        // Update data
+        // update data
         values.put(KEY_NAME, songData.getSongName());
         values.put(KEY_PATH, songData.getSongPath());
         return db.update(TABLE_SONGS, values, KEY_NAME + " = ?", new String[]{String.valueOf(songData.getSongName())});

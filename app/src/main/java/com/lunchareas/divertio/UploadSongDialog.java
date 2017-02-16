@@ -173,39 +173,15 @@ public class UploadSongDialog extends DialogFragment {
             DownloadManager youtubeConvertManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
             youtubeConvertManager.enqueue(youtubeConvertRequest);
 
-                        /*
-
-                        REPLACING WITH DATABASES:
-
-                        // create a config file for the music file
-                        String fileName = songName + ".txt";
-                        String fileLoc = getActivity().getApplicationContext().getDir("DivertioInfoFiles ", Context.MODE_PRIVATE).getAbsolutePath();
-                        File musicInfoFile = new File(fileLoc, fileName);
-
-                        try {
-
-                            // write all the stuff, only works with this type of writer for some reason
-                            FileWriter fw = new FileWriter(musicInfoFile);
-                            fw.write(songName + "\n");
-                            fw.write(musicFilePath + "\n");
-                            fw.flush();
-                            fw.close();
-                            System.out.println("DATA PRINTED TO INFO FILE:\n" + songName + "\n" + musicFilePath + "\n" + "File Location: " + fileLoc + "\n");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        */
-
             // update database
             String musicFilePath = Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName;
             SongDBHandler db = new SongDBHandler(getActivity());
             try {
                 SongData songData = new SongData(songName, musicFilePath);
                 db.addSongData(songData);
-                System.out.println("Successfully updated database.");
+                System.out.println("Successfully updated song database.");
             } catch (Exception e) {
-                System.out.println("Database update failure.");
+                System.out.println("Song database update failure.");
             }
 
             // reset the song list view
