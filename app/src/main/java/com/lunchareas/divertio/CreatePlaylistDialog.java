@@ -94,5 +94,7 @@ public class CreatePlaylistDialog extends DialogFragment {
         } catch (Exception e) {
             System.out.println("Playlist database update failure.");
         }
+
+        ((PlaylistActivity) getActivity()).setPlaylistView();
     }
 }

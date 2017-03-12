@@ -350,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setSongListView() {
         //cleanMusicFileDir();
-        getSongList();
+        getSongsForActivity();
         SongAdapter songListAdapter = new SongAdapter(this, songInfoList);
         songView.setAdapter(songListAdapter);
     }
@@ -359,11 +359,11 @@ public class MainActivity extends AppCompatActivity {
         return songInfoList;
     }
 
-    public void getSongList() {
+    public void getSongsForActivity() {
 
         // get database and song list
         SongDBHandler db = new SongDBHandler(this);
-        songInfoList = (ArrayList) db.getSongDataList();
+        songInfoList = (ArrayList<SongData>) db.getSongDataList();
     }
 
     // not going to use for now, but could be useful later on

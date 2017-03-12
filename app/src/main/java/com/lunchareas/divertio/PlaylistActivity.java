@@ -33,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 public class PlaylistActivity extends AppCompatActivity {
 
     private ArrayList<SongData> songInfoList;
+    private ArrayList<PlaylistData> playlistInfoList;
 
     private AudioManager am;
     private BroadcastReceiver songBroadcastReceiver;
@@ -51,6 +52,8 @@ public class PlaylistActivity extends AppCompatActivity {
     private RelativeLayout menuDrawerLayout;
     private DrawerLayout menuDrawer;
     private ListView menuList;
+
+    private ListView playlistView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +92,11 @@ public class PlaylistActivity extends AppCompatActivity {
         menuList.setAdapter(new ArrayAdapter<>(this, R.layout.menu_drawer_list_item, menuItemArr));
         menuDrawer.closeDrawers();
         drawerOpen = false;
+
+        // playlist
+        playlistInfoList = new ArrayList<>();
+        playlistView = (ListView) findViewById(R.id.playlist_list);
+        setPlaylistView();
 
         menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -282,7 +290,24 @@ public class PlaylistActivity extends AppCompatActivity {
         this.startService(musicChangeIntent);
     }
 
+    public void setPlaylistView() {
+        getPlaylistsForActivity();
+        PlaylistAdapter playlistAdapter = new PlaylistAdapter(this, playlistInfoList);
+        playlistView.setAdapter(playlistAdapter);
+    }
+
     public ArrayList<SongData> getSongInfoList() {
         return this.songInfoList;
+    }
+
+    public ArrayList<PlaylistData> getPlaylistInfoList() {
+        return this.playlistInfoList;
+    }
+
+    public void getPlaylistsForActivity() {
+
+        // get database and playlist
+        PlaylistDBHandler db = new PlaylistDBHandler(this);
+        playlistInfoList = (ArrayList<PlaylistData>) db.getPlaylistDataList();
     }
 }

@@ -22,6 +22,7 @@ public class PlaylistData {
     PlaylistData(String name, List<SongData> list) {
         this.playlistName = name;
         this.songList = list;
+        this.numSongs = list.size();
     }
 
     public String getPlaylistName() {
