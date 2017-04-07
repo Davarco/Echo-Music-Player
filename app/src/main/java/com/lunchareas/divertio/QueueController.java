@@ -6,7 +6,7 @@ import android.content.Intent;
 
 import java.util.List;
 
-public class QueueController {
+public class QueueController implements MusicController {
 
     private PlaylistData playlistData;
     private List<SongData> songList;

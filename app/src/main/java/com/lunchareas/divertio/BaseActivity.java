@@ -34,7 +34,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements MusicController {
 
     private int id;
     protected AudioManager am;
@@ -53,13 +53,17 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected ImageButton songLastButton;
     protected ImageButton songNextButton;
 
-    protected boolean musicBound;
     protected Intent musicCreateIntent;
     protected Intent musicStartIntent;
     protected Intent musicPauseIntent;
     protected Intent musicChangeIntent;
+
+    protected boolean musicBound;
     protected PlayMusicService musicSrv;
 
+    /*
+    Probably should find a better way of initializing the view.
+     */
     public BaseActivity(int id) {
         this.id = id;
     }
@@ -193,6 +197,35 @@ public abstract class BaseActivity extends AppCompatActivity {
         };
     }
 
+    @Override
+    public void sendMusicCreateIntent(String path) {
+        musicCreateIntent = new Intent(this, PlayMusicService.class);
+        System.out.println("Passing string to create intent: " + path);
+        musicCreateIntent.putExtra(PlayMusicService.PLAYMUSIC_CREATE, path);
+        this.startService(musicCreateIntent);
+    }
+
+    @Override
+    public void sendMusicStartIntent() {
+        musicStartIntent = new Intent(this, PlayMusicService.class);
+        musicStartIntent.putExtra(PlayMusicService.PLAYMUSIC_START, 0);
+        this.startService(musicStartIntent);
+    }
+
+    @Override
+    public void sendMusicPauseIntent() {
+        musicPauseIntent = new Intent(this, PlayMusicService.class);
+        musicPauseIntent.putExtra(PlayMusicService.PLAYMUSIC_PAUSE, 0);
+        this.startService(musicPauseIntent);
+    }
+
+    @Override
+    public void sendMusicChangeIntent(int position) {
+        musicChangeIntent = new Intent(this, PlayMusicService.class);
+        musicChangeIntent.putExtra(PlayMusicService.PLAYMUSIC_CHANGE, position);
+        this.startService(musicChangeIntent);
+    }
+
     protected abstract void setDisplay();
 
     // for broadcast managing from play music service
@@ -241,31 +274,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected abstract void selectMenuItem(int position);
-
-    public void sendMusicCreateIntent(String path) {
-        musicCreateIntent = new Intent(this, PlayMusicService.class);
-        System.out.println("Passing string to create intent: " + path);
-        musicCreateIntent.putExtra(PlayMusicService.PLAYMUSIC_CREATE, path);
-        this.startService(musicCreateIntent);
-    }
-
-    public void sendMusicStartIntent() {
-        musicStartIntent = new Intent(this, PlayMusicService.class);
-        musicStartIntent.putExtra(PlayMusicService.PLAYMUSIC_START, 0);
-        this.startService(musicStartIntent);
-    }
-
-    public void sendMusicPauseIntent() {
-        musicPauseIntent = new Intent(this, PlayMusicService.class);
-        musicPauseIntent.putExtra(PlayMusicService.PLAYMUSIC_PAUSE, 0);
-        this.startService(musicPauseIntent);
-    }
-
-    public void sendMusicChangeIntent(int position) {
-        musicChangeIntent = new Intent(this, PlayMusicService.class);
-        musicChangeIntent.putExtra(PlayMusicService.PLAYMUSIC_CHANGE, position);
-        this.startService(musicChangeIntent);
-    }
 
     public List<SongData> getSongInfoList() {
         return this.songInfoList;
