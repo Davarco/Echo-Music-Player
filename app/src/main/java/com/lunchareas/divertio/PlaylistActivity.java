@@ -1,5 +1,6 @@
 package com.lunchareas.divertio;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -27,13 +28,15 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class PlaylistActivity extends AppCompatActivity {
 
-    private ArrayList<SongData> songInfoList;
-    private ArrayList<PlaylistData> playlistInfoList;
+    private int currentPosition;
+    private List<SongData> songInfoList;
+    private List<PlaylistData> playlistInfoList;
 
     private AudioManager am;
     private BroadcastReceiver songBroadcastReceiver;
@@ -56,6 +59,7 @@ public class PlaylistActivity extends AppCompatActivity {
     private ListView playlistView;
 
     @Override
+    @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist);
@@ -98,10 +102,29 @@ public class PlaylistActivity extends AppCompatActivity {
         playlistView = (ListView) findViewById(R.id.playlist_list);
         setPlaylistView();
 
+        // current position is -1 because no platlist is playing
+        currentPosition = -1;
+
         menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 selectMenuItem(i);
+            }
+        });
+
+        playlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                System.out.println("Detected click in playlist item in list view.");
+                if (!musicBound) {
+                    songCtrlButton.setBackgroundResource(R.drawable.pause_red);
+                    PlaylistData playlistData = playlistInfoList.get(position);
+                    QueueController queueController = new QueueController(playlistData);
+                    musicBound = true;
+                } else if (position != currentPosition) {
+                    songCtrlButton.setBackgroundResource(R.drawable.pause_red);
+                    sendMusicPauseIntent();
+                }
             }
         });
 
@@ -189,7 +212,7 @@ public class PlaylistActivity extends AppCompatActivity {
         };
     }
 
-    // for broadcast managing from play_red music service
+    // for broadcast managing from play music service
     @Override
     protected void onStart() {
         super.onStart();
@@ -225,7 +248,7 @@ public class PlaylistActivity extends AppCompatActivity {
             }
             case R.id.playlist_menu_delete: {
                 System.out.println("Starting new activity - delete.");
-                DialogFragment deletePlaylistDialog = new DeleteSongDialog();
+                DialogFragment deletePlaylistDialog = new DeletePlaylistDialog();
                 deletePlaylistDialog.show(getSupportFragmentManager(), "Delete");
                 return true;
             }
@@ -296,11 +319,11 @@ public class PlaylistActivity extends AppCompatActivity {
         playlistView.setAdapter(playlistAdapter);
     }
 
-    public ArrayList<SongData> getSongInfoList() {
+    public List<SongData> getSongInfoList() {
         return this.songInfoList;
     }
 
-    public ArrayList<PlaylistData> getPlaylistInfoList() {
+    public List<PlaylistData> getPlaylistInfoList() {
         return this.playlistInfoList;
     }
 
@@ -308,6 +331,6 @@ public class PlaylistActivity extends AppCompatActivity {
 
         // get database and playlist
         PlaylistDBHandler db = new PlaylistDBHandler(this);
-        playlistInfoList = (ArrayList<PlaylistData>) db.getPlaylistDataList();
+        playlistInfoList = db.getPlaylistDataList();
     }
 }

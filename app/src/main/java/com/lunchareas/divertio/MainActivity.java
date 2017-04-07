@@ -1,6 +1,7 @@
 package com.lunchareas.divertio;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String MUSIC_DIR_NAME = "Divertio";
 
     private int currentPosition;
-    private ArrayList<SongData> songInfoList;
+    private List<SongData> songInfoList;
     private ListView songView;
     private boolean firstInstance;
     private boolean musicPlayerExists;
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView menuList;
 
     @Override
-    //@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
 
         // set the toolbar and the layout
@@ -355,7 +356,7 @@ public class MainActivity extends AppCompatActivity {
         songView.setAdapter(songListAdapter);
     }
 
-    public ArrayList<SongData> getSongInfoList() {
+    public List<SongData> getSongInfoList() {
         return songInfoList;
     }
 
@@ -363,7 +364,7 @@ public class MainActivity extends AppCompatActivity {
 
         // get database and song list
         SongDBHandler db = new SongDBHandler(this);
-        songInfoList = (ArrayList<SongData>) db.getSongDataList();
+        songInfoList = db.getSongDataList();
     }
 
     // not going to use for now, but could be useful later on

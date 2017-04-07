@@ -16,9 +16,9 @@ public class CreatePlaylistDialog extends DialogFragment {
 
     private View createPlaylistView;
     private View createPlaylistTitle;
-    private ArrayList<String> songInfoTemp;
-    private ArrayList<Integer> selectedSongs;
-    private ArrayList<SongData> songInfoList;
+    private List<String> songInfoTemp;
+    private List<Integer> selectedSongs;
+    private List<SongData> songInfoList;
     private EditText playlistNameInput;
 
     @Override

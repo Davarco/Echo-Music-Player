@@ -11,13 +11,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlaylistAdapter extends BaseAdapter {
 
-    private ArrayList<PlaylistData> playlistDataList;
+    private List<PlaylistData> playlistDataList;
     private LayoutInflater playlistInflater;
 
-    public PlaylistAdapter(Context c, ArrayList<PlaylistData> playlist) {
+    public PlaylistAdapter(Context c, List<PlaylistData> playlist) {
         this.playlistDataList = playlist;
         this.playlistInflater = LayoutInflater.from(c);
     }

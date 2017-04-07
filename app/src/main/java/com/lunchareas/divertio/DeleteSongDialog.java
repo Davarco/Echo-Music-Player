@@ -11,12 +11,13 @@ import android.support.v4.app.DialogFragment;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DeleteSongDialog extends DialogFragment {
 
-    private ArrayList<SongData> songInfoList;
-    private ArrayList<Integer> selectedSongs;
-    private ArrayList<String> songInfoTemp;
+    private List<SongData> songInfoList;
+    private List<Integer> selectedSongs;
+    private List<String> songInfoTemp;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

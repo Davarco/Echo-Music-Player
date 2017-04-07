@@ -126,7 +126,7 @@ public class PlaylistDBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(dbQuery, null);
 
         // go through database and all to list
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             do {
                 PlaylistData playlistData = new PlaylistData(cursor.getString(KEY_NAME_IDX), stringToSongData(cursor.getString(KEY_LIST_IDX)));
                 playlistDataList.add(playlistData);
