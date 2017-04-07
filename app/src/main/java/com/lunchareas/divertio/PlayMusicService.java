@@ -16,6 +16,10 @@ public class PlayMusicService extends Service {
     public static final String PLAYMUSIC_RESULT = "REQUEST_PROCESSED";
     public static final String PLAYMUSIC_POSITION = "POSITION";
     public static final String PLAYMUSIC_DURATION = "DURATION";
+    public static final String PLAYMUSIC_CREATE = "CREATE";
+    public static final String PLAYMUSIC_CHANGE = "CHANGE";
+    public static final String PLAYMUSIC_START = "START";
+    public static final String PLAYMUSIC_PAUSE = PlayMusicService.PLAYMUSIC_PAUSE;
 
     private Bundle intentCmd;
     private static MediaPlayer mp = null;
@@ -59,18 +63,18 @@ public class PlayMusicService extends Service {
         });
 
         if (intentCmd != null) {
-            if (intentCmd.containsKey("CREATE")) {
-                System.out.println("Create Key: " + intentCmd.getString("CREATE"));
-                initMusicPlayer(intentCmd.getString("CREATE"));
+            if (intentCmd.containsKey(PlayMusicService.PLAYMUSIC_CREATE)) {
+                System.out.println("Create Key: " + intentCmd.getString(PlayMusicService.PLAYMUSIC_CREATE));
+                initMusicPlayer(intentCmd.getString(PlayMusicService.PLAYMUSIC_CREATE));
                 mp.start();
                 musicUpdaterThread.start();
-            } else if (intentCmd.containsKey("START") && mp != null) {
+            } else if (intentCmd.containsKey(PlayMusicService.PLAYMUSIC_START) && mp != null) {
                 mp.start();
                 musicUpdaterThread.start();
-            } else if (intentCmd.containsKey("PAUSE") && mp != null) {
+            } else if (intentCmd.containsKey(PlayMusicService.PLAYMUSIC_PAUSE) && mp != null) {
                 mp.pause();
-            } else if (intentCmd.containsKey("CHANGE") && mp != null) {
-                int newPosition = intentCmd.getInt("CHANGE");
+            } else if (intentCmd.containsKey(PlayMusicService.PLAYMUSIC_CHANGE) && mp != null) {
+                int newPosition = intentCmd.getInt(PlayMusicService.PLAYMUSIC_CHANGE);
                 mp.seekTo(newPosition);
             } else {
                 System.err.println("ERROR: Command sent to PlayMusicService not found.");
