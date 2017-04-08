@@ -26,6 +26,17 @@
                 android:background="@drawable/menu_toggle_icon"
                 android:layout_width="36dp"
                 android:layout_height="36dp" />
+            <TextView
+                android:id="@+id/bar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="68dp"
+                android:layout_marginTop="-36dp"
+                android:layout_toRightOf="@+id/menu_toggle"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:gravity="bottom"
+                android:text="@string/playlist_name"
+                android:textSize="24sp"
+                android:textColor="@color/white"/>
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 

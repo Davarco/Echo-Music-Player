@@ -2,6 +2,7 @@ package com.lunchareas.divertio;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +30,7 @@ public class PlaylistActivity extends BaseActivity {
     @Override
     @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
-
-        // set the toolbar and the layout
         super.onCreate(savedInstanceState);
-        Toolbar mainBar = (Toolbar)findViewById(R.id.header_bar);
-        setSupportActionBar(mainBar);
-        this.setTitle("Playlists");
 
         // playlist
         playlistInfoList = new ArrayList<>();

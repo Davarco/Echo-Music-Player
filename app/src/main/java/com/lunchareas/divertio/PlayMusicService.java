@@ -47,6 +47,7 @@ public class PlayMusicService extends Service {
                 int songPosition;
                 int songDuration;
                 do {
+
                     // change duration if track changes
                     songPosition = mp.getCurrentPosition();
                     songDuration = mp.getDuration();

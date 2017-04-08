@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -76,6 +77,14 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
         setContentView(id);
         super.onCreate(savedInstanceState);
         setDisplay();
+
+        // setup toolbar
+        Toolbar mainBar = (Toolbar)findViewById(R.id.header_bar);
+        setSupportActionBar(mainBar);
+
+        // set new font for title
+        TextView barTitle = (TextView) findViewById(R.id.bar_title);
+        barTitle.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Lato-Medium.ttf"));
 
         // get song info
         SongDBHandler db = new SongDBHandler(this);

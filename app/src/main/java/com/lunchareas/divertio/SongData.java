@@ -9,15 +9,19 @@ public class SongData {
     private String songName;
     private String songPath;
     private String songArtist;
-    private int songDuration;
     private Drawable songIcon;
 
-    SongData(String name, String path, String artist, int duration, Drawable icon) {
+    SongData(String name, String path, String artist, Drawable icon) {
         this.songName = name;
         this.songPath = path;
         this.songArtist = artist;
-        this.songDuration = duration;
         this.songIcon = icon;
+    }
+
+    SongData(String name, String path, String artist) {
+        this.songName = name;
+        this.songPath = path;
+        this.songArtist = artist;
     }
 
     SongData(String name, String path) {
@@ -37,10 +41,6 @@ public class SongData {
         return this.songArtist;
     }
 
-    public int getSongDuration() {
-        return this.songDuration;
-    }
-
     public Drawable getSongIcon() {
         return this.songIcon;
     }
@@ -55,10 +55,6 @@ public class SongData {
 
     public void setSongArtist(String artist) {
         this.songArtist = artist;
-    }
-
-    public void setSongDuration(int duration) {
-        this.songDuration = duration;
     }
 
     public void setSongIcon(Drawable icon) {

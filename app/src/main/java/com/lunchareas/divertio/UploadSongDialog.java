@@ -34,6 +34,7 @@ public class UploadSongDialog extends DialogFragment {
     private View uploadDialogView;
     private EditText songNameInput;
     private EditText userLinkInput;
+    private EditText composerNameInput;
     private boolean internetConnectionStatus;
 
     @Override
@@ -121,8 +122,10 @@ public class UploadSongDialog extends DialogFragment {
             // get song name and link
             songNameInput = (EditText) uploadDialogView.findViewById(R.id.dialog_upload_name);
             userLinkInput = (EditText) uploadDialogView.findViewById(R.id.dialog_upload_link);
+            composerNameInput = (EditText) uploadDialogView.findViewById(R.id.dialog_upload_composer);
             String songName = songNameInput.getText().toString().trim();
             String userLink = userLinkInput.getText().toString().trim();
+            String composerName = composerNameInput.getText().toString().trim();
             String downloadMusicLink = "";
             String songFileName = songName + ".mp3";
             System.out.println("Inserted link is " + userLink + ".");
@@ -177,7 +180,8 @@ public class UploadSongDialog extends DialogFragment {
             String musicFilePath = Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName;
             SongDBHandler db = new SongDBHandler(getActivity());
             try {
-                SongData songData = new SongData(songName, musicFilePath);
+                SongData songData = new SongData(songName, musicFilePath, composerName);
+                System.out.println("Composer name: " + composerName);
                 db.addSongData(songData);
                 System.out.println("Successfully updated song database.");
             } catch (Exception e) {

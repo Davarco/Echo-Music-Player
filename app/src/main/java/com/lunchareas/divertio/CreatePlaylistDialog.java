@@ -20,6 +20,7 @@ public class CreatePlaylistDialog extends DialogFragment {
     private List<Integer> selectedSongs;
     private List<SongData> songInfoList;
     private EditText playlistNameInput;
+    private String playlistName;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -40,35 +41,61 @@ public class CreatePlaylistDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         createPlaylistView = inflater.inflate(R.layout.create_playlist_dialog, null);
         createPlaylistTitle = inflater.inflate(R.layout.create_playlist_title, null);
-        createPlaylistBuilder
-                .setView(createPlaylistView)
-                .setCustomTitle(createPlaylistTitle)
-                .setMultiChoiceItems(songList, null, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
-                        if (isChecked) {
-                            selectedSongs.add(position);
-                            System.out.println("Adding position " + position);
-                        } else if (selectedSongs.contains(position)) {
-                            selectedSongs.remove(Integer.valueOf(position));
-                            System.out.println("Removing position " + position);
-                        }
+        
+        // parts of the dialog
+        createPlaylistBuilder.setCustomTitle(createPlaylistTitle);
+        createPlaylistBuilder.setMultiChoiceItems(songList, null, new DialogInterface.OnMultiChoiceClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
+                    if (isChecked) {
+                        selectedSongs.add(position);
+                        System.out.println("Adding position " + position);
+                    } else if (selectedSongs.contains(position)) {
+                        selectedSongs.remove(Integer.valueOf(position));
+                        System.out.println("Removing position " + position);
                     }
-                })
-                .setPositiveButton(R.string.create_playlist_confirm, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        executePlaylistCreate();
-                    }
-                })
-                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        System.out.println("Canceled creation...");
-                    }
-                });
+                }
+            });
+        createPlaylistBuilder.setPositiveButton(R.string.create_playlist_confirm, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int which) {
+                    getPlaylistName();
+                    executePlaylistCreate();
+                }
+            });
+        createPlaylistBuilder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int which) {
+                    System.out.println("Canceled creation...");
+                }
+            });
 
         return createPlaylistBuilder.create();
+    }
+    
+    private void getPlaylistName() {
+        
+        // Create another dialog to get the name
+        AlertDialog.Builder nameDialogBuilder = new AlertDialog.Builder(getActivity());
+        nameDialogBuilder.setView(createPlaylistView);
+        nameDialogBuilder.setPositiveButton(R.string.create_playlist_finish, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                // get name from input
+                playlistNameInput = (EditText) createPlaylistView.findViewById(R.id.dialog_create_playlist_name);
+                playlistName = playlistNameInput.getText().toString().trim();
+                System.out.println("Playlist name: " + playlistName);
+            }
+        });
+        nameDialogBuilder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                System.out.println("Canceled creation...");
+            }
+        });
+        AlertDialog nameDialog = nameDialogBuilder.create();
+        nameDialog.show();
     }
 
     private void executePlaylistCreate() {
@@ -79,11 +106,6 @@ public class CreatePlaylistDialog extends DialogFragment {
             SongData songData = songInfoList.get(selectedSongs.get(i));
             songDataList.add(songData);
         }
-
-        // get name from input
-        playlistNameInput = (EditText) createPlaylistView.findViewById(R.id.dialog_create_playlist_name);
-        String playlistName = playlistNameInput.getText().toString().trim();
-        System.out.println("Playlist name: " + playlistName);
 
         // update database with new playlist
         PlaylistDBHandler db = new PlaylistDBHandler(getActivity());

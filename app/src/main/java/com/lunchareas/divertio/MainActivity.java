@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Environment;
@@ -38,11 +39,7 @@ public class MainActivity extends BaseActivity {
     @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
 
-        // set the toolbar and the layout
         super.onCreate(savedInstanceState);
-        Toolbar mainBar = (Toolbar)findViewById(R.id.header_bar);
-        setSupportActionBar(mainBar);
-        this.setTitle("Divertio");
 
         // external storage permissions
         if (Build.VERSION.SDK_INT < 23) {
@@ -111,7 +108,7 @@ public class MainActivity extends BaseActivity {
                 uploadDialog.show(getSupportFragmentManager(), "Upload");
                 return true;
             }
-            case R.id.playlist_menu_delete: {
+            case R.id.song_menu_delete: {
                 System.out.println("Starting new activity - delete.");
                 DialogFragment deleteDialog = new DeleteSongDialog();
                 deleteDialog.show(getSupportFragmentManager(), "Delete");

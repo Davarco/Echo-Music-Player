@@ -46,4 +46,24 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="8dp"
         android:hint="@string/upload_link_hint"/>
+    <TextView
+        android:id="@+id/dialog_upload_composer_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:text="@string/upload_composer_title"/>
+    <EditText
+        android:id="@+id/dialog_upload_composer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="8dp"
+        android:hint="@string/upload_composer_hint"/>
 </LinearLayout>

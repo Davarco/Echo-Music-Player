@@ -54,6 +54,9 @@ public class SongAdapter extends BaseAdapter {
         songItemName.setText(songItem.getSongName());
         songItemArtist.setText(songItem.getSongArtist());
 
+        // Debug
+        System.out.println("Song Artist: " + songItem.getSongArtist());
+
         // set position as tag
         songListLayout.setTag(position);
         return songListLayout;

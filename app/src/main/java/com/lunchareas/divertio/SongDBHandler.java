@@ -22,10 +22,12 @@ public class SongDBHandler extends SQLiteOpenHelper {
     private static final String TABLE_SONGS = "songs";
     private static final String KEY_NAME = "name";
     private static final String KEY_PATH = "path";
+    private static final String KEY_ARTIST = "artist";
 
     // numbers correspond to keys
     private static final int KEY_NAME_IDX = 0;
     private static final int KEY_PATH_IDX = 1;
+    private static final int KEY_ARTIST_IDX = 2;
 
     public SongDBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -33,7 +35,7 @@ public class SongDBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_SONG_DATABASE = "CREATE TABLE " + TABLE_SONGS + "(" + KEY_NAME + " TEXT," + KEY_PATH + " TEXT" + ")";
+        String CREATE_SONG_DATABASE = "CREATE TABLE " + TABLE_SONGS + "(" + KEY_NAME + " TEXT," + KEY_PATH + " TEXT," + KEY_ARTIST + " TEXT" + ")";
         db.execSQL(CREATE_SONG_DATABASE);
     }
 
@@ -54,6 +56,7 @@ public class SongDBHandler extends SQLiteOpenHelper {
         // insert new data from song data
         values.put(KEY_NAME, songData.getSongName());
         values.put(KEY_PATH, songData.getSongPath());
+        values.put(KEY_ARTIST, songData.getSongArtist());
         db.insert(TABLE_SONGS, null, values);
         db.close();
     }
@@ -89,7 +92,7 @@ public class SongDBHandler extends SQLiteOpenHelper {
         // go through database and all to list
         if (cursor.moveToFirst()) {
             do {
-                SongData songData = new SongData(cursor.getString(KEY_NAME_IDX), cursor.getString(KEY_PATH_IDX));
+                SongData songData = new SongData(cursor.getString(KEY_NAME_IDX), cursor.getString(KEY_PATH_IDX), cursor.getString(KEY_ARTIST_IDX));
                 songDataList.add(songData);
             } while (cursor.moveToNext());
         }
@@ -108,6 +111,7 @@ public class SongDBHandler extends SQLiteOpenHelper {
         // update data
         values.put(KEY_NAME, songData.getSongName());
         values.put(KEY_PATH, songData.getSongPath());
+        values.put(KEY_ARTIST, songData.getSongArtist());
         return db.update(TABLE_SONGS, values, KEY_NAME + " = ?", new String[]{String.valueOf(songData.getSongName())});
     }
 
