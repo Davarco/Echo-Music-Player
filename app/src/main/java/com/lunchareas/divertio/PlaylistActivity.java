@@ -3,7 +3,11 @@ package com.lunchareas.divertio;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -43,15 +47,13 @@ public class PlaylistActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 System.out.println("Detected click in playlist item in list view.");
-                if (!musicBound) {
-                    songCtrlButton.setBackgroundResource(R.drawable.pause_red);
-                    PlaylistData playlistData = playlistInfoList.get(position);
-                    QueueController queueController = new QueueController(playlistData);
-                    musicBound = true;
-                } else if (position != currentPosition) {
-                    songCtrlButton.setBackgroundResource(R.drawable.pause_red);
-                    sendMusicPauseIntent();
-                }
+                songCtrlButton.setBackgroundResource(R.drawable.pause_red);
+                sendMusicPauseIntent();
+                PlaylistData playlistData = playlistInfoList.get(position);
+                PlaylistController queueController = new PlaylistController(playlistData, PlaylistActivity.this);
+                queueController.startQueue();
+                musicBound = true;
+                currentPosition = position;
             }
         });
     }
@@ -60,6 +62,35 @@ public class PlaylistActivity extends BaseActivity {
     protected void setDisplay() {
         setContentView(R.layout.activity_playlist);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.playlist_overflow_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        System.out.println("Detected that position " + item.getItemId() + " was selected.");
+        switch (item.getItemId()) {
+            case R.id.playlist_menu_create: {
+                System.out.println("Starting new activity - create.");
+                DialogFragment createPlaylistDialog = new CreatePlaylistDialog();
+                createPlaylistDialog.show(getSupportFragmentManager(), "Upload");
+                return true;
+            }
+            case R.id.playlist_menu_delete: {
+                System.out.println("Starting new activity - delete.");
+                DialogFragment deletePlaylistDialog = new DeletePlaylistDialog();
+                deletePlaylistDialog.show(getSupportFragmentManager(), "Delete");
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     // options for drawer menu
     @Override

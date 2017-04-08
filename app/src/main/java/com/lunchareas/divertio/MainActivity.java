@@ -10,6 +10,9 @@ import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import android.content.*;
@@ -71,18 +74,11 @@ public class MainActivity extends BaseActivity {
         songView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("Detected click on song item in list view.");
-                if (!musicBound) {
-                    songCtrlButton.setBackgroundResource(R.drawable.pause_red);
-                    String path = songInfoList.get(position).getSongPath();
-                    sendMusicCreateIntent(path);
-                    musicBound = true;
-                } else if (position != currentPosition) {
-                    songCtrlButton.setBackgroundResource(R.drawable.pause_red);
-                    String wantedPath = songInfoList.get(position).getSongPath();
-                    sendMusicPauseIntent();
-                    sendMusicCreateIntent(wantedPath);
-                }
+                songCtrlButton.setBackgroundResource(R.drawable.pause_red);
+                String wantedPath = songInfoList.get(position).getSongPath();
+                sendMusicPauseIntent();
+                sendMusicCreateIntent(wantedPath);
+                musicBound = true;
             }
         });
     }
@@ -96,6 +92,34 @@ public class MainActivity extends BaseActivity {
         d.dismiss();
         DialogFragment uploadFailureDialog = new UploadSongFailureDialog();
         uploadFailureDialog.show(getSupportFragmentManager(), "UploadFailure");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.song_overflow_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        System.out.println("Detected that position " + item.getItemId() + " was selected.");
+        switch (item.getItemId()) {
+            case R.id.song_menu_upload: {
+                System.out.println("Starting new activity - upload.");
+                DialogFragment uploadDialog = new UploadSongDialog();
+                uploadDialog.show(getSupportFragmentManager(), "Upload");
+                return true;
+            }
+            case R.id.playlist_menu_delete: {
+                System.out.println("Starting new activity - delete.");
+                DialogFragment deleteDialog = new DeleteSongDialog();
+                deleteDialog.show(getSupportFragmentManager(), "Delete");
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     // options for drawer menu

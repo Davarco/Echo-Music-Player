@@ -25,7 +25,7 @@ public class CreatePlaylistDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         // get the list of songs to pick from
-        songInfoList = ((PlaylistActivity)getActivity()).getSongInfoList();
+        songInfoList = ((BaseActivity)getActivity()).getSongInfoList();
         songInfoTemp = new ArrayList<>();
         for (int i = 0; i < songInfoList.size(); i++) {
             songInfoTemp.add(songInfoList.get(i).getSongName());

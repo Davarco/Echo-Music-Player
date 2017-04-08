@@ -18,7 +18,7 @@
     <!-- Dialog strings -->
     <string name="upload_confirm">Upload</string>
     <string name="upload_name_title">File Name:</string>
-    <string name="upload_name_hint">(Discard the .mp3)</string>
+    <string name="upload_name_hint">(Don\'t include .mp3)</string>
     <string name="upload_link_title">Via Youtube:</string>
     <string name="upload_link_hint">Youtube Link</string>
     <string name="upload_failure_message">Failed to upload.\nCheck internet status and link?</string>

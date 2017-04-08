@@ -170,8 +170,8 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
         songBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                int songPosition = intent.getIntExtra(PlayMusicService.PLAYMUSIC_POSITION, 0);
-                int songDuration = intent.getIntExtra(PlayMusicService.PLAYMUSIC_DURATION, 0);
+                int songPosition = intent.getIntExtra(PlayMusicService.MUSIC_POSITION, 0);
+                int songDuration = intent.getIntExtra(PlayMusicService.MUSIC_DURATION, 0);
 
                 // set location based on position/duration
                 songProgressManager.setMax(songDuration);
@@ -198,31 +198,36 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
     }
 
     @Override
+    public void sendPlaylistCreateIntent(List<SongData> songList) {
+        // useless here
+    }
+
+    @Override
     public void sendMusicCreateIntent(String path) {
         musicCreateIntent = new Intent(this, PlayMusicService.class);
         System.out.println("Passing string to create intent: " + path);
-        musicCreateIntent.putExtra(PlayMusicService.PLAYMUSIC_CREATE, path);
+        musicCreateIntent.putExtra(PlayMusicService.MUSIC_CREATE, path);
         this.startService(musicCreateIntent);
     }
 
     @Override
     public void sendMusicStartIntent() {
         musicStartIntent = new Intent(this, PlayMusicService.class);
-        musicStartIntent.putExtra(PlayMusicService.PLAYMUSIC_START, 0);
+        musicStartIntent.putExtra(PlayMusicService.MUSIC_START, 0);
         this.startService(musicStartIntent);
     }
 
     @Override
     public void sendMusicPauseIntent() {
         musicPauseIntent = new Intent(this, PlayMusicService.class);
-        musicPauseIntent.putExtra(PlayMusicService.PLAYMUSIC_PAUSE, 0);
+        musicPauseIntent.putExtra(PlayMusicService.MUSIC_PAUSE, 0);
         this.startService(musicPauseIntent);
     }
 
     @Override
     public void sendMusicChangeIntent(int position) {
         musicChangeIntent = new Intent(this, PlayMusicService.class);
-        musicChangeIntent.putExtra(PlayMusicService.PLAYMUSIC_CHANGE, position);
+        musicChangeIntent.putExtra(PlayMusicService.MUSIC_CHANGE, position);
         this.startService(musicChangeIntent);
     }
 
@@ -232,8 +237,8 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
     @Override
     protected void onStart() {
         super.onStart();
-        LocalBroadcastManager.getInstance(this).registerReceiver((songBroadcastReceiver), new IntentFilter(PlayMusicService.PLAYMUSIC_RESULT));
-        System.out.println("Running playlist start!");
+        LocalBroadcastManager.getInstance(this).registerReceiver((songBroadcastReceiver), new IntentFilter(PlayMusicService.MUSIC_RESULT));
+        System.out.println("Running start!");
         menuDrawer.closeDrawers();
     }
 
@@ -249,28 +254,6 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.playlist_overflow_menu, menu);
         return true;
-    }
-
-    // options for overflow menu
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        System.out.println("Detected that position " + item.getItemId() + " was selected.");
-        switch (item.getItemId()) {
-            case R.id.playlist_menu_create: {
-                System.out.println("Starting new activity - create.");
-                DialogFragment createPlaylistDialog = new CreatePlaylistDialog();
-                createPlaylistDialog.show(getSupportFragmentManager(), "Upload");
-                return true;
-            }
-            case R.id.playlist_menu_delete: {
-                System.out.println("Starting new activity - delete.");
-                DialogFragment deletePlaylistDialog = new DeletePlaylistDialog();
-                deletePlaylistDialog.show(getSupportFragmentManager(), "Delete");
-                return true;
-            }
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     protected abstract void selectMenuItem(int position);

@@ -11,18 +11,23 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.v4.content.LocalBroadcastManager;
 
+import java.io.IOException;
+
 public class PlayMusicService extends Service {
 
-    public static final String PLAYMUSIC_RESULT = "REQUEST_PROCESSED";
-    public static final String PLAYMUSIC_POSITION = "POSITION";
-    public static final String PLAYMUSIC_DURATION = "DURATION";
-    public static final String PLAYMUSIC_CREATE = "CREATE";
-    public static final String PLAYMUSIC_CHANGE = "CHANGE";
-    public static final String PLAYMUSIC_START = "START";
-    public static final String PLAYMUSIC_PAUSE = PlayMusicService.PLAYMUSIC_PAUSE;
+    public static final String MUSIC_RESULT = "REQUEST_PROCESSED";
+    public static final String MUSIC_POSITION = "POSITION";
+    public static final String MUSIC_DURATION = "DURATION";
+    public static final String MUSIC_CREATE = "CREATE";
+    public static final String MUSIC_CHANGE = "CHANGE";
+    public static final String MUSIC_START = "START";
+    public static final String MUSIC_PAUSE = "PAUSE";
+    public static final String MUSIC_FINISH = "FINISH";
+    public static final String PLAYLIST_CREATE = "PLAYLIST_CREATE";
 
     private Bundle intentCmd;
-    private static MediaPlayer mp = null;
+    private MediaPlayer mp = null;
+    private int idx;
 
     // set up broadcaster to activity to update progress bar
     private LocalBroadcastManager musicUpdater;
@@ -48,11 +53,12 @@ public class PlayMusicService extends Service {
                     //System.out.println("Song service position: " + songPosition + "\nSong service duration: " + songDuration);
 
                     // create and send intent with position and duration
-                    Intent songIntent = new Intent(PLAYMUSIC_RESULT);
-                    songIntent.putExtra(PLAYMUSIC_POSITION, songPosition);
-                    songIntent.putExtra(PLAYMUSIC_DURATION, songDuration);
+                    Intent songIntent = new Intent(MUSIC_RESULT);
+                    songIntent.putExtra(MUSIC_POSITION, songPosition);
+                    songIntent.putExtra(MUSIC_DURATION, songDuration);
                     musicUpdater.sendBroadcast(songIntent);
                     musicUpdater.sendBroadcast(songIntent);
+
                     try {
                         Thread.sleep(200);
                     } catch (Exception e) {
@@ -63,25 +69,78 @@ public class PlayMusicService extends Service {
         });
 
         if (intentCmd != null) {
-            if (intentCmd.containsKey(PlayMusicService.PLAYMUSIC_CREATE)) {
-                System.out.println("Create Key: " + intentCmd.getString(PlayMusicService.PLAYMUSIC_CREATE));
-                initMusicPlayer(intentCmd.getString(PlayMusicService.PLAYMUSIC_CREATE));
+            if (intentCmd.containsKey(PlayMusicService.MUSIC_CREATE)) {
+
+                // create single song
+                System.out.println("Create Key: " + intentCmd.getString(PlayMusicService.MUSIC_CREATE));
+                initMusicPlayer(intentCmd.getString(PlayMusicService.MUSIC_CREATE));
                 mp.start();
                 musicUpdaterThread.start();
-            } else if (intentCmd.containsKey(PlayMusicService.PLAYMUSIC_START) && mp != null) {
+
+            } else if (intentCmd.containsKey(PlayMusicService.MUSIC_START) && mp != null) {
+
+                // start song
+                System.out.println("Starting music!");
                 mp.start();
                 musicUpdaterThread.start();
-            } else if (intentCmd.containsKey(PlayMusicService.PLAYMUSIC_PAUSE) && mp != null) {
+
+            } else if (intentCmd.containsKey(PlayMusicService.MUSIC_PAUSE) && mp != null) {
+
+                // pause song
+                System.out.println("Pausing music!");
                 mp.pause();
-            } else if (intentCmd.containsKey(PlayMusicService.PLAYMUSIC_CHANGE) && mp != null) {
-                int newPosition = intentCmd.getInt(PlayMusicService.PLAYMUSIC_CHANGE);
+
+            } else if (intentCmd.containsKey(PlayMusicService.MUSIC_CHANGE) && mp != null) {
+
+                // change song location
+                int newPosition = intentCmd.getInt(PlayMusicService.MUSIC_CHANGE);
                 mp.seekTo(newPosition);
+                System.out.println("Changing to new position!");
+
+            } else if (intentCmd.containsKey(PlayMusicService.PLAYLIST_CREATE)) {
+
+                // create playlist queue
+                System.out.println("Beginning playlist queue!");
+                String[] songPathList = intentCmd.getStringArray(PlayMusicService.PLAYLIST_CREATE);
+                beginPlaylistQueue(songPathList);
+
             } else {
-                System.err.println("ERROR: Command sent to PlayMusicService not found.");
+                System.out.println("Command sent to PlayMusicService not found.");
             }
         }
 
         return START_STICKY;
+    }
+
+    private void beginPlaylistQueue(final String[] songPathList) {
+
+        // Play the first song
+        initMusicPlayer(songPathList[0]);
+        mp.start();
+        musicUpdaterThread.start();
+
+        // Setup for completion
+        idx = 1;
+        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                if (idx < songPathList.length) {
+                    try {
+                        mp.reset();
+                        mp.setDataSource(songPathList[idx]);
+                        mp.prepare();
+                        mp.start();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    musicUpdaterThread.start();
+                    idx += 1;
+                    System.out.println("Playing next song, number " + Integer.toString(idx));
+                } else {
+                    System.out.println("Finished playlist.");
+                }
+            }
+        });
     }
 
     @Override
@@ -91,7 +150,7 @@ public class PlayMusicService extends Service {
 
     @Override
     public void onDestroy() {
-        System.out.println("MUSICPLAYER: PlayMusicService destroyed...");
+        System.out.println("PlayMusicService destroyed...");
         mp.release();
         mp = null;
         musicUpdaterThread.interrupt();
