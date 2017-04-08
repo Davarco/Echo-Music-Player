@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreatePlaylistDialog extends DialogFragment {
+
+    private static final String TAG = CreatePlaylistDialog.class.getName();
 
     private View createPlaylistView;
     private View createPlaylistTitle;
@@ -49,10 +52,10 @@ public class CreatePlaylistDialog extends DialogFragment {
                 public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
                     if (isChecked) {
                         selectedSongs.add(position);
-                        System.out.println("Adding position " + position);
+                        Log.i(TAG, "Adding position " + position);
                     } else if (selectedSongs.contains(position)) {
                         selectedSongs.remove(Integer.valueOf(position));
-                        System.out.println("Removing position " + position);
+                        Log.i(TAG, "Removing position " + position);
                     }
                 }
             });
@@ -66,7 +69,7 @@ public class CreatePlaylistDialog extends DialogFragment {
         createPlaylistBuilder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int which) {
-                    System.out.println("Canceled creation...");
+                    Log.i(TAG, "Canceled creation...");
                 }
             });
 
@@ -85,13 +88,13 @@ public class CreatePlaylistDialog extends DialogFragment {
                 // get name from input
                 playlistNameInput = (EditText) createPlaylistView.findViewById(R.id.dialog_create_playlist_name);
                 playlistName = playlistNameInput.getText().toString().trim();
-                System.out.println("Playlist name: " + playlistName);
+                Log.i(TAG, "Playlist name: " + playlistName);
             }
         });
         nameDialogBuilder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                System.out.println("Canceled creation...");
+                Log.i(TAG, "Canceled creation...");
             }
         });
         AlertDialog nameDialog = nameDialogBuilder.create();
@@ -112,9 +115,9 @@ public class CreatePlaylistDialog extends DialogFragment {
         try {
             PlaylistData playlistData = new PlaylistData(playlistName, songDataList);
             db.addPlaylistData(playlistData);
-            System.out.println("Successfully updated playlist database.");
+            Log.i(TAG, "Successfully updated playlist database.");
         } catch (Exception e) {
-            System.out.println("Playlist database update failure.");
+            Log.e(TAG, "Playlist database update failure.", e);
         }
 
         ((PlaylistActivity) getActivity()).setPlaylistView();

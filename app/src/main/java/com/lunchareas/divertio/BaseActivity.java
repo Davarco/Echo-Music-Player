@@ -16,6 +16,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,6 +37,8 @@ import java.util.concurrent.TimeUnit;
 
 
 public abstract class BaseActivity extends AppCompatActivity implements MusicController {
+
+    private static final String TAG = BaseActivity.class.getName();
 
     private int id;
     protected AudioManager am;
@@ -84,12 +87,16 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
 
         // set new font for title
         TextView barTitle = (TextView) findViewById(R.id.bar_title);
-        barTitle.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Lato-Medium.ttf"));
+        try {
+            barTitle.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/Lato-Medium.ttf"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(TAG, "Could not open the font.");
+        }
 
         // get song info
         SongDBHandler db = new SongDBHandler(this);
         songInfoList = db.getSongDataList();
-        System.out.println(songInfoList);
 
         // song bar
         am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -119,7 +126,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
         songCtrlButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Detected click on play_red button.");
+                Log.i(TAG, "Detected click on play_red button.");
                 if (musicBound) {
                     sendMusicPauseIntent();
                     songCtrlButton.setBackgroundResource(R.drawable.play_red);
@@ -135,7 +142,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
         menuToggleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Detected click on menu button.");
+                Log.i(TAG, "Detected click on menu button.");
                 if (drawerOpen) {
                     //menuDrawerLayout.setVisibility(View.GONE);
                     menuDrawer.closeDrawer(GravityCompat.START);
@@ -214,7 +221,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
     @Override
     public void sendMusicCreateIntent(String path) {
         musicCreateIntent = new Intent(this, PlayMusicService.class);
-        System.out.println("Passing string to create intent: " + path);
+        Log.i(TAG, "Passing string to create intent: " + path);
         musicCreateIntent.putExtra(PlayMusicService.MUSIC_CREATE, path);
         this.startService(musicCreateIntent);
     }
@@ -247,7 +254,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
     protected void onStart() {
         super.onStart();
         LocalBroadcastManager.getInstance(this).registerReceiver((songBroadcastReceiver), new IntentFilter(PlayMusicService.MUSIC_RESULT));
-        System.out.println("Running start!");
+        Log.i(TAG, "Running start!");
         menuDrawer.closeDrawers();
     }
 

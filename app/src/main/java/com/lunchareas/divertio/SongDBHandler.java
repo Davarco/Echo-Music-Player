@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class SongDBHandler extends SQLiteOpenHelper {
+
+    private static final String TAG = SongDBHandler.class.getName();
 
     // database info
     private static final int DATABASE_VERSION = 1;
@@ -74,10 +77,10 @@ public class SongDBHandler extends SQLiteOpenHelper {
             db.close();
             return songData;
         } else {
-            System.out.println("Failed to create database cursor.");
+            Log.e(TAG, "Failed to create database cursor.");
         }
 
-        System.out.println("Failed to find song data with that name in database.");
+        Log.e(TAG, "Failed to find song data with that name in database.");
         return null;
     }
 

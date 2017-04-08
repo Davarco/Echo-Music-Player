@@ -1,6 +1,7 @@
 package com.lunchareas.divertio;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SongAdapter extends BaseAdapter {
+
+    private static final String TAG = SongAdapter.class.getName();
 
     private List<SongData> songDataList;
     private LayoutInflater songListInflater;
@@ -54,8 +57,9 @@ public class SongAdapter extends BaseAdapter {
         songItemName.setText(songItem.getSongName());
         songItemArtist.setText(songItem.getSongArtist());
 
-        // Debug
-        System.out.println("Song Artist: " + songItem.getSongArtist());
+        // Assertions
+        Log.i(TAG, "Song Name: " + songItem.getSongName());
+        Log.i(TAG, "Song Artist: " + songItem.getSongArtist());
 
         // set position as tag
         songListLayout.setTag(position);

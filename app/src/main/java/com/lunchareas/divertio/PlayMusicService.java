@@ -10,10 +10,13 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import java.io.IOException;
 
 public class PlayMusicService extends Service {
+
+    private static final String TAG = PlayMusicService.class.getName();
 
     public static final String MUSIC_RESULT = "REQUEST_PROCESSED";
     public static final String MUSIC_POSITION = "POSITION";
@@ -51,7 +54,7 @@ public class PlayMusicService extends Service {
                     // change duration if track changes
                     songPosition = mp.getCurrentPosition();
                     songDuration = mp.getDuration();
-                    //System.out.println("Song service position: " + songPosition + "\nSong service duration: " + songDuration);
+                    //Log.i(TAG, "Song service position: " + songPosition + "\nSong service duration: " + songDuration);
 
                     // create and send intent with position and duration
                     Intent songIntent = new Intent(MUSIC_RESULT);
@@ -73,7 +76,7 @@ public class PlayMusicService extends Service {
             if (intentCmd.containsKey(PlayMusicService.MUSIC_CREATE)) {
 
                 // create single song
-                System.out.println("Create Key: " + intentCmd.getString(PlayMusicService.MUSIC_CREATE));
+                Log.i(TAG, "Create Key: " + intentCmd.getString(PlayMusicService.MUSIC_CREATE));
                 initMusicPlayer(intentCmd.getString(PlayMusicService.MUSIC_CREATE));
                 mp.start();
                 musicUpdaterThread.start();
@@ -81,14 +84,14 @@ public class PlayMusicService extends Service {
             } else if (intentCmd.containsKey(PlayMusicService.MUSIC_START) && mp != null) {
 
                 // start song
-                System.out.println("Starting music!");
+                Log.i(TAG, "Starting music!");
                 mp.start();
                 musicUpdaterThread.start();
 
             } else if (intentCmd.containsKey(PlayMusicService.MUSIC_PAUSE) && mp != null) {
 
                 // pause song
-                System.out.println("Pausing music!");
+                Log.i(TAG, "Pausing music!");
                 mp.pause();
 
             } else if (intentCmd.containsKey(PlayMusicService.MUSIC_CHANGE) && mp != null) {
@@ -96,17 +99,17 @@ public class PlayMusicService extends Service {
                 // change song location
                 int newPosition = intentCmd.getInt(PlayMusicService.MUSIC_CHANGE);
                 mp.seekTo(newPosition);
-                System.out.println("Changing to new position!");
+                Log.i(TAG, "Changing to new position!");
 
             } else if (intentCmd.containsKey(PlayMusicService.PLAYLIST_CREATE)) {
 
                 // create playlist queue
-                System.out.println("Beginning playlist queue!");
+                Log.i(TAG, "Beginning playlist queue!");
                 String[] songPathList = intentCmd.getStringArray(PlayMusicService.PLAYLIST_CREATE);
                 beginPlaylistQueue(songPathList);
 
             } else {
-                System.out.println("Command sent to PlayMusicService not found.");
+                Log.e(TAG, "Command sent to PlayMusicService not found.");
             }
         }
 
@@ -136,9 +139,9 @@ public class PlayMusicService extends Service {
                     }
                     musicUpdaterThread.start();
                     idx += 1;
-                    System.out.println("Playing next song, number " + Integer.toString(idx));
+                    Log.i(TAG, "Playing next song, number " + Integer.toString(idx));
                 } else {
-                    System.out.println("Finished playlist.");
+                    Log.i(TAG, "Finished playlist.");
                 }
             }
         });
@@ -151,7 +154,7 @@ public class PlayMusicService extends Service {
 
     @Override
     public void onDestroy() {
-        System.out.println("PlayMusicService destroyed...");
+        Log.i(TAG, "PlayMusicService destroyed...");
         mp.release();
         mp = null;
         musicUpdaterThread.interrupt();

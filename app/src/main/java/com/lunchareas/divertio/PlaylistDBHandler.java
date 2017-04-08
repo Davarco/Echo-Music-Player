@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.Streams;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlaylistDBHandler extends SQLiteOpenHelper {
+
+    private static final String TAG = PlaylistDBHandler.class.getName();
 
     // database info
     private static final int DATABASE_VERSION = 1;
@@ -61,7 +64,7 @@ public class PlaylistDBHandler extends SQLiteOpenHelper {
 
         Gson gson = new Gson();
         String songListString = gson.toJson(songNameList);
-        System.out.println("String: " + songListString);
+        Log.i(TAG, "String: " + songListString);
 
         return songListString;
     }
@@ -110,10 +113,10 @@ public class PlaylistDBHandler extends SQLiteOpenHelper {
             db.close();
             return playlistData;
         } else {
-            System.out.println("Failed to create database cursor.");
+            Log.i(TAG, "Failed to create database cursor.");
         }
 
-        System.out.println("Failed to find song data with that name in database.");
+        Log.i(TAG, "Failed to find song data with that name in database.");
         return null;
     }
 

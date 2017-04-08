@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -30,6 +31,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class UploadSongDialog extends DialogFragment {
+
+    private static final String TAG = UploadSongDialog.class.getName();
 
     private View uploadDialogView;
     private EditText songNameInput;
@@ -66,7 +69,7 @@ public class UploadSongDialog extends DialogFragment {
                     try {
                         checkConnectionThread.join();
                     } catch (Exception e) {
-                        System.out.println("Couldn't wait for connection thread.");
+                        Log.e(TAG, "Couldn't wait for connection thread.");
                     }
 
                     // run the download procedure
@@ -76,7 +79,7 @@ public class UploadSongDialog extends DialogFragment {
             .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    System.out.println("Canceled MP3 upload.");
+                    Log.i(TAG, "Canceled MP3 upload.");
                 }
             });
 
@@ -90,7 +93,7 @@ public class UploadSongDialog extends DialogFragment {
     }
 
     public boolean hasActiveInternetConnection() {
-        System.out.println("Reached internet connection checker...");
+        Log.i(TAG, "Reached internet connection checker...");
         if (isNetworkAvailable(getActivity())) {
             try {
                 HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.something.com").openConnection());
@@ -98,15 +101,15 @@ public class UploadSongDialog extends DialogFragment {
                 urlc.setRequestProperty("Connection", "close");
                 urlc.setConnectTimeout(3000);
                 urlc.connect();
-                System.out.println("Network is available, checking for response code...");
+                Log.i(TAG, "Network is available, checking for response code...");
                 return (urlc.getResponseCode() == 200);
             } catch (IOException e) {
-                System.out.println("No connection...");
+                Log.e(TAG, "No connection...");
             }
         } else {
-            System.out.println("No network available...");
+            Log.e(TAG, "No network available...");
         }
-        System.out.println("Apparently a network is available...");
+        Log.i(TAG, "Apparently a network is available...");
         return false;
     }
 
@@ -128,12 +131,12 @@ public class UploadSongDialog extends DialogFragment {
             String composerName = composerNameInput.getText().toString().trim();
             String downloadMusicLink = "";
             String songFileName = songName + ".mp3";
-            System.out.println("Inserted link is " + userLink + ".");
+            Log.i(TAG, "Inserted link is " + userLink + ".");
 
             // using advanced api to get link line
             try {
                 String downloadInfoLink = "https://www.youtubeinmp3.com/download/?video=" + userLink;
-                System.out.println("The link is: " + downloadInfoLink);
+                Log.i(TAG, "The link is: " + downloadInfoLink);
 
                 // use jsoup to find the download link
                 Document doc = Jsoup.connect(downloadInfoLink)
@@ -143,13 +146,13 @@ public class UploadSongDialog extends DialogFragment {
                         .timeout(6000)
                         .get();
                 if (doc == null) {
-                    System.out.println("The doc is empty.");
+                    Log.i(TAG, "The doc is empty.");
                 } else {
-                    System.out.println("The doc is not empty.");
+                    Log.i(TAG, "The doc is not empty.");
                 }
                 Element musicLinkElement = doc.getElementById("download");
                 downloadMusicLink = "https://youtubeinmp3.com" + musicLinkElement.attr("href");
-                System.out.println("Final Download Link: " + downloadMusicLink);
+                Log.i(TAG, "Final Download Link: " + downloadMusicLink);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -181,18 +184,18 @@ public class UploadSongDialog extends DialogFragment {
             SongDBHandler db = new SongDBHandler(getActivity());
             try {
                 SongData songData = new SongData(songName, musicFilePath, composerName);
-                System.out.println("Composer name: " + composerName);
+                Log.i(TAG, "Composer name: " + composerName);
                 db.addSongData(songData);
-                System.out.println("Successfully updated song database.");
+                Log.i(TAG, "Successfully updated song database.");
             } catch (Exception e) {
-                System.out.println("Song database update failure.");
+                Log.i(TAG, "Song database update failure.");
             }
 
             // reset the song list view
             ((MainActivity) getActivity()).setSongListView();
 
         } else {
-            System.out.println("Could not connect to website?");
+            Log.i(TAG, "Could not connect to website?");
             replaceDialogWithFailure();
         }
     }

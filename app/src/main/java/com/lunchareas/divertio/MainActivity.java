@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,6 +24,8 @@ import java.util.*;
 import java.lang.*;
 
 public class MainActivity extends BaseActivity {
+
+    private static final String TAG = MainActivity.class.getName();
 
     private final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 501;
     public static final String MUSIC_DIR_NAME = "Divertio";
@@ -43,11 +46,11 @@ public class MainActivity extends BaseActivity {
 
         // external storage permissions
         if (Build.VERSION.SDK_INT < 23) {
-            System.out.println("Don't need permissions.");
+            Log.i(TAG, "Don't need permissions.");
         } else {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    System.out.println("PERMISSIONS: App needs permissions to read external storage.");
+                    Log.i(TAG, "PERMISSIONS: App needs permissions to read external storage.");
                 }
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
             }
@@ -100,16 +103,16 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        System.out.println("Detected that position " + item.getItemId() + " was selected.");
+        Log.i(TAG, "Detected that position " + item.getItemId() + " was selected.");
         switch (item.getItemId()) {
             case R.id.song_menu_upload: {
-                System.out.println("Starting new activity - upload.");
+                Log.i(TAG, "Starting new activity - upload.");
                 DialogFragment uploadDialog = new UploadSongDialog();
                 uploadDialog.show(getSupportFragmentManager(), "Upload");
                 return true;
             }
             case R.id.song_menu_delete: {
-                System.out.println("Starting new activity - delete.");
+                Log.i(TAG, "Starting new activity - delete.");
                 DialogFragment deleteDialog = new DeleteSongDialog();
                 deleteDialog.show(getSupportFragmentManager(), "Delete");
                 return true;
@@ -122,27 +125,27 @@ public class MainActivity extends BaseActivity {
     // options for drawer menu
     @Override
     protected void selectMenuItem(int position) {
-        System.out.println("Detected click on position " + position + ".");
+        Log.i(TAG, "Detected click on position " + position + ".");
         switch (position) {
             case 0: {
-                System.out.println("No effect, on that activity!");
+                Log.i(TAG, "No effect, on that activity!");
                 break;
             }
             case 1: {
-                System.out.println("Starting new activity - playlist.");
+                Log.i(TAG, "Starting new activity - playlist.");
                 Intent i = new Intent(this, PlaylistActivity.class);
                 startActivity(i);
                 break;
             }
             /*
             case 2: {
-                System.out.println("Starting new activity - bluetooth.");
+                Log.i(TAG, "Starting new activity - bluetooth.");
                 Intent i = new Intent(this, BluetoothActivity.class);
                 startActivity(i);
                 break;
             }
             case 3: {
-                System.out.println("Starting new activity - settings.");
+                Log.i(TAG, "Starting new activity - settings.");
                 Intent i = new Intent(this, SettingsActivity.class);
                 startActivity(i);
                 break;
@@ -170,11 +173,11 @@ public class MainActivity extends BaseActivity {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
-                System.out.println("Service is running.");
+                Log.i(TAG, "Service is running.");
                 return true;
             }
         }
-        System.out.println("Service is not running.");
+        Log.i(TAG, "Service is not running.");
         return false;
     }
 }

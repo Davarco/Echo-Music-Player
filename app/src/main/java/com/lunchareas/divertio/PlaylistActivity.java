@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlaylistActivity extends BaseActivity {
+
+    private static final String TAG = PlaylistActivity.class.getName();
 
     private int currentPosition;
     private List<PlaylistData> playlistInfoList;
@@ -43,7 +46,7 @@ public class PlaylistActivity extends BaseActivity {
         playlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                System.out.println("Detected click in playlist item in list view.");
+                Log.i(TAG, "Detected click in playlist item in list view.");
                 songCtrlButton.setBackgroundResource(R.drawable.pause_red);
                 sendMusicPauseIntent();
                 PlaylistData playlistData = playlistInfoList.get(position);
@@ -69,16 +72,16 @@ public class PlaylistActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        System.out.println("Detected that position " + item.getItemId() + " was selected.");
+        Log.i(TAG, "Detected that position " + item.getItemId() + " was selected.");
         switch (item.getItemId()) {
             case R.id.playlist_menu_create: {
-                System.out.println("Starting new activity - create.");
+                Log.i(TAG, "Starting new activity - create.");
                 DialogFragment createPlaylistDialog = new CreatePlaylistDialog();
                 createPlaylistDialog.show(getSupportFragmentManager(), "Upload");
                 return true;
             }
             case R.id.playlist_menu_delete: {
-                System.out.println("Starting new activity - delete.");
+                Log.i(TAG, "Starting new activity - delete.");
                 DialogFragment deletePlaylistDialog = new DeletePlaylistDialog();
                 deletePlaylistDialog.show(getSupportFragmentManager(), "Delete");
                 return true;
@@ -92,27 +95,27 @@ public class PlaylistActivity extends BaseActivity {
     // options for drawer menu
     @Override
     protected void selectMenuItem(int position) {
-        System.out.println("Detected click on position " + position + ".");
+        Log.i(TAG, "Detected click on position " + position + ".");
         switch (position) {
             case 0: {
-                System.out.println("Starting new activity - main.");
+                Log.i(TAG, "Starting new activity - main.");
                 Intent i = new Intent(this, MainActivity.class);
                 startActivity(i);
                 break;
             }
             case 1: {
-                System.out.println("No effect, on that activity.");
+                Log.i(TAG, "No effect, on that activity.");
                 break;
             }
             /*
             case 2: {
-                System.out.println("Starting new activity - bluetooth.");
+                Log.i(TAG, "Starting new activity - bluetooth.");
                 Intent i = new Intent(this, BluetoothActivity.class);
                 startActivity(i);
                 break;
             }
             case 3: {
-                System.out.println("Starting new activity - settings.");
+                Log.i(TAG, "Starting new activity - settings.");
                 Intent i = new Intent(this, SettingsActivity.class);
                 startActivity(i);
                 break;

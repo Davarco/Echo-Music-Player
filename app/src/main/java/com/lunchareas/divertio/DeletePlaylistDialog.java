@@ -5,12 +5,15 @@ import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DeletePlaylistDialog extends DialogFragment {
+
+    private static final String TAG = DeletePlaylistDialog.class.getName();
 
     private List<PlaylistData> playlistInfoList;
     private List<String> playlistInfoTemp;
@@ -39,10 +42,10 @@ public class DeletePlaylistDialog extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
                         if (isChecked) {
                             selectedPlaylists.add(position);
-                            System.out.println("Adding position " + position);
+                            Log.i(TAG, "Adding position " + position);
                         } else {
                             selectedPlaylists.remove(Integer.valueOf(position));
-                            System.out.println("Removing position " + position);
+                            Log.i(TAG, "Removing position " + position);
                         }
                     }
                 })
@@ -62,7 +65,7 @@ public class DeletePlaylistDialog extends DialogFragment {
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        System.out.println("Canceled deletion...");
+                        Log.i(TAG, "Canceled deletion...");
                     }
                 });
 
