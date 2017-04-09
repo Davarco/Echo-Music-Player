@@ -106,13 +106,13 @@ public class MainActivity extends BaseActivity {
         Log.i(TAG, "Detected that position " + item.getItemId() + " was selected.");
         switch (item.getItemId()) {
             case R.id.song_menu_upload: {
-                Log.i(TAG, "Starting new activity - upload.");
+                Log.i(TAG, "Starting new dialog - upload.");
                 DialogFragment uploadDialog = new UploadSongDialog();
                 uploadDialog.show(getSupportFragmentManager(), "Upload");
                 return true;
             }
             case R.id.song_menu_delete: {
-                Log.i(TAG, "Starting new activity - delete.");
+                Log.i(TAG, "Starting new dialog - delete.");
                 DialogFragment deleteDialog = new DeleteSongDialog();
                 deleteDialog.show(getSupportFragmentManager(), "Delete");
                 return true;

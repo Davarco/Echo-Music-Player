@@ -2,19 +2,25 @@
     <!-- Universal strings -->
     <string name="app_name">Divertio</string>
     <string name="playlist_name">Playlists</string>
+    <string name="playlist_modifier_name">Playlist (Unnamed)</string>
 
     <!-- Song default strings -->
     <string name="song_default_name">(No name)</string>
     <string name="song_default_composer">(No Name)</string>
     <string name="default_time_text">0:00/0:00</string>
 
-    <!-- Overflow menu strings -->
+    <!-- Main menu strings -->
     <string name="overflow_upload_title">Upload</string>
     <string name="overflow_delete_title">Delete</string>
 
     <!-- Playlist menu strings -->
     <string name="playlist_create_title">Create</string>
     <string name="playlist_delete_title">Delete</string>
+
+    <!-- Playlist modifier menu strings -->
+    <string name="playlist_rename_title">Rename Playlist</string>
+    <string name="playlist_add_songs_title">Add Songs</string>
+    <string name="playlist_delete_songs_title">Delete Songs</string>
 
     <!-- Dialog strings -->
     <string name="upload_confirm">Upload</string>

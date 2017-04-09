@@ -39,6 +39,11 @@
             android:name="com.lunchareas.divertio.PlaylistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize">
         </activity>
+
+        <activity
+            android:name="com.lunchareas.divertio.PlaylistModifierActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+        </activity>
     </application>
 
 </manifest>

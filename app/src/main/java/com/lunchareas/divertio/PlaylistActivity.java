@@ -46,14 +46,9 @@ public class PlaylistActivity extends BaseActivity {
         playlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Log.i(TAG, "Detected click in playlist item in list view.");
-                songCtrlButton.setBackgroundResource(R.drawable.pause_red);
-                sendMusicPauseIntent();
-                PlaylistData playlistData = playlistInfoList.get(position);
-                PlaylistController queueController = new PlaylistController(playlistData, PlaylistActivity.this);
-                queueController.startQueue();
-                musicBound = true;
-                currentPosition = position;
+                Log.i(TAG, "Detected click in playlist item in list view, starting modifier.");
+                Intent i = new Intent(view.getContext(), PlaylistModifierActivity.class);
+                startActivity(i);
             }
         });
     }
@@ -75,13 +70,13 @@ public class PlaylistActivity extends BaseActivity {
         Log.i(TAG, "Detected that position " + item.getItemId() + " was selected.");
         switch (item.getItemId()) {
             case R.id.playlist_menu_create: {
-                Log.i(TAG, "Starting new activity - create.");
+                Log.i(TAG, "Starting new dialog - upload.");
                 DialogFragment createPlaylistDialog = new CreatePlaylistDialog();
                 createPlaylistDialog.show(getSupportFragmentManager(), "Upload");
                 return true;
             }
             case R.id.playlist_menu_delete: {
-                Log.i(TAG, "Starting new activity - delete.");
+                Log.i(TAG, "Starting new dialog - delete.");
                 DialogFragment deletePlaylistDialog = new DeletePlaylistDialog();
                 deletePlaylistDialog.show(getSupportFragmentManager(), "Delete");
                 return true;

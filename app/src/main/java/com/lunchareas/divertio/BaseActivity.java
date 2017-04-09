@@ -180,6 +180,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
             public void onStopTrackingTouch(SeekBar seekBar) {
                 // resumes regular music from pause_red
                 sendMusicStartIntent();
+                songCtrlButton.setBackgroundResource(R.drawable.pause_red);
             }
         });
 

@@ -1,10 +1,12 @@
 package com.lunchareas.divertio;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +26,13 @@ public class CreatePlaylistDialog extends DialogFragment {
     private List<SongData> songInfoList;
     private EditText playlistNameInput;
     private String playlistName;
+    private Activity activity;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         // get the list of songs to pick from
+        activity = getActivity();
         songInfoList = ((BaseActivity)getActivity()).getSongInfoList();
         songInfoTemp = new ArrayList<>();
         for (int i = 0; i < songInfoList.size(); i++) {
@@ -63,7 +67,6 @@ public class CreatePlaylistDialog extends DialogFragment {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int which) {
                     getPlaylistName();
-                    executePlaylistCreate();
                 }
             });
         createPlaylistBuilder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
@@ -89,6 +92,7 @@ public class CreatePlaylistDialog extends DialogFragment {
                 playlistNameInput = (EditText) createPlaylistView.findViewById(R.id.dialog_create_playlist_name);
                 playlistName = playlistNameInput.getText().toString().trim();
                 Log.i(TAG, "Playlist name: " + playlistName);
+                executePlaylistCreate();
             }
         });
         nameDialogBuilder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
@@ -111,7 +115,7 @@ public class CreatePlaylistDialog extends DialogFragment {
         }
 
         // update database with new playlist
-        PlaylistDBHandler db = new PlaylistDBHandler(getActivity());
+        PlaylistDBHandler db = new PlaylistDBHandler(activity);
         try {
             PlaylistData playlistData = new PlaylistData(playlistName, songDataList);
             db.addPlaylistData(playlistData);
@@ -120,6 +124,6 @@ public class CreatePlaylistDialog extends DialogFragment {
             Log.e(TAG, "Playlist database update failure.", e);
         }
 
-        ((PlaylistActivity) getActivity()).setPlaylistView();
+        ((PlaylistActivity) activity).setPlaylistView();
     }
 }

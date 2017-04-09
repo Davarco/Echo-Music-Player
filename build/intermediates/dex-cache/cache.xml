@@ -3,78 +3,6 @@
 
     <item
         is-multidex="true"
-        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.3"
-        sha1="94ff483113efd8422c8fd1d10ea59b40cdd4e5f1">
-        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_ab0126d49b3a07606b7f1f3c46bebb05fa5e99b3/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/jars/libs/internal_impl-24.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.3"
-        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
-        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_2f7d4066b9bf77e7efa315d24a8a59f4cb8bdc3a/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.3"
-        sha1="0ecb4b595fa0f0f8018a149ace3ea6525624f94e">
-        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-compat-24.2.1_701b688ffaff6010778bfc0345ab05d224fb5e87/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/24.2.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.3"
-        sha1="9c4c3bc902450c39ed54de170db4fb12aea20a35">
-        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-utils-24.2.1_a52b1a77bb435c02bc6550eccab59e9de30caf7f/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/24.2.1/jars/libs/internal_impl-24.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.3"
-        sha1="935a969265b2a166b2d20415423f5f6e90fe16e0">
-        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_95a49ed31491100bfae234a109cc9fe5acf08dde/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/24.2.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.3"
-        sha1="d5c731fc64c03dfe04d51134955b483551c35849">
-        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-24.2.1_d886a07326abf6189618602cd942ef297a6ae194/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/8.4.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.3"
-        sha1="fef2b3e4b6b1b0e5fe7b69fa137a5fa55a3182ab">
-        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-base-8.4.0_25abe9b9d9d6b9018168170f890c03612b8d1e6e/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.3"
-        sha1="119cb90935f421cc9cd16357df7e38a0cafaa775">
-        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_9b9cb346219f67886aa8e141101e566f4d05b1f6/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/exploded-aar/com.android.support/support-fragment/24.2.1/jars/libs/internal_impl-24.2.1.jar"
         jumboMode="true"
         optimize="true"
@@ -90,6 +18,15 @@
         revision="24.0.3"
         sha1="867dad63c33388ff8c7644b236579355036d075f">
         <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_d662f78d9c074e194d5d17abc67f99e672e874bb/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="568df17cd40ea9732507c2e04537548a9408cb6c">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_ab0126d49b3a07606b7f1f3c46bebb05fa5e99b3/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -129,12 +66,39 @@
     </item>
     <item
         is-multidex="true"
+        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/jars/libs/internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_2f7d4066b9bf77e7efa315d24a8a59f4cb8bdc3a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/exploded-aar/com.android.support/support-fragment/24.2.1/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.3"
         sha1="b9a1ac78ad7ef3abedc4a4b30cd92bcacb939d1f">
         <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-fragment-24.2.1_77214f22b245b003de02613cf09b98bb5cb2b6e4/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="0ecb4b595fa0f0f8018a149ace3ea6525624f94e">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-compat-24.2.1_701b688ffaff6010778bfc0345ab05d224fb5e87/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/24.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="9c4c3bc902450c39ed54de170db4fb12aea20a35">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-utils-24.2.1_a52b1a77bb435c02bc6550eccab59e9de30caf7f/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -147,12 +111,30 @@
     </item>
     <item
         is-multidex="true"
+        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/24.2.1/jars/libs/internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="935a969265b2a166b2d20415423f5f6e90fe16e0">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_95a49ed31491100bfae234a109cc9fe5acf08dde/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/24.2.1/jars/libs/internal_impl-24.2.1.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.3"
         sha1="fbf8da429efd5ad21e02e3e5ecaa1efc4167878d">
         <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_25a2665bbe1f683db4f5d3339b5e35240eb22d98/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/24.2.1/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="d5c731fc64c03dfe04d51134955b483551c35849">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-24.2.1_d886a07326abf6189618602cd942ef297a6ae194/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -180,6 +162,24 @@
         revision="24.0.3"
         sha1="ecb6e1f8e4b0e84c4b886c2f14a1500caf309757">
         <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/2/gson-2.3.1_7dcdcf59faf0b24ebda217d0fc5a53b4ad9f2cde/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/8.4.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="fef2b3e4b6b1b0e5fe7b69fa137a5fa55a3182ab">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-base-8.4.0_25abe9b9d9d6b9018168170f890c03612b8d1e6e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="16446172dd379b0cdc0569e7d876a816b206b210">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_9b9cb346219f67886aa8e141101e566f4d05b1f6/classes.dex" />
     </item>
     <item
         is-multidex="true"
