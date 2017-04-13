@@ -10,7 +10,7 @@
     <string name="default_time_text">0:00/0:00</string>
 
     <!-- Main menu strings -->
-    <string name="overflow_upload_title">Upload</string>
+    <string name="overflow_upload_title">Download</string>
     <string name="overflow_delete_title">Delete</string>
 
     <!-- Playlist menu strings -->
@@ -19,18 +19,18 @@
 
     <!-- Playlist modifier menu strings -->
     <string name="playlist_rename_title">Rename Playlist</string>
-    <string name="playlist_add_songs_title">Add Songs</string>
-    <string name="playlist_delete_songs_title">Delete Songs</string>
+    <string name="playlist_add_songs_title">Add Music</string>
+    <string name="playlist_delete_songs_title">Delete Music</string>
 
     <!-- Dialog strings -->
-    <string name="upload_confirm">Upload</string>
+    <string name="upload_confirm">Download</string>
     <string name="upload_name_title">File Name:</string>
     <string name="upload_name_hint">(Don\'t include .mp3)</string>
     <string name="upload_link_title">Via Youtube:</string>
     <string name="upload_link_hint">Youtube Link</string>
     <string name="upload_composer_title">Composer:</string>
     <string name="upload_composer_hint">Name</string>
-    <string name="upload_failure_message">Failed to upload.\nCheck internet status and link?</string>
+    <string name="upload_failure_message">Failed to download.\nCheck internet status and link?</string>
     <string name="delete_dialog_title">Songs to Delete:</string>
 
     <string name="delete_confirm">Delete</string>

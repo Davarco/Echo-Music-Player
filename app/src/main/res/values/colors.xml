@@ -14,5 +14,6 @@
     <!-- generic colors -->
     <color name="blue">#3949AB</color>
     <color name="red">#B71C1C</color>
+    <color name="alt_blue">#0D47A1</color>
 
 </resources>

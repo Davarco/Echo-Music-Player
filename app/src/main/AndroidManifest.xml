@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
-            android:name="com.lunchareas.divertio.MainActivity"
+            android:name="com.lunchareas.divertio.activities.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleInstance">
             <intent-filter>
@@ -27,7 +27,7 @@
         </activity>
 
         <service
-            android:name="com.lunchareas.divertio.PlayMusicService"
+            android:name="com.lunchareas.divertio.activities.PlayMusicService"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false" />
 
@@ -36,12 +36,12 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name="com.lunchareas.divertio.PlaylistActivity"
+            android:name="com.lunchareas.divertio.activities.PlaylistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize">
         </activity>
 
         <activity
-            android:name="com.lunchareas.divertio.PlaylistModifierActivity"
+            android:name="com.lunchareas.divertio.activities.PlaylistManagerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize">
         </activity>
     </application>

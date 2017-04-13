@@ -3,7 +3,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="56dp"
-    android:background="@color/blue">
+    android:background="@color/alt_blue">
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
