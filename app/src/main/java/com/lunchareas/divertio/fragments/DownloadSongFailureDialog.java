@@ -15,7 +15,7 @@ public class DownloadSongFailureDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder uploadFailureBuilder = new AlertDialog.Builder(getActivity());
         uploadFailureBuilder
-            .setMessage(R.string.upload_failure_message)
+            .setMessage(R.string.download_failure_message)
             .setPositiveButton(R.string.dialog_confirm, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {

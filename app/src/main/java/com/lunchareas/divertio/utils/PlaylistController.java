@@ -17,33 +17,48 @@ public class PlaylistController implements MusicConductor {
     private static final String TAG = PlaylistController.class.getName();
 
     private int idx;
+    private int firstPos;
     private Context context;
     private List<SongData> songList;
 
-    public PlaylistController(PlaylistData playlistData, Context context) {
+    public PlaylistController(int firstPos, PlaylistData playlistData, Context context) {
         this.idx = 0;
+        this.firstPos = firstPos;
         this.context = context;
         this.songList = playlistData.getSongList();
     }
 
     public void startQueue() {
-        Log.i(TAG, "Starting queue!");
+        Log.d(TAG, "Starting queue!");
         sendMusicPauseIntent();
         sendPlaylistCreateIntent(songList);
     }
 
     @Override
     public void sendPlaylistCreateIntent(List<SongData> songList) {
-        Log.i(TAG, "Trying to send playlist create intent.");
+        Log.d(TAG, "Trying to send playlist create intent.");
         Intent playlistCreateIntent = new Intent(context, PlayMusicService.class);
 
+        // Shuffle list, get first song
+        SongData firstSong = songList.get(firstPos);
         Collections.shuffle(songList);
+
+        // Switch 0th with supposed first song
+        for (int i = 0; i < songList.size(); i++) {
+            if (songList.get(i).getSongName().equals(firstSong.getSongName())) {
+                Log.d(TAG, "Swapping " + i + " and " + 0 + ".");
+                Collections.swap(songList, i, 0);
+                break;
+            } else {
+                Log.d(TAG, "No swap.");
+            }
+        }
 
         // Create the string array
         String[] songPathList = new String[songList.size()];
         for (int i = 0; i < songList.size(); i++) {
             songPathList[i] = songList.get(i).getSongPath();
-            Log.i(TAG, "Song " + Integer.toString(i+1) + ": " + songPathList[i]);
+            Log.d(TAG, "Song " + Integer.toString(i+1) + ": " + songPathList[i]);
         }
 
         // send the intent
@@ -53,9 +68,9 @@ public class PlaylistController implements MusicConductor {
 
     @Override
     public void sendMusicCreateIntent(String path) {
-        Log.i(TAG, "Trying to send music create intent.");
+        Log.d(TAG, "Trying to send music create intent.");
         Intent musicCreateIntent = new Intent(context, PlayMusicService.class);
-        Log.i(TAG, "Passing string to create intent: " + path);
+        Log.d(TAG, "Passing string to create intent: " + path);
         musicCreateIntent.putExtra(PlayMusicService.MUSIC_CREATE, path);
         context.startService(musicCreateIntent);
     }

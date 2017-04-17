@@ -52,7 +52,7 @@ public class PlaylistActivity extends BaseActivity {
         playlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Log.i(TAG, "Detected click in playlist item in list view, starting modifier.");
+                Log.d(TAG, "Detected click in playlist item in list view, starting modifier.");
                 Intent i = new Intent(view.getContext(), PlaylistManagerActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 i.putExtra(PLAYLIST_NAME, playlistInfoList.get(position).getPlaylistName());
@@ -75,16 +75,16 @@ public class PlaylistActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i(TAG, "Detected that position " + item.getItemId() + " was selected.");
+        Log.d(TAG, "Detected that position " + item.getItemId() + " was selected.");
         switch (item.getItemId()) {
             case R.id.playlist_menu_create: {
-                Log.i(TAG, "Starting new dialog - upload.");
+                Log.d(TAG, "Starting new dialog - upload.");
                 DialogFragment createPlaylistDialog = new CreatePlaylistDialog();
                 createPlaylistDialog.show(getSupportFragmentManager(), "Upload");
                 return true;
             }
             case R.id.playlist_menu_delete: {
-                Log.i(TAG, "Starting new dialog - delete.");
+                Log.d(TAG, "Starting new dialog - delete.");
                 DialogFragment deletePlaylistDialog = new DeletePlaylistDialog();
                 deletePlaylistDialog.show(getSupportFragmentManager(), "Delete");
                 return true;
@@ -98,28 +98,28 @@ public class PlaylistActivity extends BaseActivity {
     // options for drawer menu
     @Override
     protected void selectMenuItem(int position) {
-        Log.i(TAG, "Detected click on position " + position + ".");
+        Log.d(TAG, "Detected click on position " + position + ".");
         switch (position) {
             case 0: {
-                Log.i(TAG, "Starting new activity - main.");
+                Log.d(TAG, "Starting new activity - main.");
                 Intent i = new Intent(this, MainActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
                 break;
             }
             case 1: {
-                Log.i(TAG, "No effect, on that activity.");
+                Log.d(TAG, "No effect, on that activity.");
                 break;
             }
             /*
             case 2: {
-                Log.i(TAG, "Starting new activity - bluetooth.");
+                Log.d(TAG, "Starting new activity - bluetooth.");
                 Intent i = new Intent(this, BluetoothActivity.class);
                 startActivity(i);
                 break;
             }
             case 3: {
-                Log.i(TAG, "Starting new activity - settings.");
+                Log.d(TAG, "Starting new activity - settings.");
                 Intent i = new Intent(this, SettingsActivity.class);
                 startActivity(i);
                 break;

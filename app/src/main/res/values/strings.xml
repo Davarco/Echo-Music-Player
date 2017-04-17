@@ -1,4 +1,5 @@
 <resources>
+
     <!-- Universal strings -->
     <string name="app_name">Divertio</string>
     <string name="playlist_name">Playlists</string>
@@ -17,33 +18,42 @@
     <string name="playlist_create_title">Create</string>
     <string name="playlist_delete_title">Delete</string>
 
+    <!-- Song choice menu strings -->
+    <string name="song_rename_title">Rename Song</string>
+    <string name="song_delete_title">Delete Song</string>
+    <string name="song_change_artist">Change Artist</string>
+
     <!-- Playlist modifier menu strings -->
     <string name="playlist_rename_title">Rename Playlist</string>
     <string name="playlist_add_songs_title">Add Music</string>
     <string name="playlist_delete_songs_title">Delete Music</string>
 
-    <!-- Dialog strings -->
-    <string name="upload_confirm">Download</string>
-    <string name="upload_name_title">File Name:</string>
-    <string name="upload_name_hint">(Don\'t include .mp3)</string>
-    <string name="upload_link_title">Via Youtube:</string>
-    <string name="upload_link_hint">Youtube Link</string>
-    <string name="upload_composer_title">Composer:</string>
-    <string name="upload_composer_hint">Name</string>
-    <string name="upload_failure_message">Failed to download.\nCheck internet status and link?</string>
-    <string name="delete_dialog_title">Songs to Delete:</string>
+    <!-- Universal dialog strings -->
+    <string name="dialog_confirm">OK</string>
+    <string name="dialog_cancel">Cancel</string>
 
+    <!-- Download song dialog strings -->
+    <string name="download_confirm">Download</string>
+    <string name="download_name_title">File Name:</string>
+    <string name="download_name_hint">(Don\'t include .mp3)</string>
+    <string name="download_link_title">Via Youtube:</string>
+    <string name="download_link_hint">Youtube Link</string>
+    <string name="download_composer_title">Composer:</string>
+    <string name="download_composer_hint">Name</string>
+    <string name="download_failure_message">Failed to download.\nCheck internet status and link?</string>
+
+    <!-- Delete song dialog strings -->
+    <string name="delete_dialog_title">Songs to Delete:</string>
     <string name="delete_confirm">Delete</string>
 
+    <!-- Create playlist dialog strings -->
     <string name="create_playlist_title">Playlist Name:</string>
     <string name="create_playlist_songlist_title">Song List:</string>
     <string name="create_playlist_hint">Name</string>
     <string name="create_playlist_confirm">Next</string>
     <string name="create_playlist_finish">Finish</string>
 
+    <!-- Delete playlist dialog strings -->
     <string name="delete_playlist_title">Playlists to Delete:</string>
-
-    <string name="dialog_confirm">OK</string>
-    <string name="dialog_cancel">Cancel</string>
 
 </resources>

@@ -67,6 +67,8 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
     protected boolean musicBound;
     protected PlayMusicService musicSrv;
 
+    protected Context context;
+
     /*
     Probably should find a better way of initializing the view.
      */
@@ -83,6 +85,9 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
         super.onCreate(savedInstanceState);
         setDisplay();
         setBackground();
+
+        // get context
+        context = getApplicationContext();
 
         // setup toolbar
         Toolbar mainBar = (Toolbar)findViewById(R.id.header_bar);
@@ -129,7 +134,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
         songCtrlButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Detected click on play_red button.");
+                Log.d(TAG, "Detected click on play_red button.");
                 if (musicBound) {
                     sendMusicPauseIntent();
                     songCtrlButton.setBackgroundResource(R.drawable.play_red);
@@ -145,7 +150,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
         menuToggleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Detected click on menu button.");
+                Log.d(TAG, "Detected click on menu button.");
                 if (drawerOpen) {
                     //menuDrawerLayout.setVisibility(View.GONE);
                     menuDrawer.closeDrawer(GravityCompat.START);
@@ -234,7 +239,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
     @Override
     public void sendMusicCreateIntent(String path) {
         musicCreateIntent = new Intent(this, PlayMusicService.class);
-        Log.i(TAG, "Passing string to create intent: " + path);
+        Log.d(TAG, "Passing string to create intent: " + path);
         musicCreateIntent.putExtra(PlayMusicService.MUSIC_CREATE, path);
         this.startService(musicCreateIntent);
     }
@@ -267,7 +272,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
     protected void onStart() {
         super.onStart();
         LocalBroadcastManager.getInstance(this).registerReceiver((songBroadcastReceiver), new IntentFilter(PlayMusicService.MUSIC_RESULT));
-        Log.i(TAG, "Running start!");
+        Log.d(TAG, "Running start!");
         menuDrawer.closeDrawers();
     }
 

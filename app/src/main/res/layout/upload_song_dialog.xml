@@ -15,7 +15,7 @@
         android:textSize="24sp"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:text="@string/upload_name_title"/>
+        android:text="@string/download_name_title"/>
     <EditText
         android:id="@+id/dialog_upload_name"
         android:inputType="text"
@@ -24,7 +24,7 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="8dp"
-        android:hint="@string/upload_name_hint"/>
+        android:hint="@string/download_name_hint"/>
     <TextView
         android:id="@+id/dialog_upload_link_title"
         android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
         android:textSize="24sp"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:text="@string/upload_link_title"/>
+        android:text="@string/download_link_title"/>
     <EditText
         android:id="@+id/dialog_upload_link"
         android:inputType="text"
@@ -45,7 +45,7 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="8dp"
-        android:hint="@string/upload_link_hint"/>
+        android:hint="@string/download_link_hint"/>
     <TextView
         android:id="@+id/dialog_upload_composer_title"
         android:layout_width="wrap_content"
@@ -57,7 +57,7 @@
         android:textSize="24sp"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:text="@string/upload_composer_title"/>
+        android:text="@string/download_composer_title"/>
     <EditText
         android:id="@+id/dialog_upload_composer"
         android:layout_width="match_parent"
@@ -65,5 +65,5 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="8dp"
-        android:hint="@string/upload_composer_hint"/>
+        android:hint="@string/download_composer_hint"/>
 </LinearLayout>

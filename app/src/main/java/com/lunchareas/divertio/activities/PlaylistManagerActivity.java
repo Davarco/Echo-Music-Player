@@ -63,10 +63,11 @@ public class PlaylistManagerActivity extends BaseActivity {
         playlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                System.out.println("Detected click in playlist item in list view.");
+                Log.d(TAG, "Detected click in playlist item in list view.");
+                Log.d(TAG, "Song: " + playlistData.getSongList().get(position).getSongName());
                 songCtrlButton.setBackgroundResource(R.drawable.pause_red);
                 sendMusicPauseIntent();
-                PlaylistController queueController = new PlaylistController(playlistData, PlaylistManagerActivity.this);
+                PlaylistController queueController = new PlaylistController(position, playlistData, PlaylistManagerActivity.this);
                 queueController.startQueue();
                 musicBound = true;
             }
@@ -87,19 +88,19 @@ public class PlaylistManagerActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i(TAG, "Detected that position " + item.getItemId() + " was selected.");
+        Log.d(TAG, "Detected that position " + item.getItemId() + " was selected.");
         switch (item.getItemId()) {
             /*
             case R.id.playlist_rename: {
-                Log.i(TAG, "Starting new dialog - rename.");
+                Log.d(TAG, "Starting new dialog - rename.");
                 return true;
             } */
             case R.id.playlist_add: {
-                Log.i(TAG, "Starting new dialog - add.");
+                Log.d(TAG, "Starting new dialog - add.");
                 return true;
             }
             case R.id.playlist_delete: {
-                Log.i(TAG, "Starting new dialog - delete.");
+                Log.d(TAG, "Starting new dialog - delete.");
                 return true;
             }
             default:
@@ -110,17 +111,17 @@ public class PlaylistManagerActivity extends BaseActivity {
     // options for drawer menu
     @Override
     protected void selectMenuItem(int position) {
-        Log.i(TAG, "Detected click on position " + position + ".");
+        Log.d(TAG, "Detected click on position " + position + ".");
         switch (position) {
             case 0: {
-                Log.i(TAG, "Starting new activity - main!");
+                Log.d(TAG, "Starting new activity - main!");
                 Intent i = new Intent(this, MainActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
                 break;
             }
             case 1: {
-                Log.i(TAG, "Starting new activity - playlist.");
+                Log.d(TAG, "Starting new activity - playlist.");
                 Intent i = new Intent(this, PlaylistActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
@@ -128,13 +129,13 @@ public class PlaylistManagerActivity extends BaseActivity {
             }
             /*
             case 2: {
-                Log.i(TAG, "Starting new activity - bluetooth.");
+                Log.d(TAG, "Starting new activity - bluetooth.");
                 Intent i = new Intent(this, BluetoothActivity.class);
                 startActivity(i);
                 break;
             }
             case 3: {
-                Log.i(TAG, "Starting new activity - settings.");
+                Log.d(TAG, "Starting new activity - settings.");
                 Intent i = new Intent(this, SettingsActivity.class);
                 startActivity(i);
                 break;

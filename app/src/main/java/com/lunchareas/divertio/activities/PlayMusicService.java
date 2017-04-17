@@ -12,6 +12,8 @@ import android.os.PowerManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import java.io.IOException;
+
 public class PlayMusicService extends Service {
 
     private static final String TAG = PlayMusicService.class.getName();
@@ -33,6 +35,7 @@ public class PlayMusicService extends Service {
     // set up broadcaster to activity to update progress bar
     private LocalBroadcastManager musicUpdater;
     private Thread musicUpdaterThread;
+    private boolean musicReset;
 
     @Override
     public int onStartCommand(Intent workIntent, int flags, int startId) {
@@ -49,10 +52,20 @@ public class PlayMusicService extends Service {
                 int songDuration;
                 do {
 
+                    // Wait for reset to finish if necessary
+                    while (musicReset) {
+                        try {
+                            Thread.sleep(200);
+                            Log.d(TAG, "Pausing music updater!");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
                     // change duration if track changes
                     songPosition = mp.getCurrentPosition();
                     songDuration = mp.getDuration();
-                    //Log.i(TAG, "Song service position: " + songPosition + "\nSong service duration: " + songDuration);
+                    //Log.d(TAG, "Song service position: " + songPosition + "\nSong service duration: " + songDuration);
 
                     // create and send intent with position and duration
                     Intent songIntent = new Intent(MUSIC_RESULT);
@@ -66,6 +79,7 @@ public class PlayMusicService extends Service {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+
                 } while (mp != null && mp.getCurrentPosition() <= songDuration);
             }
         });
@@ -74,7 +88,7 @@ public class PlayMusicService extends Service {
             if (intentCmd.containsKey(PlayMusicService.MUSIC_CREATE)) {
 
                 // create single song
-                Log.i(TAG, "Create Key: " + intentCmd.getString(PlayMusicService.MUSIC_CREATE));
+                Log.d(TAG, "Create Key: " + intentCmd.getString(PlayMusicService.MUSIC_CREATE));
                 initMusicPlayer(intentCmd.getString(PlayMusicService.MUSIC_CREATE));
                 mp.start();
                 musicUpdaterThread.start();
@@ -82,14 +96,14 @@ public class PlayMusicService extends Service {
             } else if (intentCmd.containsKey(PlayMusicService.MUSIC_START) && mp != null) {
 
                 // start song
-                Log.i(TAG, "Starting music!");
+                Log.d(TAG, "Starting music!");
                 mp.start();
                 musicUpdaterThread.start();
 
             } else if (intentCmd.containsKey(PlayMusicService.MUSIC_PAUSE) && mp != null) {
 
                 // pause song
-                Log.i(TAG, "Pausing music!");
+                Log.d(TAG, "Pausing music!");
                 mp.pause();
 
             } else if (intentCmd.containsKey(PlayMusicService.MUSIC_CHANGE) && mp != null) {
@@ -97,12 +111,12 @@ public class PlayMusicService extends Service {
                 // change song location
                 int newPosition = intentCmd.getInt(PlayMusicService.MUSIC_CHANGE);
                 mp.seekTo(newPosition);
-                Log.i(TAG, "Changing to new position!");
+                Log.d(TAG, "Changing to new position!");
 
             } else if (intentCmd.containsKey(PlayMusicService.PLAYLIST_CREATE)) {
 
                 // create playlist queue
-                Log.i(TAG, "Beginning playlist queue!");
+                Log.d(TAG, "Beginning playlist queue!");
                 String[] songPathList = intentCmd.getStringArray(PlayMusicService.PLAYLIST_CREATE);
                 beginPlaylistQueue(songPathList);
 
@@ -119,30 +133,36 @@ public class PlayMusicService extends Service {
 
     private void beginPlaylistQueue(final String[] songPathList) {
 
-        // Play the first song
+        // play the first song
         initMusicPlayer(songPathList[0]);
         mp.start();
         musicUpdaterThread.start();
 
-        // Setup for completion
+        // setup for completion
         idx = 1;
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
                 if (idx < songPathList.length) {
                     try {
+
+                        // make sure the updater thread waits
+                        musicReset = true;
                         mp.reset();
                         mp.setDataSource(songPathList[idx]);
                         mp.prepare();
                         mp.start();
+                        musicReset = false;
+
+                        //musicUpdaterThread.start();
+                        idx += 1;
+                        Log.d(TAG, "Playing next song, number " + Integer.toString(idx));
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    musicUpdaterThread.start();
-                    idx += 1;
-                    Log.i(TAG, "Playing next song, number " + Integer.toString(idx));
                 } else {
-                    Log.i(TAG, "Finished playlist.");
+                    Log.d(TAG, "Finished playlist.");
                 }
             }
         });
@@ -155,7 +175,7 @@ public class PlayMusicService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.i(TAG, "PlayMusicService destroyed...");
+        Log.d(TAG, "PlayMusicService destroyed...");
         mp.release();
         mp = null;
         musicUpdaterThread.interrupt();

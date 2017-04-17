@@ -59,8 +59,8 @@ public class SongAdapter extends BaseAdapter {
         songItemArtist.setText(songItem.getSongArtist());
 
         // Assertions
-        //Log.i(TAG, "Song Name: " + songItem.getSongName());
-        //Log.i(TAG, "Song Artist: " + songItem.getSongArtist());
+        //Log.d(TAG, "Song Name: " + songItem.getSongName());
+        //Log.d(TAG, "Song Artist: " + songItem.getSongArtist());
 
         // set position as tag
         songListLayout.setTag(position);

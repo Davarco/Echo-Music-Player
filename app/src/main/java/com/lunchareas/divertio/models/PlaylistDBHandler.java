@@ -63,7 +63,7 @@ public class PlaylistDBHandler extends SQLiteOpenHelper {
 
         Gson gson = new Gson();
         String songListString = gson.toJson(songNameList);
-        Log.i(TAG, "String: " + songListString);
+        Log.d(TAG, "String: " + songListString);
 
         return songListString;
     }
@@ -112,10 +112,10 @@ public class PlaylistDBHandler extends SQLiteOpenHelper {
             db.close();
             return playlistData;
         } else {
-            Log.i(TAG, "Failed to create database cursor.");
+            Log.d(TAG, "Failed to create database cursor.");
         }
 
-        Log.i(TAG, "Failed to find song data with that name in database.");
+        Log.d(TAG, "Failed to find song data with that name in database.");
         return null;
     }
 
@@ -160,8 +160,4 @@ public class PlaylistDBHandler extends SQLiteOpenHelper {
         db.delete(TABLE_PLAYLISTS, KEY_NAME + " = ?", new String[]{ playlistData.getPlaylistName() });
         db.close();
     }
-
-    /*
-    TODO: Implement the above with names.
-     */
 }

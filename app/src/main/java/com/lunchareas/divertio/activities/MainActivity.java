@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -49,19 +50,19 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // external storage permissions
+        // External storage permissions
         if (Build.VERSION.SDK_INT < 23) {
-            Log.i(TAG, "Don't need permissions.");
+            Log.d(TAG, "Don't need permissions.");
         } else {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    Log.i(TAG, "PERMISSIONS: App needs permissions to read external storage.");
+                    Log.d(TAG, "PERMISSIONS: App needs permissions to read external storage.");
                 }
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
             }
         }
 
-        // song
+        // Get song info and set the listview
         songInfoList = new ArrayList<>();
         songView = (ListView) findViewById(R.id.song_list);
         setSongListView();
@@ -70,7 +71,7 @@ public class MainActivity extends BaseActivity {
         final AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         currentPosition = -1;
 
-        // create directory for files if it does not exist
+        // Create directory for files if it does not exist
         File musicFolder = new File(Environment.getExternalStorageDirectory() + File.separator + MUSIC_DIR_NAME);
         if (!musicFolder.exists()) {
             musicFolder.mkdir();
@@ -90,9 +91,50 @@ public class MainActivity extends BaseActivity {
         songView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                return false;
+                Log.d(TAG, "Detected LONG click on song.");
+                showSongChoiceMenu(view, i);
+                return true;
             }
         });
+    }
+
+    @SuppressLint("NewApi")
+    private void showSongChoiceMenu(View view, final int pos) {
+        PopupMenu popupMenu = new PopupMenu(context, view, Gravity.RIGHT);
+
+        // Handle individual clicks
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.song_rename_title: {
+                        Log.d(TAG, "Renaming song title!");
+                        return true;
+                    }
+                    case R.id.song_delete_title: {
+                        Log.d(TAG, "Deleting song!");
+
+                        // Remove song from list and re-update view
+                        SongDBHandler db = new SongDBHandler(context);
+                        db.deleteSongData(songInfoList.get(pos));
+                        setSongListView();
+                        return true;
+                    }
+                    case R.id.song_change_artist: {
+                        Log.d(TAG, "Changing song artist!");
+                        return true;
+                    }
+                    default: {
+                        return false;
+                    }
+                }
+            }
+        });
+
+        // Create menu and show
+        MenuInflater menuInflater = popupMenu.getMenuInflater();
+        menuInflater.inflate(R.menu.song_choice_menu, popupMenu.getMenu());
+        popupMenu.show();
     }
 
     @Override
@@ -115,16 +157,16 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i(TAG, "Detected that position " + item.getItemId() + " was selected.");
+        Log.d(TAG, "Detected that position " + item.getItemId() + " was selected.");
         switch (item.getItemId()) {
             case R.id.song_menu_upload: {
-                Log.i(TAG, "Starting new dialog - upload.");
+                Log.d(TAG, "Starting new dialog - upload.");
                 DialogFragment uploadDialog = new DownloadSongDialog();
                 uploadDialog.show(getSupportFragmentManager(), "Upload");
                 return true;
             }
             case R.id.song_menu_delete: {
-                Log.i(TAG, "Starting new dialog - delete.");
+                Log.d(TAG, "Starting new dialog - delete.");
                 DialogFragment deleteDialog = new DeleteSongDialog();
                 deleteDialog.show(getSupportFragmentManager(), "Delete");
                 return true;
@@ -134,17 +176,17 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    // options for drawer menu
+    // Options for drawer menu
     @Override
     protected void selectMenuItem(int position) {
-        Log.i(TAG, "Detected click on position " + position + ".");
+        Log.d(TAG, "Detected click on position " + position + ".");
         switch (position) {
             case 0: {
-                Log.i(TAG, "No effect, on that activity!");
+                Log.d(TAG, "No effect, on that activity!");
                 break;
             }
             case 1: {
-                Log.i(TAG, "Starting new activity - playlist.");
+                Log.d(TAG, "Starting new activity - playlist.");
                 Intent i = new Intent(this, PlaylistActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
@@ -152,13 +194,13 @@ public class MainActivity extends BaseActivity {
             }
             /*
             case 2: {
-                Log.i(TAG, "Starting new activity - bluetooth.");
+                Log.d(TAG, "Starting new activity - bluetooth.");
                 Intent i = new Intent(this, BluetoothActivity.class);
                 startActivity(i);
                 break;
             }
             case 3: {
-                Log.i(TAG, "Starting new activity - settings.");
+                Log.d(TAG, "Starting new activity - settings.");
                 Intent i = new Intent(this, SettingsActivity.class);
                 startActivity(i);
                 break;
@@ -176,21 +218,21 @@ public class MainActivity extends BaseActivity {
 
     public void getSongsForActivity() {
 
-        // get database and song list
+        // Get database and song list
         SongDBHandler db = new SongDBHandler(this);
         songInfoList = db.getSongDataList();
     }
 
-    // not going to use for now, but could be useful later on
+    // Not going to use for now, but could be useful later on
     private boolean isServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
-                Log.i(TAG, "Service is running.");
+                Log.d(TAG, "Service is running.");
                 return true;
             }
         }
-        Log.i(TAG, "Service is not running.");
+        Log.d(TAG, "Service is not running.");
         return false;
     }
 }

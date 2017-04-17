@@ -13,6 +13,19 @@ import java.util.List;
 
 public class SongDBHandler extends SQLiteOpenHelper {
 
+    /*
+    Eventually, I will probably want to add more features to the songs.
+    Instructions:
+    (X is the attribute name)
+    - Add a KEY_X and a KEY_X_IDX constant
+    - Add KEY_X to the "onCreate" method
+    - Add KEY_X to the "addSongData" method
+    - Add KEY_X to the "getSongData" method in the database query
+    - Add KEY_X to the "updateSongData" method
+    - Add KEY_X_IDX to the "getSongData" method in the songData constructor
+    - Add KEY_X_IDX to the "getSongDataList" method in the songData constructor
+     */
+
     private static final String TAG = SongDBHandler.class.getName();
 
     // database info
@@ -66,12 +79,12 @@ public class SongDBHandler extends SQLiteOpenHelper {
 
         // get table data
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.query(TABLE_SONGS, new String[] { KEY_NAME, KEY_PATH }, KEY_NAME + "=?", new String[] { String.valueOf(name) }, null, null, null, null);
+        Cursor cursor = db.query(TABLE_SONGS, new String[] { KEY_NAME, KEY_PATH, KEY_ARTIST }, KEY_NAME + "=?", new String[] { String.valueOf(name) }, null, null, null, null);
 
         // search through database
         if (cursor != null) {
             cursor.moveToFirst();
-            SongData songData = new SongData(cursor.getString(KEY_NAME_IDX), cursor.getString(KEY_PATH_IDX));
+            SongData songData = new SongData(cursor.getString(KEY_NAME_IDX), cursor.getString(KEY_PATH_IDX), cursor.getString(KEY_ARTIST_IDX));
             db.close();
             return songData;
         } else {
@@ -126,8 +139,4 @@ public class SongDBHandler extends SQLiteOpenHelper {
         db.delete(TABLE_SONGS, KEY_NAME + " = ?", new String[]{ songData.getSongName() });
         db.close();
     }
-
-    /*
-    TODO: Implement the above with names.
-     */
 }
