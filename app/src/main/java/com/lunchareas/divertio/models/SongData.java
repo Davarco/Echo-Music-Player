@@ -60,4 +60,14 @@ public class SongData {
     public void setSongIcon(Drawable icon) {
         this.songIcon = icon;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        SongData otherSong = (SongData)other;
+        if (otherSong.getSongName().equals(this.getSongName())) {
+            return true;
+        }
+
+        return false;
+    }
 }

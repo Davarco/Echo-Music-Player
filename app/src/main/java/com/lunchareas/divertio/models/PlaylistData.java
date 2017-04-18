@@ -56,4 +56,15 @@ public class PlaylistData {
     public void setNumSongs(int numSongs) {
         this.numSongs = numSongs;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(this.playlistName + "\n");
+        for (int i = 0; i < songList.size(); i++) {
+            stringBuilder.append("Song " + Integer.toString(i+1) + ": " + songList.get(i).getSongName() + "\n");
+        }
+        stringBuilder.append("Number of Songs: " + numSongs);
+        return stringBuilder.toString();
+    }
 }

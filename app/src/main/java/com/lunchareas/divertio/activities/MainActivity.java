@@ -25,6 +25,7 @@ import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.fragments.DownloadSongDialog;
 import com.lunchareas.divertio.fragments.DownloadSongFailureDialog;
+import com.lunchareas.divertio.utils.MusicManager;
 
 import java.io.File;
 import java.util.*;
@@ -101,6 +102,7 @@ public class MainActivity extends BaseActivity {
     @SuppressLint("NewApi")
     private void showSongChoiceMenu(View view, final int pos) {
         PopupMenu popupMenu = new PopupMenu(context, view, Gravity.RIGHT);
+        final SongData selectedSong = songInfoList.get(pos);
 
         // Handle individual clicks
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -116,8 +118,9 @@ public class MainActivity extends BaseActivity {
 
                         // Remove song from list and re-update view
                         SongDBHandler db = new SongDBHandler(context);
-                        db.deleteSongData(songInfoList.get(pos));
+                        db.deleteSongData(selectedSong);
                         setSongListView();
+
                         return true;
                     }
                     case R.id.song_change_artist: {
@@ -160,7 +163,7 @@ public class MainActivity extends BaseActivity {
         Log.d(TAG, "Detected that position " + item.getItemId() + " was selected.");
         switch (item.getItemId()) {
             case R.id.song_menu_upload: {
-                Log.d(TAG, "Starting new dialog - upload.");
+                Log.d(TAG, "Starting new dialog - download.");
                 DialogFragment uploadDialog = new DownloadSongDialog();
                 uploadDialog.show(getSupportFragmentManager(), "Upload");
                 return true;
