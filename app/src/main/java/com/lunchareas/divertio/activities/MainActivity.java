@@ -117,8 +117,8 @@ public class MainActivity extends BaseActivity {
                         Log.d(TAG, "Deleting song!");
 
                         // Remove song from list and re-update view
-                        SongDBHandler db = new SongDBHandler(context);
-                        db.deleteSongData(selectedSong);
+                        MusicManager musicManager = new MusicManager(context);
+                        musicManager.deleteSong(selectedSong);
                         setSongListView();
 
                         return true;
