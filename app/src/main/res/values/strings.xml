@@ -24,7 +24,8 @@
     <string name="song_change_artist">Change Artist</string>
     <string name="song_change_title">New Title:</string>
     <string name="song_change_title_hint">Title</string>
-    <string name="song_change_title_confirm">Change</string>
+    <string name="song_change_artist_title">New Artist:</string>
+    <string name="song_change_artist_hint">Name</string>
 
     <!-- Playlist modifier menu strings -->
     <string name="playlist_rename_title">Rename Playlist</string>
@@ -34,6 +35,7 @@
     <!-- Universal dialog strings -->
     <string name="dialog_confirm">OK</string>
     <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_change">Change</string>
 
     <!-- Download song dialog strings -->
     <string name="download_confirm">Download</string>

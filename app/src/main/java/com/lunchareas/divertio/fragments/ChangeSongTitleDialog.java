@@ -38,7 +38,7 @@ public class ChangeSongTitleDialog extends DialogFragment {
         changeTitleView = inflater.inflate(R.layout.change_song_title_dialog, null);
         titleChangeDialogBuilder
                 .setView(changeTitleView)
-                .setPositiveButton(R.string.song_change_title_confirm, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.dialog_change, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d(TAG, "Got click on positive title change button.");

@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.*;
 import android.content.*;
 
+import com.lunchareas.divertio.fragments.ChangeSongArtistDialog;
 import com.lunchareas.divertio.fragments.ChangeSongTitleDialog;
 import com.lunchareas.divertio.fragments.DeleteSongDialog;
 import com.lunchareas.divertio.R;
@@ -134,6 +135,14 @@ public class MainActivity extends BaseActivity {
                     }
                     case R.id.song_change_artist: {
                         Log.d(TAG, "Changing song artist!");
+
+                        // Create popup for new artist
+                        DialogFragment changeSongArtistDialog = new ChangeSongArtistDialog();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(ChangeSongArtistDialog.MUSIC_POS, pos);
+                        changeSongArtistDialog.setArguments(bundle);
+                        changeSongArtistDialog.show(getSupportFragmentManager(), "ChangeArtist");
+
                         return true;
                     }
                     default: {

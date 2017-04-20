@@ -34,6 +34,17 @@ public class SongController {
         db.updateSongData(newSongData, songData.getSongName());
     }
 
+    public void changeSongArtist(SongData songData, String newArtist) {
+
+        // Create new song data with artist
+        SongData newSongData = new SongData(songData.getSongName(), songData.getSongPath(), newArtist);
+        Log.d(TAG, "Changing title from " + songData.getSongArtist() + " to " + newArtist);
+
+        // Update the song data
+        SongDBHandler db = new SongDBHandler(context);
+        db.updateSongData(newSongData);
+    }
+
     public void deleteSong(SongData songData) {
 
         // Make sure all playlists no longer have song

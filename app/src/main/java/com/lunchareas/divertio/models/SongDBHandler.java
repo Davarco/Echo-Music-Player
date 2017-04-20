@@ -86,6 +86,7 @@ public class SongDBHandler extends SQLiteOpenHelper {
             cursor.moveToFirst();
             SongData songData = new SongData(cursor.getString(KEY_NAME_IDX), cursor.getString(KEY_PATH_IDX), cursor.getString(KEY_ARTIST_IDX));
             db.close();
+            //cursor.close();
             return songData;
         } else {
             Log.e(TAG, "Failed to create database cursor.");
@@ -111,6 +112,7 @@ public class SongDBHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+        //cursor.close();
         db.close();
         return songDataList;
     }
