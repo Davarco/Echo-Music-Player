@@ -13,4 +13,8 @@
     <item
         android:id="@+id/song_change_artist"
         android:title="@string/song_change_artist"/>
+    <item
+        android:id="@+id/song_to_playlist"
+        android:title="@string/song_to_playlist"/>
+
 </menu>

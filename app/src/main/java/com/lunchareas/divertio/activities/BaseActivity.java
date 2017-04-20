@@ -30,6 +30,8 @@ import android.widget.TextView;
 
 import com.lunchareas.divertio.interfaces.MusicConductor;
 import com.lunchareas.divertio.R;
+import com.lunchareas.divertio.models.PlaylistDBHandler;
+import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 
@@ -45,6 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
     private int id;
     protected AudioManager am;
     protected List<SongData> songInfoList;
+    protected List<PlaylistData> playlistInfoList;
 
     protected boolean drawerOpen;
     protected String[] menuItemArr;
@@ -88,6 +91,10 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
 
         // get context
         context = getApplicationContext();
+
+        // get all playlists
+        PlaylistDBHandler dbPlaylist = new PlaylistDBHandler(this);
+        playlistInfoList = dbPlaylist.getPlaylistDataList();
 
         // setup toolbar
         Toolbar mainBar = (Toolbar)findViewById(R.id.header_bar);
@@ -294,5 +301,9 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
 
     public List<SongData> getSongInfoList() {
         return this.songInfoList;
+    }
+
+    public List<PlaylistData> getPlaylistInfoList() {
+        return this.playlistInfoList;
     }
 }

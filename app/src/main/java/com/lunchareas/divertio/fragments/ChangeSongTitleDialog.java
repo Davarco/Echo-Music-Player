@@ -13,7 +13,7 @@ import android.widget.EditText;
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.MainActivity;
 import com.lunchareas.divertio.models.SongData;
-import com.lunchareas.divertio.utils.SongController;
+import com.lunchareas.divertio.utils.SongUtil;
 
 public class ChangeSongTitleDialog extends DialogFragment {
 
@@ -49,7 +49,7 @@ public class ChangeSongTitleDialog extends DialogFragment {
 
                         // Change the song name
                         SongData songData = ((MainActivity) getActivity()).getSongInfoList().get(position);
-                        SongController songController = new SongController(getActivity());
+                        SongUtil songController = new SongUtil(getActivity());
                         songController.changeSongName(songData, inputText);
 
                         // Re-update the view

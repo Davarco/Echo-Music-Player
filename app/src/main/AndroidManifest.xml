@@ -41,7 +41,7 @@
         </activity>
 
         <activity
-            android:name="com.lunchareas.divertio.activities.PlaylistManagerActivity"
+            android:name="com.lunchareas.divertio.activities.PlaylistControllerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize">
         </activity>
     </application>

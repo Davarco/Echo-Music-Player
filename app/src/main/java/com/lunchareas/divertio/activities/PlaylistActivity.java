@@ -53,7 +53,7 @@ public class PlaylistActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Log.d(TAG, "Detected click in playlist item in list view, starting modifier.");
-                Intent i = new Intent(view.getContext(), PlaylistManagerActivity.class);
+                Intent i = new Intent(view.getContext(), PlaylistControllerActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 i.putExtra(PLAYLIST_NAME, playlistInfoList.get(position).getPlaylistName());
                 startActivity(i);

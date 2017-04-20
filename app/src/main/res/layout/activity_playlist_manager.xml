@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/wallpaper"
-    tools:context="com.lunchareas.divertio.activities.PlaylistManagerActivity">
+    tools:context="com.lunchareas.divertio.activities.PlaylistControllerActivity">
 
     <!-- Widget Toolbar -->
     <android.support.v7.widget.Toolbar

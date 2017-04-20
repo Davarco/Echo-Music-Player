@@ -11,15 +11,6 @@
         <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/pre-dexed/debug/gson-2.3.1_7dcdcf59faf0b24ebda217d0fc5a53b4ad9f2cde.jar" />
     </item>
     <item
-        is-multidex="false"
-        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/libs/jsoup-1.10.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.0"
-        sha1="6b471012876a440ae746860d80738be2dd104655">
-        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/pre-dexed/debug/jsoup-1.10.1_277ab8e3941831204ec03a9069abc604fa96de35.jar" />
-    </item>
-    <item
         is-multidex="true"
         jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/libs/gson-2.3.1.jar"
         jumboMode="true"
@@ -39,21 +30,30 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="916f8ca7e820f946174dcb671de66efbb76d615d">
-        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_9b9cb346219f67886aa8e141101e566f4d05b1f6/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/libs/jsoup-1.10.1.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="6b471012876a440ae746860d80738be2dd104655">
         <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/2/jsoup-1.10.1_277ab8e3941831204ec03a9069abc604fa96de35/classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/libs/jsoup-1.10.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="6b471012876a440ae746860d80738be2dd104655">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/pre-dexed/debug/jsoup-1.10.1_277ab8e3941831204ec03a9069abc604fa96de35.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="974485f363affbac0884e7472180d1a1d7e559bd">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_9b9cb346219f67886aa8e141101e566f4d05b1f6/classes.dex" />
     </item>
 
 </items>
