@@ -129,6 +129,27 @@ public class SongDBHandler extends SQLiteOpenHelper {
         return db.update(TABLE_SONGS, values, KEY_NAME + " = ?", new String[]{String.valueOf(songData.getSongName())});
     }
 
+    // name is a little different because it is the key
+    public int updateSongData(SongData songData, String oldName) {
+
+        // get table data
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        // update data
+        values.put(KEY_NAME, songData.getSongName());
+        values.put(KEY_PATH, songData.getSongPath());
+        values.put(KEY_ARTIST, songData.getSongArtist());
+        return db.update(TABLE_SONGS, values, KEY_NAME + " = ?", new String[]{String.valueOf(oldName)});
+    }
+
+    // name is a little different, alt method
+    public void updateSongData(SongData oldData, SongData newData) {
+
+        deleteSongData(oldData);
+        addSongData(newData);
+    }
+
     // in order for this to be used, a new song data must be created
     public void deleteSongData(SongData songData) {
 

@@ -22,6 +22,9 @@
     <string name="song_rename_title">Rename Song</string>
     <string name="song_delete_title">Delete Song</string>
     <string name="song_change_artist">Change Artist</string>
+    <string name="song_change_title">New Title:</string>
+    <string name="song_change_title_hint">Title</string>
+    <string name="song_change_title_confirm">Change</string>
 
     <!-- Playlist modifier menu strings -->
     <string name="playlist_rename_title">Rename Playlist</string>

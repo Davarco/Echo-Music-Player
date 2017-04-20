@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.*;
 import android.content.*;
 
+import com.lunchareas.divertio.fragments.ChangeSongTitleDialog;
 import com.lunchareas.divertio.fragments.DeleteSongDialog;
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.adapters.SongAdapter;
@@ -25,7 +26,7 @@ import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.fragments.DownloadSongDialog;
 import com.lunchareas.divertio.fragments.DownloadSongFailureDialog;
-import com.lunchareas.divertio.utils.MusicManager;
+import com.lunchareas.divertio.utils.SongController;
 
 import java.io.File;
 import java.util.*;
@@ -101,7 +102,7 @@ public class MainActivity extends BaseActivity {
 
     @SuppressLint("NewApi")
     private void showSongChoiceMenu(View view, final int pos) {
-        PopupMenu popupMenu = new PopupMenu(context, view, Gravity.RIGHT);
+        final PopupMenu popupMenu = new PopupMenu(context, view, Gravity.RIGHT);
         final SongData selectedSong = songInfoList.get(pos);
 
         // Handle individual clicks
@@ -111,14 +112,22 @@ public class MainActivity extends BaseActivity {
                 switch (item.getItemId()) {
                     case R.id.song_rename_title: {
                         Log.d(TAG, "Renaming song title!");
+
+                        // Create popup for new title
+                        DialogFragment changeSongTitleDialog = new ChangeSongTitleDialog();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(ChangeSongTitleDialog.MUSIC_POS, pos);
+                        changeSongTitleDialog.setArguments(bundle);
+                        changeSongTitleDialog.show(getSupportFragmentManager(), "ChangeTitle");
+
                         return true;
                     }
                     case R.id.song_delete_title: {
                         Log.d(TAG, "Deleting song!");
 
                         // Remove song from list and re-update view
-                        MusicManager musicManager = new MusicManager(context);
-                        musicManager.deleteSong(selectedSong);
+                        SongController songController = new SongController(context);
+                        songController.deleteSong(selectedSong);
                         setSongListView();
 
                         return true;

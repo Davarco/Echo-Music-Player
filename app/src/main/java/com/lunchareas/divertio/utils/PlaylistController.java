@@ -14,6 +14,10 @@ import java.util.List;
 
 public class PlaylistController implements MusicConductor {
 
+    /*
+    TODO: Need to test if playlist manager is actually going through all the songs
+     */
+
     private static final String TAG = PlaylistController.class.getName();
 
     private int idx;

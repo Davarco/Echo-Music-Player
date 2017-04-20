@@ -9,12 +9,10 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 
 import com.lunchareas.divertio.R;
-import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.activities.MainActivity;
-import com.lunchareas.divertio.utils.MusicManager;
+import com.lunchareas.divertio.utils.SongController;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,8 +61,8 @@ public class DeleteSongDialog extends DialogFragment {
 
                         // delete from database
                         SongData songData = songInfoList.get(selectedSongs.get(i));
-                        MusicManager musicManager = new MusicManager(getActivity());
-                        musicManager.deleteSong(songData);
+                        SongController songController = new SongController(getActivity());
+                        songController.deleteSong(songData);
                     }
                     ((MainActivity)getActivity()).setSongListView();
                 }
