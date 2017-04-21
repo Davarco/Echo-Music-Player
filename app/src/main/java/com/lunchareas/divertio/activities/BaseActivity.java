@@ -83,24 +83,24 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
     @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
 
-        // differs due to different activities
+        // Differs due to different activities
         setContentView(id);
         super.onCreate(savedInstanceState);
         setDisplay();
         setBackground();
 
-        // get context
+        // Get context
         context = getApplicationContext();
 
-        // get all playlists
+        // Get all playlists
         PlaylistDBHandler dbPlaylist = new PlaylistDBHandler(this);
         playlistInfoList = dbPlaylist.getPlaylistDataList();
 
-        // setup toolbar
+        // Setup toolbar
         Toolbar mainBar = (Toolbar)findViewById(R.id.header_bar);
         setSupportActionBar(mainBar);
 
-        // set new font for title
+        // Set new font for title
         TextView barTitle = (TextView) findViewById(R.id.bar_title);
         try {
             barTitle.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/RobotoSlab-Regular.ttf"));
@@ -109,11 +109,11 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
             Log.e(TAG, "Could not open the font.");
         }
 
-        // get song info
+        // Get song info
         SongDBHandler db = new SongDBHandler(this);
         songInfoList = db.getSongDataList();
 
-        // song bar
+        // Setup song bar
         am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         songProgressManager = (SeekBar) findViewById(R.id.progress_bar);
         songProgressManager.getProgressDrawable().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
@@ -128,7 +128,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
             songCtrlButton.setBackgroundResource(R.drawable.play_red);
         }
 
-        // menu drawer
+        // Create the menu drawer
         menuDrawerLayout = (RelativeLayout) findViewById(R.id.menu_drawer_layout);
         menuDrawer = (DrawerLayout) findViewById(R.id.menu_drawer);
         menuToggleButton = (Button) findViewById(R.id.menu_toggle);
@@ -187,13 +187,13 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                // prevents broken music during time change
+                // Prevents broken music during time change
                 sendMusicPauseIntent();
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                // resumes regular music from pause_red
+                // Resumes regular music from pause_red
                 sendMusicStartIntent();
                 songCtrlButton.setBackgroundResource(R.drawable.pause_red);
             }
@@ -205,11 +205,11 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
                 int songPosition = intent.getIntExtra(PlayMusicService.MUSIC_POSITION, 0);
                 int songDuration = intent.getIntExtra(PlayMusicService.MUSIC_DURATION, 0);
 
-                // set location based on position/duration
+                // Set location based on position/duration
                 songProgressManager.setMax(songDuration);
                 songProgressManager.setProgress(songPosition);
 
-                // set new text in time
+                // Set new text in time
                 String songPositionTime = String.format(
                         Locale.US, "%02d:%02d",
                         TimeUnit.MILLISECONDS.toMinutes(songPosition),
@@ -240,7 +240,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
 
     @Override
     public void sendPlaylistCreateIntent(List<SongData> songList) {
-        // useless here
+        // Useless here
     }
 
     @Override
@@ -274,7 +274,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
 
     protected abstract void setDisplay();
 
-    // for broadcast managing from play music service
+    // For broadcast managing from play music service
     @Override
     protected void onStart() {
         super.onStart();
@@ -289,7 +289,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
         super.onStop();
     }
 
-    // overflow menu
+    // Overflow menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

@@ -31,7 +31,7 @@ public class DeleteSongsFromPlaylistDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        // get the list of songs to pick from
+        // Get the list of songs to pick from
         songInfoList = ((BaseActivity) getActivity()).getSongInfoList();
         songInfoTemp = new ArrayList<>();
         for (int i = 0; i < songInfoList.size(); i++) {
@@ -42,13 +42,13 @@ public class DeleteSongsFromPlaylistDialog extends DialogFragment {
         songList = songInfoTemp.toArray(songList);
         selectedSongs = new ArrayList<>();
 
-        // get the correct position
+        // Get the correct position
         position = (int) getArguments().get(MUSIC_POS);
         Log.d(TAG, "Position: " + position);
 
         AlertDialog.Builder addSongsDialogBuilder = new AlertDialog.Builder(getActivity());
         addSongsDialogBuilder
-                .setTitle(R.string.playlist_add_songs_title)
+                .setTitle(R.string.playlist_delete_songs_title)
                 .setMultiChoiceItems(songList, null, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
@@ -88,6 +88,6 @@ public class DeleteSongsFromPlaylistDialog extends DialogFragment {
 
         // Add the songs
         PlaylistUtil playlistUtil = new PlaylistUtil(getActivity());
-        //playlistUtil.addSongsToPlaylist(songDataList, ((PlaylistActivity) getActivity()).getPlaylistInfoList().get(position));
+        playlistUtil.deleteSongsFromPlaylist(songDataList, ((PlaylistActivity) getActivity()).getPlaylistInfoList().get(position));
     }
 }

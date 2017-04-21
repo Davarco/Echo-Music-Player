@@ -35,6 +35,7 @@
     <string name="playlist_remove_title">Delete Playlist</string>
     <string name="playlist_add_songs_title">Add Music</string>
     <string name="playlist_delete_songs_title">Delete Music</string>
+    <string name="playlist_play_next_title">Play Next</string>
     <string name="playlist_change_title">New Title:</string>
     <string name="playlist_change_title_hint">Title</string>
 

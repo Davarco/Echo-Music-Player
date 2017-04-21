@@ -23,6 +23,7 @@ import com.lunchareas.divertio.fragments.DeleteSongsFromPlaylistDialog;
 import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.R;
+import com.lunchareas.divertio.utils.PlaylistQueueManager;
 import com.lunchareas.divertio.utils.PlaylistUtil;
 
 import java.util.ArrayList;
@@ -47,12 +48,12 @@ public class PlaylistActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // playlist
+        // Create playlist
         playlistInfoList = new ArrayList<>();
         playlistView = (ListView) findViewById(R.id.playlist_list);
         setPlaylistView();
 
-        // current position is -1 because no playlist is playing
+        // Current position is -1 because no playlist is playing
         currentPosition = -1;
 
         playlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -132,6 +133,17 @@ public class PlaylistActivity extends BaseActivity {
 
                         return true;
                     }
+                    case R.id.playlist_play_next: {
+                        Log.d(TAG, "Playing this playlist.");
+
+                        // Get random first num
+                        int firstSong = (int)(Math.random()*playlistData.getSongList().size());
+
+                        // Create queue controller to run
+                        PlaylistQueueManager queueManager = new PlaylistQueueManager(firstSong, playlistData, context);
+                        queueManager.startQueue();
+                        songCtrlButton.setBackgroundResource(R.drawable.pause_red);
+                    }
                     default: {
                         return false;
                     }
@@ -179,7 +191,7 @@ public class PlaylistActivity extends BaseActivity {
     }
 
 
-    // options for drawer menu
+    // Options for drawer menu
     @Override
     protected void selectMenuItem(int position) {
         Log.d(TAG, "Detected click on position " + position + ".");
@@ -224,7 +236,7 @@ public class PlaylistActivity extends BaseActivity {
 
     public void getPlaylistsForActivity() {
 
-        // get database and playlist
+        // Get database and playlist
         PlaylistDBHandler db = new PlaylistDBHandler(this);
         playlistInfoList = db.getPlaylistDataList();
     }

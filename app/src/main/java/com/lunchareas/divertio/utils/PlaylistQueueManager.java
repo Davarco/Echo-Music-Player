@@ -65,7 +65,7 @@ public class PlaylistQueueManager implements MusicConductor {
             Log.d(TAG, "Song " + Integer.toString(i+1) + ": " + songPathList[i]);
         }
 
-        // send the intent
+        // Send the intent
         playlistCreateIntent.putExtra(PlayMusicService.PLAYLIST_CREATE, songPathList);
         context.startService(playlistCreateIntent);
     }

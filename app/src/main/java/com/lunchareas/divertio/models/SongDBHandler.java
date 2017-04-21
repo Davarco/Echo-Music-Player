@@ -28,17 +28,17 @@ public class SongDBHandler extends SQLiteOpenHelper {
 
     private static final String TAG = SongDBHandler.class.getName();
 
-    // database info
+    // Database info
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "SongInfoDatabase";
 
-    // database attributes
+    // Database attributes
     private static final String TABLE_SONGS = "songs";
     private static final String KEY_NAME = "name";
     private static final String KEY_PATH = "path";
     private static final String KEY_ARTIST = "artist";
 
-    // numbers correspond to keys
+    // Numbers correspond to keys
     private static final int KEY_NAME_IDX = 0;
     private static final int KEY_PATH_IDX = 1;
     private static final int KEY_ARTIST_IDX = 2;
@@ -56,18 +56,18 @@ public class SongDBHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldDb, int newDb) {
 
-        // replace old table
+        // Replace old table
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SONGS);
         this.onCreate(db);
     }
 
     public void addSongData(SongData songData) {
 
-        // get table data
+        // Get table data
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        // insert new data from song data
+        // Insert new data from song data
         values.put(KEY_NAME, songData.getSongName());
         values.put(KEY_PATH, songData.getSongPath());
         values.put(KEY_ARTIST, songData.getSongArtist());
@@ -77,11 +77,11 @@ public class SongDBHandler extends SQLiteOpenHelper {
 
     public SongData getSongData(String name) {
 
-        // get table data
+        // Get table data
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.query(TABLE_SONGS, new String[] { KEY_NAME, KEY_PATH, KEY_ARTIST }, KEY_NAME + "=?", new String[] { String.valueOf(name) }, null, null, null, null);
 
-        // search through database
+        // Search through database
         if (cursor != null) {
             cursor.moveToFirst();
             SongData songData = new SongData(cursor.getString(KEY_NAME_IDX), cursor.getString(KEY_PATH_IDX), cursor.getString(KEY_ARTIST_IDX));
@@ -98,13 +98,13 @@ public class SongDBHandler extends SQLiteOpenHelper {
 
     public List<SongData> getSongDataList() {
 
-        // create list and get table data
+        // Create list and get table data
         List<SongData> songDataList = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         String dbQuery = "SELECT * FROM " + TABLE_SONGS;
         Cursor cursor = db.rawQuery(dbQuery, null);
 
-        // go through database and all to list
+        // Go through database and all to list
         if (cursor.moveToFirst()) {
             do {
                 SongData songData = new SongData(cursor.getString(KEY_NAME_IDX), cursor.getString(KEY_PATH_IDX), cursor.getString(KEY_ARTIST_IDX));
@@ -117,48 +117,48 @@ public class SongDBHandler extends SQLiteOpenHelper {
         return songDataList;
     }
 
-    // in order for this to be used, a new song data must be created
+    // In order for this to be used, a new song data must be created
     public int updateSongData(SongData songData) {
 
-        // get table data
+        // Get table data
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        // update data
+        // Update data
         values.put(KEY_NAME, songData.getSongName());
         values.put(KEY_PATH, songData.getSongPath());
         values.put(KEY_ARTIST, songData.getSongArtist());
         return db.update(TABLE_SONGS, values, KEY_NAME + " = ?", new String[]{String.valueOf(songData.getSongName())});
     }
 
-    // name is a little different because it is the key
+    // Name is a little different because it is the key
     public int updateSongData(SongData songData, String oldName) {
 
-        // get table data
+        // Get table data
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        // update data
+        // Update data
         values.put(KEY_NAME, songData.getSongName());
         values.put(KEY_PATH, songData.getSongPath());
         values.put(KEY_ARTIST, songData.getSongArtist());
         return db.update(TABLE_SONGS, values, KEY_NAME + " = ?", new String[]{String.valueOf(oldName)});
     }
 
-    // name is a little different, alt method
+    // Name is a little different, alt method
     public void updateSongData(SongData oldData, SongData newData) {
 
         deleteSongData(oldData);
         addSongData(newData);
     }
 
-    // in order for this to be used, a new song data must be created
+    // In order for this to be used, a new song data must be created
     public void deleteSongData(SongData songData) {
 
-        // get table data
+        // Get table data
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // delete the found element
+        // Delete the found element
         db.delete(TABLE_SONGS, KEY_NAME + " = ?", new String[]{ songData.getSongName() });
         db.close();
     }

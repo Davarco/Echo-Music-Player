@@ -11,6 +11,7 @@ import android.util.Log;
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
 import com.lunchareas.divertio.activities.PlaylistActivity;
+import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.PlaylistUtil;
 
@@ -27,22 +28,32 @@ public class AddSongsToPlaylistDialog extends DialogFragment {
     private List<SongData> songInfoList;
     private List<String> songInfoTemp;
     private List<Integer> selectedSongs;
+    private PlaylistData playlistData;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        // get the list of songs to pick from
+        // Get the playlist data
+        playlistData = ((PlaylistActivity) getActivity()).getPlaylistInfoList().get(position);
+
+        // Get the list of songs to pick from
         songInfoList = ((BaseActivity) getActivity()).getSongInfoList();
         songInfoTemp = new ArrayList<>();
         for (int i = 0; i < songInfoList.size(); i++) {
-            songInfoTemp.add(songInfoList.get(i).getSongName());
+            // Avoid duplicates
+            if (!playlistData.getSongList().contains(songInfoList.get(i))) {
+                songInfoTemp.add(songInfoList.get(i).getSongName());
+                Log.d(TAG, "Adding song to list.");
+            } else {
+                Log.d(TAG, "Song already exists.");
+            }
         }
 
         String[] songList = new String[songInfoTemp.size()];
         songList = songInfoTemp.toArray(songList);
         selectedSongs = new ArrayList<>();
 
-        // get the correct position
+        // Get the correct position
         position = (int) getArguments().get(MUSIC_POS);
         Log.d(TAG, "Position: " + position);
 
@@ -88,6 +99,6 @@ public class AddSongsToPlaylistDialog extends DialogFragment {
 
         // Add the songs
         PlaylistUtil playlistUtil = new PlaylistUtil(getActivity());
-        playlistUtil.addSongsToPlaylist(songDataList, ((PlaylistActivity) getActivity()).getPlaylistInfoList().get(position));
+        playlistUtil.addSongsToPlaylist(songDataList, playlistData);
     }
 }

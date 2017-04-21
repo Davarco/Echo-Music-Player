@@ -37,7 +37,7 @@ public class CreatePlaylistDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        // get the list of songs to pick from
+        // Get the list of songs to pick from
         activity = getActivity();
         songInfoList = ((BaseActivity)getActivity()).getSongInfoList();
         songInfoTemp = new ArrayList<>();
@@ -48,14 +48,14 @@ public class CreatePlaylistDialog extends DialogFragment {
         String[] songList = new String[songInfoTemp.size()];
         songList = songInfoTemp.toArray(songList);
 
-        // get name of playlist and list of songs
+        // Get name of playlist and list of songs
         selectedSongs = new ArrayList<>();
         AlertDialog.Builder createPlaylistBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         createPlaylistView = inflater.inflate(R.layout.create_playlist_dialog, null);
         createPlaylistTitle = inflater.inflate(R.layout.create_playlist_title, null);
         
-        // parts of the dialog
+        // Parts of the dialog
         createPlaylistBuilder.setCustomTitle(createPlaylistTitle);
         createPlaylistBuilder.setMultiChoiceItems(songList, null, new DialogInterface.OnMultiChoiceClickListener() {
                 @Override
@@ -94,7 +94,7 @@ public class CreatePlaylistDialog extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                // get name from input
+                // Get name from input
                 playlistNameInput = (EditText) createPlaylistView.findViewById(R.id.dialog_create_playlist_name);
                 playlistName = playlistNameInput.getText().toString().trim();
                 Log.d(TAG, "Playlist name: " + playlistName);
@@ -113,7 +113,7 @@ public class CreatePlaylistDialog extends DialogFragment {
 
     private void executePlaylistCreate() {
 
-        // create a list of the song data
+        // Create a list of the song data
         List<SongData> songDataList = new ArrayList<>();
         for (int i = 0; i < selectedSongs.size(); i++) {
             SongData songData = songInfoList.get(selectedSongs.get(i));
@@ -121,7 +121,7 @@ public class CreatePlaylistDialog extends DialogFragment {
             Log.i(TAG, "song name: " + songDataList.get(i).getSongName() + ", song artist: " + songDataList.get(i).getSongArtist());
         }
 
-        // update database with new playlist
+        // Update database with new playlist
         PlaylistDBHandler db = new PlaylistDBHandler(activity);
         try {
             PlaylistData playlistData = new PlaylistData(playlistName, songDataList);

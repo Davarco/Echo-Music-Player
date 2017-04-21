@@ -27,7 +27,7 @@ public class DeleteSongDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        // get the list of songs to pick from
+        // Get the list of songs to pick from
         songInfoList = ((MainActivity)getActivity()).getSongInfoList();
         songInfoTemp = new ArrayList<>();
         for (int i = 0; i < songInfoList.size(); i++) {
@@ -37,7 +37,7 @@ public class DeleteSongDialog extends DialogFragment {
         String[] songList = new String[songInfoTemp.size()];
         songList = songInfoTemp.toArray(songList);
 
-        // get songs to delete with multiple choice boxes
+        // Get songs to delete with multiple choice boxes
         selectedSongs = new ArrayList<>();
         AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(getActivity());
         deleteBuilder
@@ -59,7 +59,7 @@ public class DeleteSongDialog extends DialogFragment {
                 public void onClick(DialogInterface dialogInterface, int which) {
                     for (int i = 0; i < selectedSongs.size(); i++) {
 
-                        // delete from database
+                        // Delete from database
                         SongData songData = songInfoList.get(selectedSongs.get(i));
                         SongUtil songController = new SongUtil(getActivity());
                         songController.deleteSong(songData);

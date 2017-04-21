@@ -26,7 +26,7 @@ public class DeletePlaylistDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        // get playlists to remove from
+        // Get playlists to remove from
         playlistInfoList = ((PlaylistActivity)getActivity()).getPlaylistInfoList();
         playlistInfoTemp = new ArrayList<>();
         for (int i = 0; i < playlistInfoList.size(); i++) {
@@ -36,7 +36,7 @@ public class DeletePlaylistDialog extends DialogFragment {
         String[] playlistList = new String[playlistInfoTemp.size()];
         playlistList = playlistInfoTemp.toArray(playlistList);
 
-        // get playlists to delete
+        // Get playlists to delete
         selectedPlaylists = new ArrayList<>();
         AlertDialog.Builder deletePlaylistBuilder = new AlertDialog.Builder(getActivity());
         deletePlaylistBuilder
@@ -58,7 +58,7 @@ public class DeletePlaylistDialog extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int which) {
                         for (int i = 0; i < selectedPlaylists.size(); i++) {
 
-                            // delete from database
+                            // Delete from database
                             PlaylistData playlistData = playlistInfoList.get(selectedPlaylists.get(i));
                             PlaylistDBHandler db = new PlaylistDBHandler(getActivity());
                             db.deletePlaylistData(playlistData);

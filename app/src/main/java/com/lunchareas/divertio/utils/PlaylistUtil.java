@@ -40,6 +40,16 @@ public class PlaylistUtil {
         db.updatePlaylistData(playlistData);
     }
 
+    public void deleteSongsFromPlaylist(List<SongData> songList, PlaylistData playlistData) {
+
+        // Get the database
+        PlaylistDBHandler db = new PlaylistDBHandler(context);
+
+        // Update the database
+        playlistData.getSongList().removeAll(songList);
+        db.updatePlaylistData(playlistData);
+    }
+
     public void changePlaylistName(PlaylistData playlistData, String newTitle) {
 
         // Create new playlist data

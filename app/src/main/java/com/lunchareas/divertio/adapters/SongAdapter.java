@@ -31,13 +31,13 @@ public class SongAdapter extends BaseAdapter {
         return songDataList.size();
     }
 
-    // not used
+    // Not used
     @Override
     public Object getItem(int arg0) {
         return null;
     }
 
-    // not used
+    // Not used
     @Override
     public long getItemId(int arg0) {
         return 0;
@@ -47,12 +47,12 @@ public class SongAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parentView) {
         RelativeLayout songListLayout = (RelativeLayout) songListInflater.inflate(R.layout.song_layout, parentView, false);
 
-        // get the parts of a song layout
+        // Get the parts of a song layout
         ImageView songItemIcon = (ImageView) songListLayout.findViewById(R.id.song_icon);
         TextView songItemName = (TextView) songListLayout.findViewById(R.id.song_name);
         TextView songItemArtist = (TextView) songListLayout.findViewById(R.id.song_composer);
 
-        // set the parts equal to the corresponding song
+        // Set the parts equal to the corresponding song
         SongData songItem = songDataList.get(position);
         songItemIcon.setImageDrawable(songItem.getSongIcon());
         songItemName.setText(songItem.getSongName());
@@ -62,7 +62,7 @@ public class SongAdapter extends BaseAdapter {
         //Log.d(TAG, "Song Name: " + songItem.getSongName());
         //Log.d(TAG, "Song Artist: " + songItem.getSongArtist());
 
-        // set position as tag
+        // Set position as tag
         songListLayout.setTag(position);
         return songListLayout;
     }

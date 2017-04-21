@@ -65,7 +65,7 @@ public class DownloadSongDialog extends DialogFragment {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
 
-                    // check internet connection status
+                    // Check internet connection status
                     Thread checkConnectionThread = new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -79,7 +79,7 @@ public class DownloadSongDialog extends DialogFragment {
                         Log.e(TAG, "Couldn't wait for connection thread.");
                     }
 
-                    // run the download procedure
+                    // Run the download procedure
                     executeDialogDownload();
                 }
             })
@@ -126,13 +126,13 @@ public class DownloadSongDialog extends DialogFragment {
 
     private void executeDialogDownload() {
 
-        // only go ahead if there is internet
+        // Only go ahead if there is internet
         if (internetConnectionStatus) {
 
-            // get start
+            // Get start
             long start = System.currentTimeMillis();
 
-            // get song name and link
+            // Get song name and link
             songNameInput = (EditText) uploadDialogView.findViewById(R.id.dialog_upload_name);
             userLinkInput = (EditText) uploadDialogView.findViewById(R.id.dialog_upload_link);
             composerNameInput = (EditText) uploadDialogView.findViewById(R.id.dialog_upload_composer);
@@ -145,12 +145,12 @@ public class DownloadSongDialog extends DialogFragment {
 
             long input = System.currentTimeMillis();
 
-            // using advanced api to get link line
+            // Using advanced api to get link line
             try {
                 String downloadInfoLink = "https://www.youtubeinmp3.com/download/?video=" + userLink;
                 Log.d(TAG, "The link is: " + downloadInfoLink);
 
-                // use jsoup to find the download link
+                // Use jsoup to find the download link
                 Document doc = Jsoup.connect(downloadInfoLink)
                         .header("Accept-Encoding", "gzip, deflate")
                         .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
@@ -170,13 +170,13 @@ public class DownloadSongDialog extends DialogFragment {
                 e.printStackTrace();
             }
 
-            // get jsoup time
+            // Get jsoup time
             long jsoup = System.currentTimeMillis();
 
-            // replace with error dialog if this fails
+            // Replace with error dialog if this fails
             DownloadManager.Request youtubeConvertRequest;
             try {
-                // insert link into api and setup download
+                // Insert link into api and setup download
                 youtubeConvertRequest = new DownloadManager.Request(Uri.parse(downloadMusicLink));
                 youtubeConvertRequest.setDescription("Converting and downloading...");
                 youtubeConvertRequest.setTitle(songFileName + " Download");
@@ -189,15 +189,15 @@ public class DownloadSongDialog extends DialogFragment {
                 return;
             }
 
-            // download into music files directory
+            // Download into music files directory
             youtubeConvertRequest.setDestinationInExternalPublicDir("/Divertio", songFileName);
             DownloadManager youtubeConvertManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
             youtubeConvertManager.enqueue(youtubeConvertRequest);
 
-            // get download time
+            // Get download time
             long download = System.currentTimeMillis();
 
-            // update database
+            // Update database
             String musicFilePath = Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName;
             SongDBHandler db = new SongDBHandler(getActivity());
             try {
@@ -209,13 +209,13 @@ public class DownloadSongDialog extends DialogFragment {
                 Log.d(TAG, "Song database update failure.");
             }
 
-            // get end time
+            // Get end time
             long end = System.currentTimeMillis();
 
-            // reset the song list view
+            // Reset the song list view
             ((MainActivity) getActivity()).setSongListView();
 
-            // print times
+            // Print times
             Log.d(TAG, "Total: " + Long.toString(end-start));
             Log.d(TAG, "Input: " + Long.toString(input-start));
             Log.d(TAG, "JSOUP: " + Long.toString(jsoup-input));

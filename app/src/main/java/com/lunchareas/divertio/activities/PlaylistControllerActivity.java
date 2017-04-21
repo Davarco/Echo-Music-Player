@@ -40,7 +40,7 @@ public class PlaylistControllerActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // get playlist data
+        // Get playlist data
         if (getIntent() == null) {
             Log.e(TAG, "Cannot find intent?");
         }
@@ -51,11 +51,11 @@ public class PlaylistControllerActivity extends BaseActivity {
         PlaylistDBHandler db = new PlaylistDBHandler(this);
         playlistData = db.getPlaylistData(playlistName);
 
-        // change title
+        // Change title
         TextView titleText = (TextView) findViewById(R.id.bar_title);
         titleText.setText(playlistData.getPlaylistName());
 
-        // songs in playlist
+        // Songs in playlist
         songInfoList = new ArrayList<>();
         playlistView = (ListView) findViewById(R.id.song_list);
         setSongListView();
@@ -108,7 +108,7 @@ public class PlaylistControllerActivity extends BaseActivity {
         }
     }
 
-    // options for drawer menu
+    // Options for drawer menu
     @Override
     protected void selectMenuItem(int position) {
         Log.d(TAG, "Detected click on position " + position + ".");
@@ -153,7 +153,7 @@ public class PlaylistControllerActivity extends BaseActivity {
 
     public void getSongsForActivity() {
 
-        // get database and song list
+        // Get database and song list
         songInfoList = playlistData.getSongList();
     }
 }
