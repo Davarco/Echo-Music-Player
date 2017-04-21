@@ -5,19 +5,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 
+import com.lunchareas.divertio.fragments.AddSongsToPlaylistDialog;
+import com.lunchareas.divertio.fragments.ChangePlaylistTitleDialog;
 import com.lunchareas.divertio.fragments.CreatePlaylistDialog;
 import com.lunchareas.divertio.fragments.DeletePlaylistDialog;
 import com.lunchareas.divertio.adapters.PlaylistAdapter;
+import com.lunchareas.divertio.fragments.DeleteSongsFromPlaylistDialog;
 import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.R;
+import com.lunchareas.divertio.utils.PlaylistUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +65,84 @@ public class PlaylistActivity extends BaseActivity {
                 startActivity(i);
             }
         });
+
+        playlistView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "Detected LONG click on playlist.");
+                showPlaylistChoiceMenu(view, position);
+                return true;
+            }
+        });
+    }
+
+    @SuppressLint("NewApi")
+    private void showPlaylistChoiceMenu(View view, final int pos) {
+        final PopupMenu popupMenu = new PopupMenu(context, view, Gravity.END);
+        final PlaylistData playlistData = playlistInfoList.get(pos);
+
+        // Handle individual clicks
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.playlist_rename_title: {
+                        Log.d(TAG, "Renaming playlist.");
+
+                        // Create popup for new playlist title
+                        DialogFragment changePlaylistTitleDialog = new ChangePlaylistTitleDialog();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(ChangePlaylistTitleDialog.MUSIC_POS, pos);
+                        changePlaylistTitleDialog.setArguments(bundle);
+                        changePlaylistTitleDialog.show(getSupportFragmentManager(), "ChangePlaylistTitle");
+
+                        return true;
+                    }
+                    case R.id.playlist_remove_title: {
+                        Log.d(TAG, "Deleting playlist.");
+
+                        // Create popup for remove playlist title
+                        PlaylistUtil playlistUtil = new PlaylistUtil(context);
+                        playlistUtil.deletePlaylist(playlistData);
+                        setPlaylistView();
+
+                        return true;
+                    }
+                    case R.id.playlist_add_music_title: {
+                        Log.d(TAG, "Adding music to playlist.");
+
+                        // Create popup for music to add
+                        DialogFragment addSongsDialog = new AddSongsToPlaylistDialog();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(AddSongsToPlaylistDialog.MUSIC_POS, pos);
+                        addSongsDialog.setArguments(bundle);
+                        addSongsDialog.show(getSupportFragmentManager(), "AddSongsToPlaylist");
+
+                        return true;
+                    }
+                    case R.id.playlist_delete_music_title: {
+                        Log.d(TAG, "Deleting music from playlist.");
+
+                        // Create popup for music to delete
+                        DialogFragment removeSongsDialog = new DeleteSongsFromPlaylistDialog();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(DeleteSongsFromPlaylistDialog.MUSIC_POS, pos);
+                        removeSongsDialog.setArguments(bundle);
+                        removeSongsDialog.show(getSupportFragmentManager(), "RemoveSongsFromPlaylist");
+
+                        return true;
+                    }
+                    default: {
+                        return false;
+                    }
+                }
+            }
+        });
+
+        // Show popup menu
+        MenuInflater inflater = popupMenu.getMenuInflater();
+        inflater.inflate(R.menu.playlist_choice_menu, popupMenu.getMenu());
+        popupMenu.show();
     }
 
     @Override

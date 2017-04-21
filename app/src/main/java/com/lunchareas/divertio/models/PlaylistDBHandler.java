@@ -151,6 +151,19 @@ public class PlaylistDBHandler extends SQLiteOpenHelper {
         return db.update(TABLE_PLAYLISTS, values, KEY_NAME + " = ?", new String[]{String.valueOf(playlistData.getPlaylistName())});
     }
 
+    // name is a little different because it is the key
+    public int updatePlaylistData(PlaylistData playlistData, String oldName) {
+
+        // get table data
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        // update data
+        values.put(KEY_NAME, playlistData.getPlaylistName());
+        values.put(KEY_LIST, playlistToString(playlistData));
+        return db.update(TABLE_PLAYLISTS, values, KEY_NAME + " = ?", new String[]{String.valueOf(oldName)});
+    }
+
     public void deletePlaylistData(PlaylistData playlistData) {
 
         // get table data

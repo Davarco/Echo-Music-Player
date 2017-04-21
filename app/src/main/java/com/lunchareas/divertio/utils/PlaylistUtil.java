@@ -2,6 +2,7 @@ package com.lunchareas.divertio.utils;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
@@ -27,5 +28,33 @@ public class PlaylistUtil {
         // Update the database
         playlistData.getSongList().add(songData);
         db.updatePlaylistData(playlistData);
+    }
+
+    public void addSongsToPlaylist(List<SongData> songDataList, PlaylistData playlistData) {
+
+        // Get the database
+        PlaylistDBHandler db = new PlaylistDBHandler(context);
+
+        // Update the database
+        playlistData.getSongList().addAll(songDataList);
+        db.updatePlaylistData(playlistData);
+    }
+
+    public void changePlaylistName(PlaylistData playlistData, String newTitle) {
+
+        // Create new playlist data
+        PlaylistData newPlaylistData = new PlaylistData(newTitle, playlistData.getSongList());
+        Log.d(TAG, "Changing title from " + playlistData.getPlaylistName() + " to " + newTitle);
+
+        // Update the playlist data
+        PlaylistDBHandler db = new PlaylistDBHandler(context);
+        db.updatePlaylistData(newPlaylistData, playlistData.getPlaylistName());
+    }
+
+    public void deletePlaylist(PlaylistData playlistData) {
+
+        // Delete the playlist
+        PlaylistDBHandler db = new PlaylistDBHandler(context);
+        db.deletePlaylistData(playlistData);
     }
 }

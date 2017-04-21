@@ -34,7 +34,7 @@ public class AddToPlaylistDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        // get the list of songs to pick from
+        // get the list of playlists to pick from
         playlistInfoList = ((BaseActivity)getActivity()).getPlaylistInfoList();
         playlistInfoTemp = new ArrayList<>();
         for (int i = 0; i < playlistInfoList.size(); i++) {
