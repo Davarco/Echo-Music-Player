@@ -3,6 +3,7 @@ package com.lunchareas.divertio.activities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.os.Build;
@@ -24,10 +25,11 @@ import com.lunchareas.divertio.fragments.ChangeSongTitleDialog;
 import com.lunchareas.divertio.fragments.DeleteSongDialog;
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.adapters.SongAdapter;
+import com.lunchareas.divertio.fragments.DownloadNameFailureDialog;
 import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.fragments.DownloadSongDialog;
-import com.lunchareas.divertio.fragments.DownloadSongFailureDialog;
+import com.lunchareas.divertio.fragments.DownloadConnectionFailureDialog;
 import com.lunchareas.divertio.utils.SongUtil;
 
 import java.io.File;
@@ -176,10 +178,16 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void replaceDialogWithFailure(DialogFragment d) {
+    public void createDownloadFailureDialog(DialogFragment d) {
         d.dismiss();
-        DialogFragment uploadFailureDialog = new DownloadSongFailureDialog();
+        DialogFragment uploadFailureDialog = new DownloadConnectionFailureDialog();
         uploadFailureDialog.show(getSupportFragmentManager(), "UploadFailure");
+    }
+
+    public void createNameFailureDialog(DialogFragment d) {
+        d.dismiss();
+        DialogFragment nameFailureDialog = new DownloadNameFailureDialog();
+        nameFailureDialog.show(getSupportFragmentManager(), "NameFailure");
     }
 
     @Override

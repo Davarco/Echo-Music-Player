@@ -53,6 +53,7 @@
     <string name="download_composer_title">Composer:</string>
     <string name="download_composer_hint">Name</string>
     <string name="download_failure_message">Failed to download.\nCheck internet status and link?</string>
+    <string name="download_name_failure_msg">The song name has already been used, or it is empty.</string>
 
     <!-- Delete song dialog strings -->
     <string name="delete_dialog_title">Songs to Delete:</string>

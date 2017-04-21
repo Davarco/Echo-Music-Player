@@ -30,15 +30,24 @@ public class AddToPlaylistDialog extends DialogFragment {
     private List<PlaylistData> playlistInfoList;
     private List<String> playlistInfoTemp;
     private List<Integer> selectedPlaylists;
+    private SongData songData;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+        // Get the song data
+        songData = ((BaseActivity) getActivity()).getSongInfoList().get(position);
 
         // Get the list of playlists to pick from
         playlistInfoList = ((BaseActivity)getActivity()).getPlaylistInfoList();
         playlistInfoTemp = new ArrayList<>();
         for (int i = 0; i < playlistInfoList.size(); i++) {
-            playlistInfoTemp.add(playlistInfoList.get(i).getPlaylistName());
+            if (!playlistInfoList.get(i).getSongList().contains(songData)) {
+                playlistInfoTemp.add(playlistInfoList.get(i).getPlaylistName());
+                Log.d(TAG, "Adding playlist to pick from because it does not already contain the song.");
+            } else {
+                Log.d(TAG, "Song already is in the playlist.");
+            }
         }
 
         String[] playlistList = new String[playlistInfoTemp.size()];
@@ -83,7 +92,7 @@ public class AddToPlaylistDialog extends DialogFragment {
     private void addToPlaylists() {
 
         // Get the song
-        SongData songData = ((BaseActivity) getActivity()).getSongInfoList().get(position);
+        songData = ((BaseActivity) getActivity()).getSongInfoList().get(position);
 
         // Add song to playlists
         PlaylistUtil playlistUtil = new PlaylistUtil(getActivity());

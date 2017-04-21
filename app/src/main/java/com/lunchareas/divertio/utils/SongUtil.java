@@ -3,6 +3,7 @@ package com.lunchareas.divertio.utils;
 import android.content.Context;
 import android.util.Log;
 
+import com.lunchareas.divertio.activities.BaseActivity;
 import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.models.SongDBHandler;
@@ -73,5 +74,21 @@ public class SongUtil {
             Log.d(TAG, newPlaylist.toString());
             db.updatePlaylistData(newPlaylist);
         }
+    }
+
+    public boolean nameAlreadyExists(String input) {
+
+        // Get songs
+        SongDBHandler db = new SongDBHandler(context);
+        List<SongData> songList = db.getSongDataList();
+
+        // Search through and see if the song exists
+        for (SongData songData: songList) {
+            if (input.equals(songData.getSongName())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
