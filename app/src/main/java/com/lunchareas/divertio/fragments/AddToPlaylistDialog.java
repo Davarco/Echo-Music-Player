@@ -39,7 +39,7 @@ public class AddToPlaylistDialog extends DialogFragment {
         songData = ((BaseActivity) getActivity()).getSongInfoList().get(position);
 
         // Get the list of playlists to pick from
-        playlistInfoList = ((BaseActivity)getActivity()).getPlaylistInfoList();
+        playlistInfoList = ((BaseActivity) getActivity()).getPlaylistInfoList();
         playlistInfoTemp = new ArrayList<>();
         for (int i = 0; i < playlistInfoList.size(); i++) {
             if (!playlistInfoList.get(i).getSongList().contains(songData)) {

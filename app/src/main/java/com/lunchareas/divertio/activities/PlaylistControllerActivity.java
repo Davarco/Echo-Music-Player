@@ -18,7 +18,7 @@ import com.lunchareas.divertio.adapters.SongAdapter;
 import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.models.SongData;
-import com.lunchareas.divertio.utils.PlaylistQueueManager;
+import com.lunchareas.divertio.utils.PlaylistQueueUtil;
 //https://www.youtube.com/watch?v=1UlRIbpYTwk
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +58,7 @@ public class PlaylistControllerActivity extends BaseActivity {
         // Songs in playlist
         songInfoList = new ArrayList<>();
         playlistView = (ListView) findViewById(R.id.song_list);
-        setSongListView();
+        setMainView();
 
         playlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -67,7 +67,7 @@ public class PlaylistControllerActivity extends BaseActivity {
                 Log.d(TAG, "Song: " + playlistData.getSongList().get(position).getSongName());
                 songCtrlButton.setBackgroundResource(R.drawable.pause_red);
                 sendMusicPauseIntent();
-                PlaylistQueueManager queueController = new PlaylistQueueManager(position, playlistData, PlaylistControllerActivity.this);
+                PlaylistQueueUtil queueController = new PlaylistQueueUtil(position, playlistData, PlaylistControllerActivity.this);
                 queueController.startQueue();
                 musicBound = true;
             }
@@ -144,7 +144,8 @@ public class PlaylistControllerActivity extends BaseActivity {
         }
     }
 
-    public void setSongListView() {
+    @Override
+    public void setMainView() {
         //cleanMusicFileDir();
         getSongsForActivity();
         SongAdapter songListAdapter = new SongAdapter(this, songInfoList);

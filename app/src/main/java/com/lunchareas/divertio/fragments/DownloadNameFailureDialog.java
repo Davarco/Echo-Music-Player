@@ -16,7 +16,6 @@ public class DownloadNameFailureDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         AlertDialog.Builder createNameFailureBuilder = new AlertDialog.Builder(getActivity());
         createNameFailureBuilder
                 .setMessage(R.string.download_name_failure_msg)

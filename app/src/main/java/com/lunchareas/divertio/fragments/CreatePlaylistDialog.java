@@ -17,6 +17,7 @@ import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.activities.BaseActivity;
 import com.lunchareas.divertio.activities.PlaylistActivity;
+import com.lunchareas.divertio.utils.PlaylistUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +34,13 @@ public class CreatePlaylistDialog extends DialogFragment {
     private EditText playlistNameInput;
     private String playlistName;
     private Activity activity;
+    private PlaylistUtil playlistUtil;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+        // Create the playlist util
+        playlistUtil = new PlaylistUtil(getActivity());
 
         // Get the list of songs to pick from
         activity = getActivity();
@@ -97,8 +102,15 @@ public class CreatePlaylistDialog extends DialogFragment {
                 // Get name from input
                 playlistNameInput = (EditText) createPlaylistView.findViewById(R.id.dialog_create_playlist_name);
                 playlistName = playlistNameInput.getText().toString().trim();
-                Log.d(TAG, "Playlist name: " + playlistName);
-                executePlaylistCreate();
+                if (!playlistUtil.nameAlreadyExists(playlistName)) {
+                    Log.d(TAG, "Playlist name: " + playlistName);
+                    executePlaylistCreate();
+                } else {
+
+                    // Create dialog because name is invalid
+                    Log.d(TAG, "Playlist name already exists.");
+                    ((PlaylistActivity) activity).createNameFailureDialog();
+                }
             }
         });
         nameDialogBuilder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
@@ -131,6 +143,6 @@ public class CreatePlaylistDialog extends DialogFragment {
             Log.e(TAG, "Playlist database update failure.", e);
         }
 
-        ((PlaylistActivity) activity).setPlaylistView();
+        ((BaseActivity) activity).setMainView();
     }
 }

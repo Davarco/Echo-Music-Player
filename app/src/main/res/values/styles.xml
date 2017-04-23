@@ -1,7 +1,7 @@
 <resources>
 
     <style name="Background" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/alt_wallpaper</item>
+        <item name="android:windowBackground">@drawable/wallpaper</item>
         <item name="android:windowNoTitle">true</item>
     </style>
 

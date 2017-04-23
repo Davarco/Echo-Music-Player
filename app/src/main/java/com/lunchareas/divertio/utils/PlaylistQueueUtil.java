@@ -12,20 +12,20 @@ import com.lunchareas.divertio.models.SongData;
 import java.util.Collections;
 import java.util.List;
 
-public class PlaylistQueueManager implements MusicConductor {
+public class PlaylistQueueUtil implements MusicConductor {
 
     /*
     TODO: Need to test if playlist manager is actually going through all the songs
      */
 
-    private static final String TAG = PlaylistQueueManager.class.getName();
+    private static final String TAG = PlaylistQueueUtil.class.getName();
 
     private int idx;
     private int firstPos;
     private Context context;
     private List<SongData> songList;
 
-    public PlaylistQueueManager(int firstPos, PlaylistData playlistData, Context context) {
+    public PlaylistQueueUtil(int firstPos, PlaylistData playlistData, Context context) {
         this.idx = 0;
         this.firstPos = firstPos;
         this.context = context;

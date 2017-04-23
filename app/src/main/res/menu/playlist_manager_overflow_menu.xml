@@ -8,7 +8,7 @@
         android:id="@+id/playlist_overflow_menu"
         android:orderInCategory="100"
         android:title=""
-        android:icon="@drawable/menu_toggle_icon_2"
+        android:icon="@drawable/overflow_icon"
         android:layout_height="28dp"
         android:layout_width="28dp"
         app:showAsAction="always">

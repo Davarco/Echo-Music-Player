@@ -153,6 +153,7 @@ public class PlayMusicService extends Service {
                         mp.prepare();
                         mp.start();
                         musicReset = false;
+                        musicUpdaterThread.start();
 
                         //musicUpdaterThread.start();
                         idx += 1;

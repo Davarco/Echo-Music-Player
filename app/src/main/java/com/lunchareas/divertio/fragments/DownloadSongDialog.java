@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.lunchareas.divertio.R;
+import com.lunchareas.divertio.activities.BaseActivity;
 import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.activities.MainActivity;
@@ -126,7 +127,7 @@ public class DownloadSongDialog extends DialogFragment {
     }
 
     private void replaceDialogWithFailure() {
-        ((MainActivity)getActivity()).createDownloadFailureDialog(this);
+        ((MainActivity) getActivity()).createDownloadFailureDialog(this);
     }
 
     private void executeDialogDownload() {
@@ -222,7 +223,7 @@ public class DownloadSongDialog extends DialogFragment {
                 long end = System.currentTimeMillis();
 
                 // Reset the song list view
-                ((MainActivity) getActivity()).setSongListView();
+                ((BaseActivity) getActivity()).setMainView();
 
                 // Print times
                 Log.d(TAG, "Total: " + Long.toString(end - start));

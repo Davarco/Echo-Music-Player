@@ -67,4 +67,20 @@ public class PlaylistUtil {
         PlaylistDBHandler db = new PlaylistDBHandler(context);
         db.deletePlaylistData(playlistData);
     }
+
+    public boolean nameAlreadyExists(String name) {
+
+        // Get playlists
+        PlaylistDBHandler db = new PlaylistDBHandler(context);
+        List<PlaylistData> playlistDataList = db.getPlaylistDataList();
+
+        // Search through playlists and see if name exists
+        for (PlaylistData playlistData: playlistDataList) {
+            if (name.equals(playlistData.getPlaylistName())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

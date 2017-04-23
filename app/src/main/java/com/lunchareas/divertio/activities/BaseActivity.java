@@ -97,7 +97,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
         playlistInfoList = dbPlaylist.getPlaylistDataList();
 
         // Setup toolbar
-        Toolbar mainBar = (Toolbar)findViewById(R.id.header_bar);
+        Toolbar mainBar = (Toolbar) findViewById(R.id.header_bar);
         setSupportActionBar(mainBar);
 
         // Set new font for title
@@ -272,8 +272,6 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
         this.startService(musicChangeIntent);
     }
 
-    protected abstract void setDisplay();
-
     // For broadcast managing from play music service
     @Override
     protected void onStart() {
@@ -291,13 +289,9 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
 
     // Overflow menu
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.playlist_overflow_menu, menu);
-        return true;
-    }
-
-    protected abstract void selectMenuItem(int position);
+    public abstract boolean onCreateOptionsMenu(Menu menu);
+    
+    public abstract void setMainView();
 
     public List<SongData> getSongInfoList() {
         return this.songInfoList;
@@ -306,4 +300,9 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
     public List<PlaylistData> getPlaylistInfoList() {
         return this.playlistInfoList;
     }
+
+    protected abstract void selectMenuItem(int position);
+
+    protected abstract void setDisplay();
+
 }

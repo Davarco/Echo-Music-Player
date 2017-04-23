@@ -34,7 +34,7 @@ public class AddSongsToPlaylistDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         // Get the playlist data
-        playlistData = ((PlaylistActivity) getActivity()).getPlaylistInfoList().get(position);
+        playlistData = ((BaseActivity) getActivity()).getPlaylistInfoList().get(position);
 
         // Get the list of songs to pick from
         songInfoList = ((BaseActivity) getActivity()).getSongInfoList();
@@ -76,7 +76,7 @@ public class AddSongsToPlaylistDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         addSongsToPlaylist();
-                        ((PlaylistActivity) getActivity()).setPlaylistView();
+                        ((BaseActivity) getActivity()).setMainView();
                     }
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {

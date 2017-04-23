@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -71,7 +72,7 @@ public class MainActivity extends BaseActivity {
         // Get song info and set the listview
         songInfoList = new ArrayList<>();
         songView = (ListView) findViewById(R.id.song_list);
-        setSongListView();
+        setMainView();
 
         // -1 because no song is playing
         final AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -98,14 +99,47 @@ public class MainActivity extends BaseActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d(TAG, "Detected LONG click on song.");
-                showSongChoiceMenu(view, i);
+                // Change to selected mode if needed
+                setSelectedMode();
                 return true;
             }
         });
     }
 
+    private void setSelectedMode() {
+
+        // Set new mode and add listener
+        songView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        songView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                return false;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+
+            }
+        });
+    }
+
     @SuppressLint("NewApi")
-    private void showSongChoiceMenu(View view, final int pos) {
+    public void showSongChoiceMenu(View view, final int pos) {
         final PopupMenu popupMenu = new PopupMenu(context, view, Gravity.END);
         final SongData selectedSong = songInfoList.get(pos);
 
@@ -132,7 +166,7 @@ public class MainActivity extends BaseActivity {
                         // Remove song from list and re-update view
                         SongUtil songController = new SongUtil(context);
                         songController.deleteSong(selectedSong);
-                        setSongListView();
+                        setMainView();
 
                         return true;
                     }
@@ -251,7 +285,8 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void setSongListView() {
+    @Override
+    public void setMainView() {
         //cleanMusicFileDir();
         getSongsForActivity(); 
         SongAdapter songListAdapter = new SongAdapter(this, songInfoList);

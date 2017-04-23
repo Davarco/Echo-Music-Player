@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.lunchareas.divertio.activities.BaseActivity;
 import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.R;
@@ -63,7 +64,7 @@ public class DeletePlaylistDialog extends DialogFragment {
                             PlaylistDBHandler db = new PlaylistDBHandler(getActivity());
                             db.deletePlaylistData(playlistData);
                         }
-                        ((PlaylistActivity)getActivity()).setPlaylistView();
+                        ((BaseActivity) getActivity()).setMainView();
                     }
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {

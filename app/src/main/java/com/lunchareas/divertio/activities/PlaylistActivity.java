@@ -17,13 +17,14 @@ import android.widget.PopupMenu;
 import com.lunchareas.divertio.fragments.AddSongsToPlaylistDialog;
 import com.lunchareas.divertio.fragments.ChangePlaylistTitleDialog;
 import com.lunchareas.divertio.fragments.CreatePlaylistDialog;
+import com.lunchareas.divertio.fragments.CreatePlaylistNameFailureDialog;
 import com.lunchareas.divertio.fragments.DeletePlaylistDialog;
 import com.lunchareas.divertio.adapters.PlaylistAdapter;
 import com.lunchareas.divertio.fragments.DeleteSongsFromPlaylistDialog;
 import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.R;
-import com.lunchareas.divertio.utils.PlaylistQueueManager;
+import com.lunchareas.divertio.utils.PlaylistQueueUtil;
 import com.lunchareas.divertio.utils.PlaylistUtil;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class PlaylistActivity extends BaseActivity {
         // Create playlist
         playlistInfoList = new ArrayList<>();
         playlistView = (ListView) findViewById(R.id.playlist_list);
-        setPlaylistView();
+        setMainView();
 
         // Current position is -1 because no playlist is playing
         currentPosition = -1;
@@ -105,7 +106,7 @@ public class PlaylistActivity extends BaseActivity {
                         // Create popup for remove playlist title
                         PlaylistUtil playlistUtil = new PlaylistUtil(context);
                         playlistUtil.deletePlaylist(playlistData);
-                        setPlaylistView();
+                        setMainView();
 
                         return true;
                     }
@@ -140,7 +141,7 @@ public class PlaylistActivity extends BaseActivity {
                         int firstSong = (int)(Math.random()*playlistData.getSongList().size());
 
                         // Create queue controller to run
-                        PlaylistQueueManager queueManager = new PlaylistQueueManager(firstSong, playlistData, context);
+                        PlaylistQueueUtil queueManager = new PlaylistQueueUtil(firstSong, playlistData, context);
                         queueManager.startQueue();
                         songCtrlButton.setBackgroundResource(R.drawable.pause_red);
                     }
@@ -155,6 +156,11 @@ public class PlaylistActivity extends BaseActivity {
         MenuInflater inflater = popupMenu.getMenuInflater();
         inflater.inflate(R.menu.playlist_choice_menu, popupMenu.getMenu());
         popupMenu.show();
+    }
+
+    public void createNameFailureDialog() {
+        DialogFragment dialogFragment = new CreatePlaylistNameFailureDialog();
+        dialogFragment.show(getSupportFragmentManager(), "CreatePlaylistNameFailure");
     }
 
     @Override
@@ -224,7 +230,8 @@ public class PlaylistActivity extends BaseActivity {
         }
     }
 
-    public void setPlaylistView() {
+    @Override
+    public void setMainView() {
         getPlaylistsForActivity();
         PlaylistAdapter playlistAdapter = new PlaylistAdapter(this, playlistInfoList);
         playlistView.setAdapter(playlistAdapter);
