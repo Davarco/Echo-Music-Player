@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.*;
 import android.content.*;
 
+import com.lunchareas.divertio.adapters.SongSelectionAdapter;
 import com.lunchareas.divertio.fragments.AddToPlaylistDialog;
 import com.lunchareas.divertio.fragments.ChangeSongArtistDialog;
 import com.lunchareas.divertio.fragments.ChangeSongTitleDialog;
@@ -47,6 +48,7 @@ public class MainActivity extends BaseActivity {
     private int currentPosition;
     private List<SongData> songInfoList;
     private ListView songView;
+    private SongSelectionAdapter selectionAdapter;
 
     public MainActivity() {
         super(R.layout.activity_main);
@@ -68,6 +70,12 @@ public class MainActivity extends BaseActivity {
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
             }
         }
+
+        // Create the selection adapter
+        if (songInfoList == null) {
+            Log.d(TAG, "No song list found yet.");
+        }
+        selectionAdapter = new SongSelectionAdapter(context, R.layout.song_layout, songInfoList);
 
         // Get song info and set the listview
         songInfoList = new ArrayList<>();
@@ -107,6 +115,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setSelectedMode() {
+
+        // Set new adapter
+        songView.setAdapter(selectionAdapter);
 
         // Set new mode and add listener
         songView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
