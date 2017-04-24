@@ -27,7 +27,6 @@ public class SongSelectionAdapter extends ArrayAdapter<SongData> {
     private LayoutInflater songListInflater;
     private Context activity;
     private HashMap<Integer, Boolean> selectedSongs;
-    private RelativeLayout songListLayout;
 
     public SongSelectionAdapter(Activity activity, int resourceId, List<SongData> songList) {
         super(activity, resourceId, songList);
@@ -42,11 +41,13 @@ public class SongSelectionAdapter extends ArrayAdapter<SongData> {
 
         // Base color on selection
         boolean selected = selectedSongs.containsKey(position);
+        RelativeLayout songLayout;
         if (selected) {
-            songListLayout = (RelativeLayout) songListInflater.inflate(R.layout.song_selected_layout, parentView, false);
+            songLayout = (RelativeLayout) songListInflater.inflate(R.layout.song_selected_layout, parentView, false);
         } else {
-            songListLayout = (RelativeLayout) songListInflater.inflate(R.layout.song_layout, parentView, false);
+            songLayout = (RelativeLayout) songListInflater.inflate(R.layout.song_layout, parentView, false);
         }
+        final RelativeLayout songListLayout = songLayout;
 
         // Get the parts of a song layout
         ImageView songItemIcon = (ImageView) songListLayout.findViewById(R.id.song_icon);

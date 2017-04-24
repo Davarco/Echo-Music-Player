@@ -5,7 +5,8 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="64dp"
-    android:background="@color/black">
+    android:background="@color/blue"
+    android:alpha="0.7">
 
     <ImageView
         android:id="@+id/song_icon"
