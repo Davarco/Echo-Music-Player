@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content">
+    <item
+        android:id="@+id/song_selection_menu"
+        android:orderInCategory="100"
+        android:title=""
+        android:icon="@drawable/overflow_icon_black"
+        android:layout_height="28dp"
+        android:layout_width="28dp"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/song_selection_delete"
+                android:title="@string/song_selection_delete_title"/>
+            <item
+                android:id="@+id/song_selection_create_playlist"
+                android:title="@string/song_selection_create_playlist_title"/>
+            <item
+                android:id="@+id/song_selection_reset"
+                android:title="@string/song_selection_reset_title"/>
+        </menu>
+    </item>
+</menu>

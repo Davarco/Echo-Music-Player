@@ -37,7 +37,6 @@ public class PlaylistActivity extends BaseActivity {
     public static final String PLAYLIST_NAME = "playlist_name";
 
     private int currentPosition;
-    private List<PlaylistData> playlistInfoList;
     private ListView playlistView;
 
     public PlaylistActivity() {
@@ -50,7 +49,6 @@ public class PlaylistActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         // Create playlist
-        playlistInfoList = new ArrayList<>();
         playlistView = (ListView) findViewById(R.id.playlist_list);
         setMainView();
 
@@ -232,19 +230,13 @@ public class PlaylistActivity extends BaseActivity {
 
     @Override
     public void setMainView() {
-        getPlaylistsForActivity();
+        Log.d(TAG, "Setting main view.");
+        updatePlaylistInfoList();
         PlaylistAdapter playlistAdapter = new PlaylistAdapter(this, playlistInfoList);
         playlistView.setAdapter(playlistAdapter);
     }
 
     public List<PlaylistData> getPlaylistInfoList() {
         return this.playlistInfoList;
-    }
-
-    public void getPlaylistsForActivity() {
-
-        // Get database and playlist
-        PlaylistDBHandler db = new PlaylistDBHandler(this);
-        playlistInfoList = db.getPlaylistDataList();
     }
 }

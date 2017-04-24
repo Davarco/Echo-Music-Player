@@ -56,6 +56,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
     protected DrawerLayout menuDrawer;
     protected ListView menuList;
 
+    protected Toolbar mainBar;
     protected BroadcastReceiver songBroadcastReceiver;
     protected SeekBar songProgressManager;
     protected ImageButton songCtrlButton;
@@ -97,7 +98,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
         playlistInfoList = dbPlaylist.getPlaylistDataList();
 
         // Setup toolbar
-        Toolbar mainBar = (Toolbar) findViewById(R.id.header_bar);
+        mainBar = (Toolbar) findViewById(R.id.header_bar);
         setSupportActionBar(mainBar);
 
         // Set new font for title
@@ -299,6 +300,16 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
 
     public List<PlaylistData> getPlaylistInfoList() {
         return this.playlistInfoList;
+    }
+
+    public void updateSongInfoList() {
+        SongDBHandler db = new SongDBHandler(getApplicationContext());
+        this.songInfoList = db.getSongDataList();
+    }
+
+    public void updatePlaylistInfoList() {
+        PlaylistDBHandler db = new PlaylistDBHandler(getApplicationContext());
+        this.playlistInfoList = db.getPlaylistDataList();
     }
 
     protected abstract void selectMenuItem(int position);

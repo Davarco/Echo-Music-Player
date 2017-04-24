@@ -46,7 +46,6 @@ public class MainActivity extends BaseActivity {
     public static final String MUSIC_DIR_NAME = "Divertio";
 
     private int currentPosition;
-    private List<SongData> songInfoList;
     private ListView songView;
     private SongSelectionAdapter selectionAdapter;
 
@@ -71,16 +70,15 @@ public class MainActivity extends BaseActivity {
             }
         }
 
+        // Get song info and set the listview
+        songView = (ListView) findViewById(R.id.song_list);
+        setMainView();
+
         // Create the selection adapter
         if (songInfoList == null) {
             Log.d(TAG, "No song list found yet.");
         }
-        selectionAdapter = new SongSelectionAdapter(context, R.layout.song_layout, songInfoList);
-
-        // Get song info and set the listview
-        songInfoList = new ArrayList<>();
-        songView = (ListView) findViewById(R.id.song_list);
-        setMainView();
+        selectionAdapter = new SongSelectionAdapter(this, R.layout.song_layout, songInfoList);
 
         // -1 because no song is playing
         final AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -103,48 +101,50 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        songView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d(TAG, "Detected LONG click on song.");
-                // Change to selected mode if needed
-                setSelectedMode();
-                return true;
-            }
-        });
-    }
-
-    private void setSelectedMode() {
-
-        // Set new adapter
-        songView.setAdapter(selectionAdapter);
-
         // Set new mode and add listener
         songView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         songView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-
+                // Change the title to num of clicked items
+                Log.d(TAG, "Song item checked state changed.");
+                int numChecked = songView.getCheckedItemCount();
+                mode.setTitle(numChecked + " Selected");
+                selectionAdapter.toggleSelection(position);
             }
 
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                return false;
+                // Create the menu for the overflow
+                Log.d(TAG, "Creating song action mode.");
+                MenuInflater inflater = getMenuInflater();
+                inflater.inflate(R.menu.song_selection_menu, menu);
+                return true;
             }
 
             @Override
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                return false;
+                // Set colored and hide bar
+                Log.d(TAG, "Preparing song action mode.");
+                songView.setAdapter(selectionAdapter);
+                getSupportActionBar().hide();
+                return true;
             }
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                Log.d(TAG, "Song action item clicked.");
+                switch (item.getItemId()) {
+
+                }
                 return false;
             }
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-
+                Log.d(TAG, "Song action mode destroyed.");
+                selectionAdapter.resetSelection();
+                getSupportActionBar().show();
             }
         });
     }
@@ -298,17 +298,10 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void setMainView() {
-        //cleanMusicFileDir();
-        getSongsForActivity(); 
+        Log.d(TAG, "Setting main view.");
+        updateSongInfoList();
         SongAdapter songListAdapter = new SongAdapter(this, songInfoList);
         songView.setAdapter(songListAdapter);
-    }
-
-    public void getSongsForActivity() {
-
-        // Get database and song list
-        SongDBHandler db = new SongDBHandler(this);
-        songInfoList = db.getSongDataList();
     }
 
     // Not going to use for now, but could be useful later on

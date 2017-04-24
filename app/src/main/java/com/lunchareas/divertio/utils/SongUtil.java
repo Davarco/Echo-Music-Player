@@ -66,7 +66,7 @@ public class SongUtil {
             List<SongData> songList = playlistDataList.get(i).getSongList();
             for (int j = 0; j < songList.size(); j++) {
                 if (songList.get(j).equals(songData)) {
-                    System.out.println("Removing song no " + Integer.toString(j+1));
+                    Log.d(TAG," Removing song no " + Integer.toString(j+1));
                     songList.remove(j);
                 }
             }

@@ -2,16 +2,13 @@
 
     <style name="Background" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/wallpaper</item>
-        <item name="android:windowNoTitle">true</item>
     </style>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorAccent">@color/blue</item>
         <item name="android:textColorSecondary">@color/white</item>
     </style>
 

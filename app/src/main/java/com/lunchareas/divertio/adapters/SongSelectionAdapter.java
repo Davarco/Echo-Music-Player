@@ -4,12 +4,10 @@ package com.lunchareas.divertio.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,7 +16,7 @@ import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.MainActivity;
 import com.lunchareas.divertio.models.SongData;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class SongSelectionAdapter extends ArrayAdapter<SongData> {
@@ -27,23 +25,32 @@ public class SongSelectionAdapter extends ArrayAdapter<SongData> {
 
     private List<SongData> songDataList;
     private LayoutInflater songListInflater;
-    private Context context;
-    private SparseBooleanArray selectedSongs;
+    private Context activity;
+    private HashMap<Integer, Boolean> selectedSongs;
+    private RelativeLayout songListLayout;
 
-    public SongSelectionAdapter(Context context, int resourceId, List<SongData> songList) {
-        super(context, resourceId, songList);
+    public SongSelectionAdapter(Activity activity, int resourceId, List<SongData> songList) {
+        super(activity, resourceId, songList);
         this.songDataList = songList;
-        this.songListInflater = LayoutInflater.from(context);
-        this.context = context;
-        this.selectedSongs = new SparseBooleanArray();
+        this.songListInflater = LayoutInflater.from(activity);
+        this.activity = activity;
+        this.selectedSongs = new HashMap<>();
     }
 
     @Override
-    public View getView(final int position, final View convertView, ViewGroup parentView) {
-        final RelativeLayout songListLayout = (RelativeLayout) songListInflater.inflate(R.layout.song_selected_layout, parentView, false);
+    public View getView(final int position, View convertView, ViewGroup parentView) {
+
+        // Base color on selection
+        boolean selected = selectedSongs.containsKey(position);
+        if (selected) {
+            songListLayout = (RelativeLayout) songListInflater.inflate(R.layout.song_selected_layout, parentView, false);
+        } else {
+            songListLayout = (RelativeLayout) songListInflater.inflate(R.layout.song_layout, parentView, false);
+        }
 
         // Get the parts of a song layout
         ImageView songItemIcon = (ImageView) songListLayout.findViewById(R.id.song_icon);
+        ImageView songOverflowIcon = (ImageView) songListLayout.findViewById(R.id.song_overflow);
         TextView songItemName = (TextView) songListLayout.findViewById(R.id.song_name);
         TextView songItemArtist = (TextView) songListLayout.findViewById(R.id.song_composer);
 
@@ -56,6 +63,17 @@ public class SongSelectionAdapter extends ArrayAdapter<SongData> {
         // Assertions
         //Log.d(TAG, "Song Name: " + songItem.getSongName());
         //Log.d(TAG, "Song Artist: " + songItem.getSongArtist());
+
+        // Set listener if not selected
+        if (!selected) {
+            // Set on click listener for overflow
+            songOverflowIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((MainActivity) activity).showSongChoiceMenu(songListLayout, position);
+                }
+            });
+        }
 
         // Set position as tag
         songListLayout.setTag(position);
@@ -70,11 +88,11 @@ public class SongSelectionAdapter extends ArrayAdapter<SongData> {
 
     public void toggleSelection(int pos) {
         // !contains returns false if it already exists
-        selectSong(pos, !selectedSongs.get(pos));
+        selectSong(pos, !selectedSongs.containsKey(pos));
     }
 
-    public void removeSelection() {
-        selectedSongs = new SparseBooleanArray();
+    public void resetSelection() {
+        selectedSongs = new HashMap<>();
         notifyDataSetChanged();
     }
 
@@ -83,18 +101,17 @@ public class SongSelectionAdapter extends ArrayAdapter<SongData> {
         if (checked) {
             selectedSongs.put(pos, checked);
         } else {
-            selectedSongs.delete(pos);
+            selectedSongs.remove(pos);
         }
         notifyDataSetChanged();
     }
 
-    @Override
-    public int getCount() {
+    public int getSongCount() {
         Log.d(TAG, Integer.toString(selectedSongs.size()));
         return selectedSongs.size();
     }
 
-    public SparseBooleanArray getSelectedSongs() {
+    public HashMap<Integer, Boolean> getSelectedSongs() {
         return selectedSongs;
     }
 }
