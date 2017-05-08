@@ -20,6 +20,9 @@
                 android:id="@+id/song_selection_create_playlist"
                 android:title="@string/song_selection_create_playlist_title"/>
             <item
+                android:id="@+id/song_selection_add_to"
+                android:title="@string/song_selection_add_to_playlist_title"/>
+            <item
                 android:id="@+id/song_selection_reset"
                 android:title="@string/song_selection_reset_title"/>
         </menu>

@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.ActionMode;
 import android.view.Gravity;
 import android.view.Menu;
@@ -24,6 +25,8 @@ import com.lunchareas.divertio.adapters.SongSelectionAdapter;
 import com.lunchareas.divertio.fragments.AddToPlaylistDialog;
 import com.lunchareas.divertio.fragments.ChangeSongArtistDialog;
 import com.lunchareas.divertio.fragments.ChangeSongTitleDialog;
+import com.lunchareas.divertio.fragments.CreatePlaylistDialog;
+import com.lunchareas.divertio.fragments.CreatePlaylistFromSongsDialog;
 import com.lunchareas.divertio.fragments.DeleteSongDialog;
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.adapters.SongAdapter;
@@ -32,6 +35,7 @@ import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.fragments.DownloadSongDialog;
 import com.lunchareas.divertio.fragments.DownloadConnectionFailureDialog;
+import com.lunchareas.divertio.utils.PlaylistUtil;
 import com.lunchareas.divertio.utils.SongUtil;
 
 import java.io.File;
@@ -78,7 +82,6 @@ public class MainActivity extends BaseActivity {
         if (songInfoList == null) {
             Log.d(TAG, "No song list found yet.");
         }
-        selectionAdapter = new SongSelectionAdapter(this, R.layout.song_layout, songInfoList);
 
         // -1 because no song is playing
         final AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -103,7 +106,7 @@ public class MainActivity extends BaseActivity {
 
         // Set new mode and add listener
         songView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        songView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+        songView.setMultiChoiceModeListener(new ListView.MultiChoiceModeListener() {
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
                 // Change the title to num of clicked items
@@ -126,6 +129,7 @@ public class MainActivity extends BaseActivity {
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
                 // Set colored and hide bar
                 Log.d(TAG, "Preparing song action mode.");
+                resetAdapter();
                 songView.setAdapter(selectionAdapter);
                 getSupportActionBar().hide();
                 return true;
@@ -135,7 +139,44 @@ public class MainActivity extends BaseActivity {
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 Log.d(TAG, "Song action item clicked.");
                 switch (item.getItemId()) {
-
+                    case R.id.song_selection_delete: {
+                        // Delete the selected songs
+                        Log.d(TAG, "Deleting these songs!");
+                        songUtil = new SongUtil(context);
+                        songUtil.deleteSongList(getSongsFromIndexes(selectionAdapter.getSelectedSongs()));
+                        setMainView();
+                        mode.finish();
+                        return true;
+                    }
+                    case R.id.song_selection_create_playlist: {
+                        // Create a playlist with the songs
+                        Log.d(TAG, "Creating a playlist.");
+                        DialogFragment createPlaylistDialog = new CreatePlaylistFromSongsDialog();
+                        Bundle bundle = new Bundle();
+                        bundle.putIntegerArrayList(CreatePlaylistFromSongsDialog.MUSIC_LIST, (ArrayList<Integer>) selectionAdapter.getSelectedSongs());
+                        createPlaylistDialog.setArguments(bundle);
+                        createPlaylistDialog.show(getSupportFragmentManager(), "CreatePlaylistFromSongs");
+                        mode.finish();
+                        return true;
+                    }
+                    case R.id.song_selection_add_to: {
+                        // Add songs to playlists
+                        Log.d(TAG, "Adding these songs to a playlist!");
+                        DialogFragment addToPlaylistDialog = new AddToPlaylistDialog();
+                        Bundle bundle = new Bundle();
+                        bundle.putIntegerArrayList(AddToPlaylistDialog.MUSIC_LIST, (ArrayList<Integer>) selectionAdapter.getSelectedSongs());
+                        addToPlaylistDialog.setArguments(bundle);
+                        addToPlaylistDialog.show(getSupportFragmentManager(), "AddToPlaylists");
+                        mode.finish();
+                        return true;
+                    }
+                    case R.id.song_selection_reset: {
+                        // Reset song selections
+                        Log.d(TAG, "Resetting selections!");
+                        resetAdapter();
+                        selectionAdapter.resetSelection();
+                        return true;
+                    }
                 }
                 return false;
             }
@@ -315,5 +356,9 @@ public class MainActivity extends BaseActivity {
         }
         Log.d(TAG, "Service is not running.");
         return false;
+    }
+
+    private void resetAdapter() {
+        selectionAdapter = new SongSelectionAdapter(this, R.layout.song_layout, songInfoList);
     }
 }

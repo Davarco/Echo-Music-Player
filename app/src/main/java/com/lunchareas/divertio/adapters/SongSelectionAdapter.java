@@ -16,6 +16,7 @@ import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.MainActivity;
 import com.lunchareas.divertio.models.SongData;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,21 +27,21 @@ public class SongSelectionAdapter extends ArrayAdapter<SongData> {
     private List<SongData> songDataList;
     private LayoutInflater songListInflater;
     private Context activity;
-    private HashMap<Integer, Boolean> selectedSongs;
+    private List<Integer> selectedSongs;
 
     public SongSelectionAdapter(Activity activity, int resourceId, List<SongData> songList) {
         super(activity, resourceId, songList);
         this.songDataList = songList;
         this.songListInflater = LayoutInflater.from(activity);
         this.activity = activity;
-        this.selectedSongs = new HashMap<>();
+        this.selectedSongs = new ArrayList<>();
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parentView) {
 
         // Base color on selection
-        boolean selected = selectedSongs.containsKey(position);
+        boolean selected = selectedSongs.contains(position);
         RelativeLayout songLayout;
         if (selected) {
             songLayout = (RelativeLayout) songListInflater.inflate(R.layout.song_selected_layout, parentView, false);
@@ -89,18 +90,18 @@ public class SongSelectionAdapter extends ArrayAdapter<SongData> {
 
     public void toggleSelection(int pos) {
         // !contains returns false if it already exists
-        selectSong(pos, !selectedSongs.containsKey(pos));
+        selectSong(pos, !selectedSongs.contains(pos));
     }
 
     public void resetSelection() {
-        selectedSongs = new HashMap<>();
+        selectedSongs = new ArrayList<>();
         notifyDataSetChanged();
     }
 
     public void selectSong(Integer pos, boolean checked) {
         // Add if checked, remove if not checked
         if (checked) {
-            selectedSongs.put(pos, checked);
+            selectedSongs.add(pos);
         } else {
             selectedSongs.remove(pos);
         }
@@ -112,7 +113,7 @@ public class SongSelectionAdapter extends ArrayAdapter<SongData> {
         return selectedSongs.size();
     }
 
-    public HashMap<Integer, Boolean> getSelectedSongs() {
+    public List<Integer> getSelectedSongs() {
         return selectedSongs;
     }
 }

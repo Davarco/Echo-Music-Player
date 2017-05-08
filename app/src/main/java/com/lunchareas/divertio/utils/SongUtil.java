@@ -25,23 +25,33 @@ public class SongUtil {
     public void changeSongName(SongData songData, String newTitle) {
 
         // Create new song data with title
-        SongData newSongData = new SongData(newTitle, songData.getSongPath(), songData.getSongArtist());
-        Log.d(TAG, "Changing title from " + songData.getSongName() + " to " + newTitle);
+        String prevName = songData.getSongName();
+        songData.setSongName(newTitle);
+        Log.d(TAG, "Changing title from " + prevName + " to " + newTitle);
 
         // Update the song data
         SongDBHandler db = new SongDBHandler(context);
-        db.updateSongData(newSongData, songData.getSongName());
+        db.updateSongData(songData, prevName);
     }
 
     public void changeSongArtist(SongData songData, String newArtist) {
 
         // Create new song data with artist
-        SongData newSongData = new SongData(songData.getSongName(), songData.getSongPath(), newArtist);
-        Log.d(TAG, "Changing title from " + songData.getSongArtist() + " to " + newArtist);
+        String prevArtist = songData.getSongArtist();
+        songData.setSongArtist(newArtist);
+        Log.d(TAG, "Changing title from " + prevArtist + " to " + newArtist);
 
         // Update the song data
         SongDBHandler db = new SongDBHandler(context);
-        db.updateSongData(newSongData);
+        db.updateSongData(songData);
+    }
+
+    public void deleteSongList(List<SongData> songList) {
+
+        // Call delete song on all of them
+        for (SongData songData: songList) {
+            deleteSong(songData);
+        }
     }
 
     public void deleteSong(SongData songData) {

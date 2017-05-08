@@ -24,9 +24,13 @@ public class AddToPlaylistDialog extends DialogFragment {
 
     private static final String TAG = AddToPlaylistDialog.class.getName();
 
+    private static final int NOT_FOUND = -1;
+
     public static final String MUSIC_POS = "music_pos";
+    public static final String MUSIC_LIST = "music_list";
 
     private int position;
+    private List<Integer> songPosList;
     private List<PlaylistData> playlistInfoList;
     private List<String> playlistInfoTemp;
     private List<Integer> selectedPlaylists;
@@ -34,9 +38,6 @@ public class AddToPlaylistDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-        // Get the song data
-        songData = ((BaseActivity) getActivity()).getSongInfoList().get(position);
 
         // Get the list of playlists to pick from
         playlistInfoList = ((BaseActivity) getActivity()).getPlaylistInfoList();
@@ -55,8 +56,20 @@ public class AddToPlaylistDialog extends DialogFragment {
         selectedPlaylists = new ArrayList<>();
 
         // Get correct position
-        position = (int) getArguments().get(MUSIC_POS);
-        Log.d(TAG, "Position: " + position);
+        if (getArguments().containsKey(MUSIC_POS)) {
+            position = (int) getArguments().get(MUSIC_POS);
+            Log.d(TAG, "Position: " + position);
+        } else {
+            position = NOT_FOUND;
+        }
+
+        // Or get the list of songs
+        if (getArguments().containsKey(MUSIC_LIST)) {
+            songPosList = (List<Integer>) getArguments().get(MUSIC_LIST);
+        } else {
+            songPosList = null;
+            Log.d(TAG, "Song list passed was null.");
+        }
 
         AlertDialog.Builder addSongDialogBuilder = new AlertDialog.Builder(getActivity());
         addSongDialogBuilder
@@ -91,14 +104,36 @@ public class AddToPlaylistDialog extends DialogFragment {
 
     private void addToPlaylists() {
 
-        // Get the song
-        songData = ((BaseActivity) getActivity()).getSongInfoList().get(position);
+        // Get the song list
+        List<SongData> baseSongList = ((BaseActivity) getActivity()).getSongInfoList();
 
-        // Add song to playlists
-        PlaylistUtil playlistUtil = new PlaylistUtil(getActivity());
-        for (Integer idx: selectedPlaylists) {
-            PlaylistData playlistData = playlistInfoList.get(idx);
-            playlistUtil.addSongToPlaylist(songData, playlistData);
+        // Position exists
+        if (position != NOT_FOUND) {
+            songData = baseSongList.get(position);
+
+            // Add song to playlists
+            PlaylistUtil playlistUtil = new PlaylistUtil(getActivity());
+            for (Integer idx : selectedPlaylists) {
+                PlaylistData playlistData = playlistInfoList.get(idx);
+                playlistUtil.addSongToPlaylist(songData, playlistData);
+            }
+        }
+
+        // Song list exists
+        if (songPosList != null) {
+            List<SongData> songList = new ArrayList<>();
+            for (Integer integer: songPosList) {
+                songList.add(baseSongList.get(integer));
+            }
+
+            // Add list of songs
+            PlaylistUtil playlistUtil = new PlaylistUtil(getActivity());
+            for (Integer idx : selectedPlaylists) {
+                Log.d(TAG, "Adding songs to playlist " + playlistInfoList.get(idx).getPlaylistName());
+                PlaylistData playlistData = playlistInfoList.get(idx);
+                playlistUtil.addSongsToPlaylist(songList, playlistData);
+                playlistUtil.removeDuplicateSongs(playlistData);
+            }
         }
     }
 }

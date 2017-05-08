@@ -102,7 +102,7 @@ public class PlaylistActivity extends BaseActivity {
                         Log.d(TAG, "Deleting playlist.");
 
                         // Create popup for remove playlist title
-                        PlaylistUtil playlistUtil = new PlaylistUtil(context);
+                        playlistUtil = new PlaylistUtil(context);
                         playlistUtil.deletePlaylist(playlistData);
                         setMainView();
 
@@ -154,11 +154,6 @@ public class PlaylistActivity extends BaseActivity {
         MenuInflater inflater = popupMenu.getMenuInflater();
         inflater.inflate(R.menu.playlist_choice_menu, popupMenu.getMenu());
         popupMenu.show();
-    }
-
-    public void createNameFailureDialog() {
-        DialogFragment dialogFragment = new CreatePlaylistNameFailureDialog();
-        dialogFragment.show(getSupportFragmentManager(), "CreatePlaylistNameFailure");
     }
 
     @Override

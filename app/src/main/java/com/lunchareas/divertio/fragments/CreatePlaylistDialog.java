@@ -109,7 +109,7 @@ public class CreatePlaylistDialog extends DialogFragment {
 
                     // Create dialog because name is invalid
                     Log.d(TAG, "Playlist name already exists.");
-                    ((PlaylistActivity) activity).createNameFailureDialog();
+                    ((PlaylistActivity) activity).createPlaylistNameFailureDialog();
                 }
             }
         });

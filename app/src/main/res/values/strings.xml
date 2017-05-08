@@ -33,6 +33,7 @@
     <!-- Song selection menu strings -->
     <string name="song_selection_delete_title">Delete</string>
     <string name="song_selection_create_playlist_title">Create Playlist</string>
+    <string name="song_selection_add_to_playlist_title">Add to Playlist</string>
     <string name="song_selection_reset_title">Reset Selections</string>
 
     <!-- Playlist modifier menu strings -->

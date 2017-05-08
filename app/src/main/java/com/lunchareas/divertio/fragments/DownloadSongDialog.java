@@ -29,10 +29,13 @@ import com.lunchareas.divertio.utils.SongUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DownloadSongDialog extends DialogFragment {
 
@@ -156,6 +159,43 @@ public class DownloadSongDialog extends DialogFragment {
                 long input = System.currentTimeMillis();
 
                 // Using advanced api to get link line
+                /*
+                try {
+                    String downloadInfoLink = "https://www.yt2mp3s.me/api-console/mp3/" + getYoutubeId(userLink);
+                    Log.d(TAG, "The link is: " + downloadInfoLink);
+
+                    // Use jsoup to find the download link
+                    Document doc = Jsoup
+                            .connect(downloadInfoLink)
+                            .header("Accept-Encoding", "gzip, deflate")
+                            .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
+                            .maxBodySize(0)
+                            .timeout(6000)
+                            .get();
+                    if (doc == null) {
+                        Log.d(TAG, "The doc is empty.");
+                    } else {
+                        Log.d(TAG, "The doc is not empty.");
+                    }
+                    Elements musicLinkElements = doc.getElementsByClass("q320");
+                    while (musicLinkElements.size() == 0) {
+                        doc = Jsoup
+                                .connect(downloadInfoLink)
+                                .header("Accept-Encoding", "gzip, deflate")
+                                .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
+                                .maxBodySize(0)
+                                .timeout(6000)
+                                .get();
+                        musicLinkElements = doc.getElementsByClass("q320");
+                        Thread.sleep(200);
+                    }
+                    downloadMusicLink = musicLinkElements.get(0).attr("href");
+                    Log.d(TAG, "Final Download Link: " + downloadMusicLink);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                */
                 try {
                     String downloadInfoLink = "https://www.youtubeinmp3.com/download/?video=" + userLink;
                     Log.d(TAG, "The link is: " + downloadInfoLink);
@@ -242,5 +282,18 @@ public class DownloadSongDialog extends DialogFragment {
             Log.d(TAG, "Could not connect to website?");
             replaceDialogWithFailure();
         }
+    }
+
+    private String getYoutubeId(String link) {
+        String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
+
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(link);
+        if (matcher.find()) {
+            return matcher.group();
+        }
+
+        Log.d(TAG, "Failed to get ID.");
+        return null;
     }
 }

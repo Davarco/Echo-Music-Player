@@ -10,6 +10,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -28,13 +29,17 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.lunchareas.divertio.fragments.CreatePlaylistNameFailureDialog;
 import com.lunchareas.divertio.interfaces.MusicConductor;
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
+import com.lunchareas.divertio.utils.PlaylistUtil;
+import com.lunchareas.divertio.utils.SongUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -48,6 +53,9 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
     protected AudioManager am;
     protected List<SongData> songInfoList;
     protected List<PlaylistData> playlistInfoList;
+
+    protected SongUtil songUtil;
+    protected PlaylistUtil playlistUtil;
 
     protected boolean drawerOpen;
     protected String[] menuItemArr;
@@ -92,6 +100,10 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
 
         // Get context
         context = getApplicationContext();
+
+        // Create utils
+        songUtil = new SongUtil(context);
+        playlistUtil = new PlaylistUtil(context);
 
         // Get all playlists
         PlaylistDBHandler dbPlaylist = new PlaylistDBHandler(this);
@@ -316,4 +328,26 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
 
     protected abstract void setDisplay();
 
+    public void createPlaylistNameFailureDialog() {
+        DialogFragment dialogFragment = new CreatePlaylistNameFailureDialog();
+        dialogFragment.show(getSupportFragmentManager(), "CreatePlaylistNameFailure");
+    }
+
+    public List<SongData> getSongsFromIndexes(List<Integer> songIdxList) {
+        List<SongData> songList = new ArrayList<>();
+        for (Integer integer: songIdxList) {
+            songList.add(songInfoList.get(integer));
+        }
+
+        return songList;
+    }
+
+    public List<PlaylistData> getPlaylistsFromIndexes(List<Integer> playlistIdxList) {
+        List<PlaylistData> playlistList = new ArrayList<>();
+        for (Integer integer: playlistIdxList) {
+            playlistList.add(playlistInfoList.get(integer));
+        }
+
+        return playlistList;
+    }
 }

@@ -8,6 +8,7 @@ import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.models.SongData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlaylistUtil {
@@ -18,6 +19,20 @@ public class PlaylistUtil {
 
     public PlaylistUtil(Context context) {
         this.context = context;
+    }
+
+    public void createPlaylist(PlaylistData playlistData) {
+
+        // Create the handler and update
+        PlaylistDBHandler db = new PlaylistDBHandler(context);
+        db.addPlaylistData(playlistData);
+    }
+
+    public void createPlaylist(String name, List<SongData> songList) {
+
+        // Create the handler and update
+        PlaylistDBHandler db = new PlaylistDBHandler(context);
+        db.addPlaylistData(new PlaylistData(name, songList));
     }
 
     public void addSongToPlaylist(SongData songData, PlaylistData playlistData) {
@@ -53,12 +68,13 @@ public class PlaylistUtil {
     public void changePlaylistName(PlaylistData playlistData, String newTitle) {
 
         // Create new playlist data
-        PlaylistData newPlaylistData = new PlaylistData(newTitle, playlistData.getSongList());
-        Log.d(TAG, "Changing title from " + playlistData.getPlaylistName() + " to " + newTitle);
+        String prevTitle = playlistData.getPlaylistName();
+        playlistData.setPlaylistName(newTitle);
+        Log.d(TAG, "Changing title from " + prevTitle + " to " + newTitle);
 
         // Update the playlist data
         PlaylistDBHandler db = new PlaylistDBHandler(context);
-        db.updatePlaylistData(newPlaylistData, playlistData.getPlaylistName());
+        db.updatePlaylistData(playlistData, prevTitle);
     }
 
     public void deletePlaylist(PlaylistData playlistData) {
@@ -66,6 +82,28 @@ public class PlaylistUtil {
         // Delete the playlist
         PlaylistDBHandler db = new PlaylistDBHandler(context);
         db.deletePlaylistData(playlistData);
+    }
+
+    public void removeDuplicateSongs(PlaylistData playlistData) {
+
+        // Get the playlist
+        PlaylistDBHandler db = new PlaylistDBHandler(context);
+        List<SongData> songList = new ArrayList<>();
+        List<SongData> prevList = playlistData.getSongList();
+
+        // Add non-duplicates
+        for (SongData songData: prevList) {
+            if (!songList.contains(songData)) {
+                songList.add(songData);
+            }
+        }
+
+        // Debug number of duplicates
+        Log.d(TAG, "There were " + Integer.toString(prevList.size()-songList.size()) + " duplicates in the playlist.");
+
+        // Update database
+        playlistData.setSongList(songList);
+        db.updatePlaylistData(playlistData);
     }
 
     public boolean nameAlreadyExists(String name) {
