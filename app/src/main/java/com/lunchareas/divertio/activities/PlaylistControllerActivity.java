@@ -84,6 +84,8 @@ public class PlaylistControllerActivity extends BaseActivity {
         playlistView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "Detected LONG click on playlist song.");
+                showChoiceMenu(view, position);
                 return true;
             }
         });

@@ -29,7 +29,7 @@ public class DeleteSongDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         // Get the list of songs to pick from
-        songInfoList = ((MainActivity)getActivity()).getSongInfoList();
+        songInfoList = ((BaseActivity) getActivity()).getSongInfoList();
         songInfoTemp = new ArrayList<>();
         for (int i = 0; i < songInfoList.size(); i++) {
             songInfoTemp.add(songInfoList.get(i).getSongName());

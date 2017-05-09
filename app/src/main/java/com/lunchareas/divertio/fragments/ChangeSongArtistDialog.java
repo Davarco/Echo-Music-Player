@@ -50,7 +50,7 @@ public class ChangeSongArtistDialog extends DialogFragment {
                         inputText = newArtistInput.getText().toString();
 
                         // Change the song name
-                        SongData songData = ((MainActivity) getActivity()).getSongInfoList().get(position);
+                        SongData songData = ((BaseActivity) getActivity()).getSongInfoList().get(position);
                         SongUtil songController = new SongUtil(getActivity());
                         songController.changeSongArtist(songData, inputText);
 
