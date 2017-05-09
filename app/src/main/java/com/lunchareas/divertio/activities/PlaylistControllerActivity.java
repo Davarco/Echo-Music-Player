@@ -4,21 +4,28 @@ package com.lunchareas.divertio.activities;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.adapters.SongAdapter;
+import com.lunchareas.divertio.fragments.AddToPlaylistDialog;
+import com.lunchareas.divertio.fragments.ChangeSongArtistDialog;
+import com.lunchareas.divertio.fragments.ChangeSongTitleDialog;
 import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.PlaylistQueueUtil;
+import com.lunchareas.divertio.utils.SongUtil;
 //https://www.youtube.com/watch?v=1UlRIbpYTwk
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +79,71 @@ public class PlaylistControllerActivity extends BaseActivity {
                 musicBound = true;
             }
         });
+
+        // Just for feeling
+        playlistView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                return true;
+            }
+        });
+    }
+
+    @SuppressLint("NewApi")
+    public void showChoiceMenu(View view, final int pos) {
+        final PopupMenu popupMenu = new PopupMenu(context, view, Gravity.END);
+        final SongData selectedSong = songInfoList.get(pos);
+
+        // Handle individual clicks
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.song_rename_title: {
+                        Log.d(TAG, "Renaming song title!");
+
+                        // Create popup for new title
+                        DialogFragment changeSongTitleDialog = new ChangeSongTitleDialog();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(ChangeSongTitleDialog.MUSIC_POS, pos);
+                        changeSongTitleDialog.setArguments(bundle);
+                        changeSongTitleDialog.show(getSupportFragmentManager(), "ChangeTitle");
+
+                        return true;
+                    }
+                    case R.id.song_delete_title: {
+                        Log.d(TAG, "Deleting song!");
+
+                        // Remove song from list and re-update view
+                        SongUtil songController = new SongUtil(context);
+                        songController.deleteSong(selectedSong);
+                        setMainView();
+
+                        return true;
+                    }
+                    case R.id.song_change_artist: {
+                        Log.d(TAG, "Changing song artist!");
+
+                        // Create popup for new artist
+                        DialogFragment changeSongArtistDialog = new ChangeSongArtistDialog();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(ChangeSongArtistDialog.MUSIC_POS, pos);
+                        changeSongArtistDialog.setArguments(bundle);
+                        changeSongArtistDialog.show(getSupportFragmentManager(), "ChangeArtist");
+
+                        return true;
+                    }
+                    default: {
+                        return false;
+                    }
+                }
+            }
+        });
+
+        // Create menu and show
+        MenuInflater menuInflater = popupMenu.getMenuInflater();
+        menuInflater.inflate(R.menu.playlist_manager_choice_menu, popupMenu.getMenu());
+        popupMenu.show();
     }
 
     @Override

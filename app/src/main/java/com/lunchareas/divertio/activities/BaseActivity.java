@@ -300,8 +300,12 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
         super.onStop();
     }
 
-    // Overflow menu
-    @Override
+    protected abstract void selectMenuItem(int position);
+
+    protected abstract void setDisplay();
+
+    public abstract void showChoiceMenu(View view, final int pos);
+
     public abstract boolean onCreateOptionsMenu(Menu menu);
     
     public abstract void setMainView();
@@ -323,10 +327,6 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
         PlaylistDBHandler db = new PlaylistDBHandler(getApplicationContext());
         this.playlistInfoList = db.getPlaylistDataList();
     }
-
-    protected abstract void selectMenuItem(int position);
-
-    protected abstract void setDisplay();
 
     public void createPlaylistNameFailureDialog() {
         DialogFragment dialogFragment = new CreatePlaylistNameFailureDialog();

@@ -73,7 +73,7 @@ public class SongAdapter extends BaseAdapter {
         songOverflowIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) activity).showSongChoiceMenu(songListLayout, position);
+                ((BaseActivity) activity).showChoiceMenu(songListLayout, position);
             }
         });
 

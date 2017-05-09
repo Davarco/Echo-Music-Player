@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lunchareas.divertio.R;
+import com.lunchareas.divertio.activities.BaseActivity;
 import com.lunchareas.divertio.activities.MainActivity;
 import com.lunchareas.divertio.models.SongData;
 
@@ -72,7 +73,7 @@ public class SongSelectionAdapter extends ArrayAdapter<SongData> {
             songOverflowIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainActivity) activity).showSongChoiceMenu(songListLayout, position);
+                    ((BaseActivity) activity).showChoiceMenu(songListLayout, position);
                 }
             });
         }

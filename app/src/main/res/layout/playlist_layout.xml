@@ -39,4 +39,15 @@
         android:text="@string/song_default_composer"
         android:textColor="@color/white" />
 
+    <ImageView
+        android:id="@+id/playlist_overflow"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/overflow_icon"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"/>
+
 </RelativeLayout>

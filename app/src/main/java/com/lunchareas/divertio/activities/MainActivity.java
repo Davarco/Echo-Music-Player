@@ -82,6 +82,7 @@ public class MainActivity extends BaseActivity {
         if (songInfoList == null) {
             Log.d(TAG, "No song list found yet.");
         }
+        selectionAdapter = new SongSelectionAdapter(this, R.layout.song_layout, songInfoList);
 
         // -1 because no song is playing
         final AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -129,7 +130,6 @@ public class MainActivity extends BaseActivity {
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
                 // Set colored and hide bar
                 Log.d(TAG, "Preparing song action mode.");
-                resetAdapter();
                 songView.setAdapter(selectionAdapter);
                 getSupportActionBar().hide();
                 return true;
@@ -173,8 +173,8 @@ public class MainActivity extends BaseActivity {
                     case R.id.song_selection_reset: {
                         // Reset song selections
                         Log.d(TAG, "Resetting selections!");
-                        resetAdapter();
                         selectionAdapter.resetSelection();
+                        mode.setTitle("0 Selected");
                         return true;
                     }
                 }
@@ -191,7 +191,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @SuppressLint("NewApi")
-    public void showSongChoiceMenu(View view, final int pos) {
+    public void showChoiceMenu(View view, final int pos) {
         final PopupMenu popupMenu = new PopupMenu(context, view, Gravity.END);
         final SongData selectedSong = songInfoList.get(pos);
 
@@ -356,9 +356,5 @@ public class MainActivity extends BaseActivity {
         }
         Log.d(TAG, "Service is not running.");
         return false;
-    }
-
-    private void resetAdapter() {
-        selectionAdapter = new SongSelectionAdapter(this, R.layout.song_layout, songInfoList);
     }
 }
