@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -158,10 +159,10 @@ public class DownloadSongDialog extends DialogFragment {
                 // Get current time
                 long input = System.currentTimeMillis();
 
-                // Using advanced api to get link line
+                // Using advanced api to get link line\
                 /*
                 try {
-                    String downloadInfoLink = "https://www.yt2mp3s.me/api-console/mp3/" + getYoutubeId(userLink);
+                    String downloadInfoLink = "http://api.youtube6download.top/api/?id=" + getYoutubeId(userLink);
                     Log.d(TAG, "The link is: " + downloadInfoLink);
 
                     // Use jsoup to find the download link
@@ -196,6 +197,7 @@ public class DownloadSongDialog extends DialogFragment {
                     e.printStackTrace();
                 }
                 */
+
                 try {
                     String downloadInfoLink = "https://www.youtubeinmp3.com/download/?video=" + userLink;
                     Log.d(TAG, "The link is: " + downloadInfoLink);
@@ -218,6 +220,8 @@ public class DownloadSongDialog extends DialogFragment {
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    replaceDialogWithFailure();
+                    return;
                 }
 
                 // Get jsoup time

@@ -55,5 +55,14 @@
         sha1="f6992adbdc5f0ee9af5d0f31e73f3a8444279383">
         <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_9b9cb346219f67886aa8e141101e566f4d05b1f6/classes.dex" />
     </item>
+    <item
+        is-multidex="true"
+        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/libs/unirest-java-1.4.9.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="778cffcba803dc7d43932266aef4c91f5b6b4dd0">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/2/unirest-java-1.4.9_a0fb12139669bb66647a1557d84d0bce9e957c72/classes.dex" />
+    </item>
 
 </items>

@@ -311,10 +311,12 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
     public abstract void setMainView();
 
     public List<SongData> getSongInfoList() {
+        updateSongInfoList();
         return this.songInfoList;
     }
 
     public List<PlaylistData> getPlaylistInfoList() {
+        updatePlaylistInfoList();
         return this.playlistInfoList;
     }
 

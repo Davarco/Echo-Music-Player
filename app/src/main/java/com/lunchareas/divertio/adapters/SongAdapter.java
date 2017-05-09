@@ -2,6 +2,7 @@ package com.lunchareas.divertio.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,8 +67,8 @@ public class SongAdapter extends BaseAdapter {
         songItemArtist.setText(songItem.getSongArtist());
 
         // Assertions
-        //Log.d(TAG, "Song Name: " + songItem.getSongName());
-        //Log.d(TAG, "Song Artist: " + songItem.getSongArtist());
+        Log.d(TAG, "Song Name: " + songItem.getSongName());
+        Log.d(TAG, "Song Artist: " + songItem.getSongArtist());
 
         // Set on click listener for overflow
         songOverflowIcon.setOnClickListener(new View.OnClickListener() {

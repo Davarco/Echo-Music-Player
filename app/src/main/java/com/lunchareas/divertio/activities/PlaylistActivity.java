@@ -293,4 +293,8 @@ public class PlaylistActivity extends BaseActivity {
     public List<PlaylistData> getPlaylistInfoList() {
         return this.playlistInfoList;
     }
+
+    private void resetAdapter() {
+        selectionAdapter = new PlaylistSelectionAdapter(this, R.layout.playlist_layout, playlistInfoList);
+    }
 }

@@ -14,6 +14,7 @@ import android.widget.EditText;
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
 import com.lunchareas.divertio.activities.MainActivity;
+import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.SongUtil;
 
@@ -44,6 +45,7 @@ public class ChangeSongArtistDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d(TAG, "Got click on positive change artist button.");
+
 
                         // Get user input
                         newArtistInput = (EditText) artistChangeView.findViewById(R.id.change_song_artist_hint);

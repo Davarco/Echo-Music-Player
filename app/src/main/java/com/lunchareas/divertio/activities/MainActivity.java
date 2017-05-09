@@ -130,6 +130,7 @@ public class MainActivity extends BaseActivity {
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
                 // Set colored and hide bar
                 Log.d(TAG, "Preparing song action mode.");
+                resetAdapter();
                 songView.setAdapter(selectionAdapter);
                 getSupportActionBar().hide();
                 return true;
@@ -356,5 +357,9 @@ public class MainActivity extends BaseActivity {
         }
         Log.d(TAG, "Service is not running.");
         return false;
+    }
+
+    private void resetAdapter() {
+        selectionAdapter = new SongSelectionAdapter(this, R.layout.song_layout, songInfoList);
     }
 }
