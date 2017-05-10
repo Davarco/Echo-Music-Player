@@ -221,6 +221,7 @@ public class PlaylistControllerActivity extends BaseActivity {
     @Override
     public void setMainView() {
         //cleanMusicFileDir();
+        Log.d(TAG, "Resetting main view for playlist controller activity.");
         getSongsForActivity();
         SongAdapter songListAdapter = new SongAdapter(this, songInfoList);
         playlistView.setAdapter(songListAdapter);

@@ -9,6 +9,7 @@ import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.models.SongData;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PlaylistUtil {
@@ -120,5 +121,23 @@ public class PlaylistUtil {
         }
 
         return false;
+    }
+
+    public void replaceSongInPlaylists(SongData prev, SongData post) {
+
+        // Get playlists
+        PlaylistDBHandler db = new PlaylistDBHandler(context);
+        List<PlaylistData> playlistDataList = db.getPlaylistDataList();
+
+        // See if any playlist contains the song
+        for (PlaylistData playlistData: playlistDataList) {
+            List<SongData> songList = playlistData.getSongList();
+            for (int i = 0; i < songList.size(); i++) {
+                if (songList.get(i).equals(prev)) {
+                    songList.set(i, post);
+                }
+            }
+            db.updatePlaylistData(new PlaylistData(playlistData.getPlaylistName(), songList));
+        }
     }
 }
