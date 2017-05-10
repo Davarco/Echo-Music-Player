@@ -2,10 +2,14 @@ package com.lunchareas.divertio.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.DownloadManager;
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.DialogFragment;
@@ -38,6 +42,10 @@ import com.lunchareas.divertio.fragments.DownloadConnectionFailureDialog;
 import com.lunchareas.divertio.utils.PlaylistUtil;
 import com.lunchareas.divertio.utils.SongUtil;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 import java.io.File;
 import java.util.*;
 import java.lang.*;
@@ -52,6 +60,8 @@ public class MainActivity extends BaseActivity {
     private int currentPosition;
     private ListView songView;
     private SongSelectionAdapter selectionAdapter;
+    private ProgressDialog progressDialog;
+    private Thread downloadThread;
 
     public MainActivity() {
         super(R.layout.activity_main);
@@ -271,8 +281,18 @@ public class MainActivity extends BaseActivity {
         uploadFailureDialog.show(getSupportFragmentManager(), "UploadFailure");
     }
 
+    public void createDownloadFailureDialog() {
+        DialogFragment uploadFailureDialog = new DownloadConnectionFailureDialog();
+        uploadFailureDialog.show(getSupportFragmentManager(), "UploadFailure");
+    }
+
     public void createNameFailureDialog(DialogFragment d) {
         d.dismiss();
+        DialogFragment nameFailureDialog = new DownloadNameFailureDialog();
+        nameFailureDialog.show(getSupportFragmentManager(), "NameFailure");
+    }
+
+    public void createNameFailureDialog() {
         DialogFragment nameFailureDialog = new DownloadNameFailureDialog();
         nameFailureDialog.show(getSupportFragmentManager(), "NameFailure");
     }
@@ -344,6 +364,156 @@ public class MainActivity extends BaseActivity {
         updateSongInfoList();
         SongAdapter songListAdapter = new SongAdapter(this, songInfoList);
         songView.setAdapter(songListAdapter);
+    }
+
+    public void addProgressCircle() {
+        // Create a spinning wheel
+        Log.d(TAG, "Adding progress circle.");
+        progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage("Trying to get song...");
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+    }
+
+    public void closeProgressCircle() {
+        Log.d(TAG, "Closing progress circle.");
+        progressDialog.dismiss();
+    }
+
+    /*
+    This needs to be entirely rewritten if there is time.
+     */
+    public void downloadSong(final String userLink, final String songFileName, final String songName, final String composerName) {
+
+        final Activity activity = this;
+
+        downloadThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                // Get start time
+                String downloadMusicLink;
+                long start = System.currentTimeMillis();
+
+                // Add spinning circle
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        addProgressCircle();
+                    }
+                });
+
+                try {
+                    String downloadInfoLink = "https://www.youtubeinmp3.com/download/?video=" + userLink;
+                    Log.d(TAG, "The link is: " + downloadInfoLink);
+
+                    // Use jsoup to find the download link
+                    Document doc = Jsoup.connect(downloadInfoLink)
+                            .header("Accept-Encoding", "gzip, deflate")
+                            .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
+                            .maxBodySize(0)
+                            .timeout(6000)
+                            .get();
+                    if (doc == null) {
+                        Log.d(TAG, "The doc is empty.");
+                    } else {
+                        Log.d(TAG, "The doc is not empty.");
+                    }
+                    Element musicLinkElement = doc.getElementById("download");
+                    downloadMusicLink = "https://youtubeinmp3.com" + musicLinkElement.attr("href");
+                    Log.d(TAG, "Final Download Link: " + downloadMusicLink);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            closeProgressCircle();
+                        }
+                    });
+                    createDownloadFailureDialog();
+                    return;
+                }
+
+                // Get jsoup time
+                long jsoup = System.currentTimeMillis();
+
+                // Replace with error dialog if this fails
+                DownloadManager.Request youtubeConvertRequest;
+                try {
+                    // Insert link into api and setup download
+                    youtubeConvertRequest = new DownloadManager.Request(Uri.parse(downloadMusicLink));
+                    youtubeConvertRequest.setDescription("Converting and downloading...");
+                    youtubeConvertRequest.setTitle(songFileName + " Download");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                        youtubeConvertRequest.allowScanningByMediaScanner();
+                        youtubeConvertRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                    }
+                } catch (Exception e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            closeProgressCircle();
+                        }
+                    });
+                    createDownloadFailureDialog();
+                    return;
+                }
+
+                // Download into music files directory
+                youtubeConvertRequest.setDestinationInExternalPublicDir("/Divertio", songFileName);
+                DownloadManager youtubeConvertManager = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
+                youtubeConvertManager.enqueue(youtubeConvertRequest);
+
+                // Get download time
+                long download = System.currentTimeMillis();
+
+                // Update database
+                String musicFilePath = Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName;
+                SongDBHandler db = new SongDBHandler(activity);
+                try {
+                    SongData songData = new SongData(songName, musicFilePath, composerName);
+                    Log.d(TAG, "Composer name: " + composerName);
+                    db.addSongData(songData);
+                    Log.d(TAG, "Successfully updated song database.");
+                } catch (Exception e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            closeProgressCircle();
+                        }
+                    });
+                    Log.d(TAG, "Song database update failure.");
+                }
+
+                // Get end time
+                long end = System.currentTimeMillis();
+
+                // Reset the song list view
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setMainView();
+                    }
+                });
+
+                // Print times
+                Log.d(TAG, "JSOUP: " + Long.toString(jsoup - start));
+                Log.d(TAG, "Download: " + Long.toString(download - jsoup));
+                Log.d(TAG, "Database: " + Long.toString(end - jsoup));
+
+                // Close progress circle
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        closeProgressCircle();
+                    }
+                });
+            }
+        });
+        downloadThread.start();
     }
 
     // Not going to use for now, but could be useful later on

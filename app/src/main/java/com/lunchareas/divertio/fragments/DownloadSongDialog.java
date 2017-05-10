@@ -1,9 +1,11 @@
 package com.lunchareas.divertio.fragments;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DownloadManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -156,8 +158,8 @@ public class DownloadSongDialog extends DialogFragment {
             // Catch if name is empty
             if (!songName.equals("") && !songUtil.nameAlreadyExists(songName)) {
 
-                // Get current time
-                long input = System.currentTimeMillis();
+                // Download from activity
+                ((MainActivity) getActivity()).downloadSong(userLink, songFileName, songName, composerName);
 
                 // Using advanced api to get link line\
                 /*
@@ -198,83 +200,8 @@ public class DownloadSongDialog extends DialogFragment {
                 }
                 */
 
-                try {
-                    String downloadInfoLink = "https://www.youtubeinmp3.com/download/?video=" + userLink;
-                    Log.d(TAG, "The link is: " + downloadInfoLink);
-
-                    // Use jsoup to find the download link
-                    Document doc = Jsoup.connect(downloadInfoLink)
-                            .header("Accept-Encoding", "gzip, deflate")
-                            .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
-                            .maxBodySize(0)
-                            .timeout(6000)
-                            .get();
-                    if (doc == null) {
-                        Log.d(TAG, "The doc is empty.");
-                    } else {
-                        Log.d(TAG, "The doc is not empty.");
-                    }
-                    Element musicLinkElement = doc.getElementById("download");
-                    downloadMusicLink = "https://youtubeinmp3.com" + musicLinkElement.attr("href");
-                    Log.d(TAG, "Final Download Link: " + downloadMusicLink);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    replaceDialogWithFailure();
-                    return;
-                }
-
-                // Get jsoup time
-                long jsoup = System.currentTimeMillis();
-
-                // Replace with error dialog if this fails
-                DownloadManager.Request youtubeConvertRequest;
-                try {
-                    // Insert link into api and setup download
-                    youtubeConvertRequest = new DownloadManager.Request(Uri.parse(downloadMusicLink));
-                    youtubeConvertRequest.setDescription("Converting and downloading...");
-                    youtubeConvertRequest.setTitle(songFileName + " Download");
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                        youtubeConvertRequest.allowScanningByMediaScanner();
-                        youtubeConvertRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                    }
-                } catch (Exception e) {
-                    replaceDialogWithFailure();
-                    return;
-                }
-
-                // Download into music files directory
-                youtubeConvertRequest.setDestinationInExternalPublicDir("/Divertio", songFileName);
-                DownloadManager youtubeConvertManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
-                youtubeConvertManager.enqueue(youtubeConvertRequest);
-
-                // Get download time
-                long download = System.currentTimeMillis();
-
-                // Update database
-                String musicFilePath = Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName;
-                SongDBHandler db = new SongDBHandler(getActivity());
-                try {
-                    SongData songData = new SongData(songName, musicFilePath, composerName);
-                    Log.d(TAG, "Composer name: " + composerName);
-                    db.addSongData(songData);
-                    Log.d(TAG, "Successfully updated song database.");
-                } catch (Exception e) {
-                    Log.d(TAG, "Song database update failure.");
-                }
-
-                // Get end time
-                long end = System.currentTimeMillis();
-
-                // Reset the song list view
-                ((BaseActivity) getActivity()).setMainView();
-
-                // Print times
-                Log.d(TAG, "Total: " + Long.toString(end - start));
-                Log.d(TAG, "Input: " + Long.toString(input - start));
-                Log.d(TAG, "JSOUP: " + Long.toString(jsoup - input));
-                Log.d(TAG, "Download: " + Long.toString(download - jsoup));
-                Log.d(TAG, "Database: " + Long.toString(end - jsoup));
+                // Close progress circle
+                //((MainActivity) getActivity()).closeProgressCircle();
 
             } else {
 
