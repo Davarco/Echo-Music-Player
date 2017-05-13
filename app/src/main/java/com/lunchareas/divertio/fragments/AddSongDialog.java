@@ -15,6 +15,7 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 
 import com.lunchareas.divertio.R;
+import com.lunchareas.divertio.activities.BaseActivity;
 import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.SongUtil;
@@ -102,7 +103,8 @@ public class AddSongDialog extends DialogFragment {
                 .setPositiveButton(R.string.overflow_add_title, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        
+                        addSelectedSongs();
+                        ((BaseActivity) activity).setMainView();
                     }
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
@@ -113,5 +115,18 @@ public class AddSongDialog extends DialogFragment {
                 });
 
         return builder.create();
+    }
+
+    private void addSelectedSongs() {
+
+        // Get songs from indexes
+        List<SongData> songListTemp = new ArrayList<>();
+        for (Integer integer: selectedSongs) {
+            songListTemp.add(songList.get(integer));
+        }
+
+        // Add from util
+        SongUtil songUtil = new SongUtil(activity);
+        songUtil.addSongList(songListTemp);
     }
 }
