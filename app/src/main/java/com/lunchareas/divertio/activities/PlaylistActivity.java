@@ -1,50 +1,49 @@
 package com.lunchareas.divertio.activities;
 
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
-import com.lunchareas.divertio.adapters.PlaylistSelectionAdapter;
-import com.lunchareas.divertio.fragments.AddSongsToPlaylistDialog;
-import com.lunchareas.divertio.fragments.ChangePlaylistTitleDialog;
-import com.lunchareas.divertio.fragments.CreatePlaylistDialog;
-import com.lunchareas.divertio.fragments.CreatePlaylistNameFailureDialog;
-import com.lunchareas.divertio.fragments.DeletePlaylistDialog;
-import com.lunchareas.divertio.adapters.PlaylistAdapter;
-import com.lunchareas.divertio.fragments.DeleteSongsFromPlaylistDialog;
+import com.lunchareas.divertio.R;
+import com.lunchareas.divertio.adapters.SongFixedAdapter;
+import com.lunchareas.divertio.fragments.ChangeSongArtistDialog;
+import com.lunchareas.divertio.fragments.ChangeSongTitleDialog;
 import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
-import com.lunchareas.divertio.R;
+import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.PlaylistQueueUtil;
-import com.lunchareas.divertio.utils.PlaylistUtil;
-
+import com.lunchareas.divertio.utils.SongUtil;
+//https://www.youtube.com/watch?v=1UlRIbpYTwk
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PlaylistActivity extends BaseActivity {
 
     private static final String TAG = PlaylistActivity.class.getName();
 
-    public static final String PLAYLIST_NAME = "playlist_name";
-
-    private int currentPosition;
+    private List<SongData> songInfoList;
     private ListView playlistView;
-    private PlaylistSelectionAdapter selectionAdapter;
+    private ImageView playButton;
+    private ImageView playlistIcon;
+    private PlaylistData playlistData;
 
     public PlaylistActivity() {
-        super(R.layout.activity_playlist);
+        super(R.layout.activity_playlist_manager);
     }
 
     @Override
@@ -52,155 +51,111 @@ public class PlaylistActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Create playlist
-        playlistView = (ListView) findViewById(R.id.playlist_list);
+        // Get playlist data
+        if (getIntent() == null) {
+            Log.e(TAG, "Cannot find intent?");
+        }
+        if (getIntent().getExtras() == null) {
+            Log.e(TAG, "Extras were not passed to playlist manager.");
+        }
+        String playlistName = getIntent().getStringExtra(PlaylistMenuActivity.PLAYLIST_NAME);
+        PlaylistDBHandler db = new PlaylistDBHandler(this);
+        playlistData = db.getPlaylistData(playlistName);
+
+        // Change title
+        TextView titleText = (TextView) findViewById(R.id.bar_title);
+        titleText.setText(playlistData.getPlaylistName());
+
+        // Songs in playlist
+        songInfoList = new ArrayList<>();
+        playlistView = (ListView) findViewById(R.id.song_list);
+        playlistIcon = (ImageView) findViewById(R.id.playlist_icon);
         setMainView();
 
-        // Create the selection adapter
-        if (playlistInfoList == null) {
-            Log.d(TAG, "No playlist list found yet.");
-        }
-        selectionAdapter = new PlaylistSelectionAdapter(this, R.layout.playlist_layout, playlistInfoList);
+        // Get play button
+        playButton = (ImageView) findViewById(R.id.playlist_play_button);
 
-        // Current position is -1 because no playlist is playing
-        currentPosition = -1;
-
-        playlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        playButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Log.d(TAG, "Detected click in playlist item in list view, starting modifier.");
-                Intent i = new Intent(view.getContext(), PlaylistControllerActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                i.putExtra(PLAYLIST_NAME, playlistInfoList.get(position).getPlaylistName());
-                startActivity(i);
-            }
-        });
-
-        playlistView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "Detected LONG click on playlist.");
-                showChoiceMenu(view, position);
-                return true;
+            public void onClick(View v) {
+                Log.d(TAG,"Playing playlist.");
+                songCtrlButton.setBackgroundResource(R.drawable.pause);
+                sendMusicPauseIntent();
+                PlaylistQueueUtil queueUtil = new PlaylistQueueUtil(playlistData, PlaylistActivity.this);
+                queueUtil.startQueue();
+                musicBound = true;
             }
         });
 
         /*
-        // Set new mode and add listener
-        playlistView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        playlistView.setMultiChoiceModeListener(new ListView.MultiChoiceModeListener() {
+        playlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-                // Change the title to num of clicked items
-                Log.d(TAG, "Playlist item checked state changed.");
-                int numChecked = playlistView.getCheckedItemCount();
-                mode.setTitle(numChecked + " Selected");
-                selectionAdapter.toggleSelection(position);
-            }
-
-            @Override
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                // Create the menu for the overflow
-                Log.d(TAG, "Creating playlist action mode.");
-                MenuInflater inflater = getMenuInflater();
-                inflater.inflate(R.menu.playlist_selection_menu, menu);
-                return true;
-            }
-
-            @Override
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                // Set colored and hide bar
-                Log.d(TAG, "Preparing playlist action mode.");
-                playlistView.setAdapter(selectionAdapter);
-                getSupportActionBar().hide();
-                return true;
-            }
-
-            @Override
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                Log.d(TAG, "Playlist action item clicked.");
-                switch (item.getItemId()) {
-
-                }
-                return false;
-            }
-
-            @Override
-            public void onDestroyActionMode(ActionMode mode) {
-                Log.d(TAG, "Playlist action mode destroyed.");
-                selectionAdapter.resetSelection();
-                getSupportActionBar().show();
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Log.d(TAG, "Detected click in playlist item in list view.");
+                Log.d(TAG, "Song: " + playlistData.getSongList().get(position));
+                songCtrlButton.setBackgroundResource(R.drawable.pause);
+                sendMusicPauseIntent();
+                PlaylistQueueUtil queueController = new PlaylistQueueUtil(position, playlistData, PlaylistActivity.this);
+                queueController.startQueue();
+                musicBound = true;
             }
         });
         */
+
+        // Just for feeling
+        playlistView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "Detected LONG click on playlist song.");
+                //showChoiceMenu(view, position);
+                return true;
+            }
+        });
     }
 
     @SuppressLint("NewApi")
     public void showChoiceMenu(View view, final int pos) {
         final PopupMenu popupMenu = new PopupMenu(context, view, Gravity.END);
-        final PlaylistData playlistData = playlistInfoList.get(pos);
+        final SongData selectedSong = songInfoList.get(pos);
 
         // Handle individual clicks
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.playlist_rename_title: {
-                        Log.d(TAG, "Renaming playlist.");
+                    case R.id.song_rename_title: {
+                        Log.d(TAG, "Renaming song title!");
 
-                        // Create popup for new playlist title
-                        DialogFragment changePlaylistTitleDialog = new ChangePlaylistTitleDialog();
+                        // Create popup for new title
+                        DialogFragment changeSongTitleDialog = new ChangeSongTitleDialog();
                         Bundle bundle = new Bundle();
-                        bundle.putInt(ChangePlaylistTitleDialog.MUSIC_POS, pos);
-                        changePlaylistTitleDialog.setArguments(bundle);
-                        changePlaylistTitleDialog.show(getSupportFragmentManager(), "ChangePlaylistTitle");
+                        bundle.putInt(ChangeSongTitleDialog.MUSIC_POS, pos);
+                        changeSongTitleDialog.setArguments(bundle);
+                        changeSongTitleDialog.show(getSupportFragmentManager(), "ChangeTitle");
 
                         return true;
                     }
-                    case R.id.playlist_remove_title: {
-                        Log.d(TAG, "Deleting playlist.");
+                    case R.id.song_delete_title: {
+                        Log.d(TAG, "Deleting song!");
 
-                        // Create popup for remove playlist title
-                        playlistUtil = new PlaylistUtil(context);
-                        playlistUtil.deletePlaylist(playlistData);
+                        // Remove song from list and re-update view
+                        SongUtil songController = new SongUtil(context);
+                        songController.deleteSong(selectedSong);
                         setMainView();
 
                         return true;
                     }
-                    case R.id.playlist_add_music_title: {
-                        Log.d(TAG, "Adding music to playlist.");
+                    case R.id.song_change_artist: {
+                        Log.d(TAG, "Changing song artist!");
 
-                        // Create popup for music to add
-                        DialogFragment addSongsDialog = new AddSongsToPlaylistDialog();
+                        // Create popup for new artist
+                        DialogFragment changeSongArtistDialog = new ChangeSongArtistDialog();
                         Bundle bundle = new Bundle();
-                        bundle.putInt(AddSongsToPlaylistDialog.MUSIC_POS, pos);
-                        addSongsDialog.setArguments(bundle);
-                        addSongsDialog.show(getSupportFragmentManager(), "AddSongsToPlaylist");
+                        bundle.putInt(ChangeSongArtistDialog.MUSIC_POS, pos);
+                        changeSongArtistDialog.setArguments(bundle);
+                        changeSongArtistDialog.show(getSupportFragmentManager(), "ChangeArtist");
 
                         return true;
-                    }
-                    case R.id.playlist_delete_music_title: {
-                        Log.d(TAG, "Deleting music from playlist.");
-
-                        // Create popup for music to delete
-                        DialogFragment removeSongsDialog = new DeleteSongsFromPlaylistDialog();
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(DeleteSongsFromPlaylistDialog.MUSIC_POS, pos);
-                        removeSongsDialog.setArguments(bundle);
-                        removeSongsDialog.show(getSupportFragmentManager(), "RemoveSongsFromPlaylist");
-
-                        return true;
-                    }
-                    case R.id.playlist_play_next: {
-                        Log.d(TAG, "Playing this playlist.");
-
-                        // Get random first num
-                        int firstSong = (int)(Math.random()*playlistData.getSongList().size());
-
-                        // Create queue controller to run
-                        PlaylistQueueUtil queueManager = new PlaylistQueueUtil(firstSong, playlistData, context);
-                        queueManager.startQueue();
-                        songCtrlButton.setBackgroundResource(R.drawable.pause_red);
                     }
                     default: {
                         return false;
@@ -209,21 +164,21 @@ public class PlaylistActivity extends BaseActivity {
             }
         });
 
-        // Show popup menu
-        MenuInflater inflater = popupMenu.getMenuInflater();
-        inflater.inflate(R.menu.playlist_choice_menu, popupMenu.getMenu());
+        // Create menu and show
+        MenuInflater menuInflater = popupMenu.getMenuInflater();
+        menuInflater.inflate(R.menu.playlist_manager_choice_menu, popupMenu.getMenu());
         popupMenu.show();
     }
 
     @Override
     protected void setDisplay() {
-        setContentView(R.layout.activity_playlist);
+        setContentView(R.layout.activity_playlist_manager);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.playlist_overflow_menu, menu);
+        menuInflater.inflate(R.menu.playlist_manager_overflow_menu, menu);
         return true;
     }
 
@@ -231,16 +186,17 @@ public class PlaylistActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(TAG, "Detected that position " + item.getItemId() + " was selected.");
         switch (item.getItemId()) {
-            case R.id.playlist_menu_create: {
-                Log.d(TAG, "Starting new dialog - upload.");
-                DialogFragment createPlaylistDialog = new CreatePlaylistDialog();
-                createPlaylistDialog.show(getSupportFragmentManager(), "Upload");
+            /*
+            case R.id.playlist_rename: {
+                Log.d(TAG, "Starting new dialog - rename.");
+                return true;
+            } */
+            case R.id.playlist_add: {
+                Log.d(TAG, "Starting new dialog - add.");
                 return true;
             }
-            case R.id.playlist_menu_delete: {
+            case R.id.playlist_delete: {
                 Log.d(TAG, "Starting new dialog - delete.");
-                DialogFragment deletePlaylistDialog = new DeletePlaylistDialog();
-                deletePlaylistDialog.show(getSupportFragmentManager(), "Delete");
                 return true;
             }
             default:
@@ -248,21 +204,23 @@ public class PlaylistActivity extends BaseActivity {
         }
     }
 
-
     // Options for drawer menu
     @Override
     protected void selectMenuItem(int position) {
         Log.d(TAG, "Detected click on position " + position + ".");
         switch (position) {
             case 0: {
-                Log.d(TAG, "Starting new activity - main.");
+                Log.d(TAG, "Starting new activity - main!");
                 Intent i = new Intent(this, MainActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
                 break;
             }
             case 1: {
-                Log.d(TAG, "No effect, on that activity.");
+                Log.d(TAG, "Starting new activity - playlist.");
+                Intent i = new Intent(this, PlaylistMenuActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
                 break;
             }
             /*
@@ -284,17 +242,43 @@ public class PlaylistActivity extends BaseActivity {
 
     @Override
     public void setMainView() {
-        Log.d(TAG, "Setting main view.");
-        updatePlaylistInfoList();
-        PlaylistAdapter playlistAdapter = new PlaylistAdapter(this, playlistInfoList);
-        playlistView.setAdapter(playlistAdapter);
+        //cleanMusicFileDir();
+        Log.d(TAG, "Resetting main view for playlist controller activity.");
+        getSongsForActivity();
+        SongFixedAdapter songListAdapter = new SongFixedAdapter(this, songInfoList);
+        playlistView.setAdapter(songListAdapter);
+
+        // Set center icon image
+        if (playlistIcon != null) {
+            if (playlistData.getPlaylistIcon() == null) {
+                Log.d(TAG, "No default playlist icon found.");
+
+                // Try with song icon
+                List<SongData> songList = playlistData.getSongList();
+                Collections.shuffle(songList);
+                boolean found = false;
+                for (SongData songData : songList) {
+                    if (songData.getSongIcon() != null) {
+                        playlistIcon.setImageDrawable(songData.getSongIcon());
+                        found = true;
+                    }
+                }
+
+                // Songs had no icon too
+                if (!found) {
+                    Drawable drawable = getResources().getDrawable(R.drawable.default_song_icon);
+                    playlistIcon.setImageDrawable(drawable);
+                }
+
+            } else {
+                playlistIcon.setImageDrawable(playlistData.getPlaylistIcon());
+            }
+        }
     }
 
-    public List<PlaylistData> getPlaylistInfoList() {
-        return this.playlistInfoList;
-    }
+    public void getSongsForActivity() {
 
-    private void resetAdapter() {
-        selectionAdapter = new PlaylistSelectionAdapter(this, R.layout.playlist_layout, playlistInfoList);
+        // Get database and song list
+        songInfoList = playlistData.getSongList();
     }
 }

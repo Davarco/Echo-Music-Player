@@ -2,7 +2,6 @@ package com.lunchareas.divertio.adapters;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lunchareas.divertio.activities.BaseActivity;
-import com.lunchareas.divertio.activities.PlaylistActivity;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.R;
 

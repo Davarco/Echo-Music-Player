@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/wallpaper"
-    tools:context="com.lunchareas.divertio.activities.PlaylistControllerActivity">
+    tools:context="com.lunchareas.divertio.activities.PlaylistActivity">
 
     <!-- Widget Toolbar -->
     <android.support.v7.widget.Toolbar
@@ -54,20 +55,49 @@
             <FrameLayout
                 android:id="@+id/menu_drawer_frame"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent">
 
-            <!-- List of user songs -->
-            <ListView
-                android:id="@+id/song_list"
-                android:background="@android:color/transparent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="48dp"
-                android:divider="#000000"
-                android:dividerHeight="2dp">
-            </ListView>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <RelativeLayout
+                        android:id="@+id/playlist_background"
+                        android:layout_width="match_parent"
+                        android:layout_height="256dp"
+                        android:background="@color/black"
+                        android:alpha="0.7">
+                        <ImageView
+                            android:id="@+id/playlist_icon"
+                            android:layout_width="156dp"
+                            android:layout_height="156dp"
+                            android:layout_centerInParent="true"/>
+                    </RelativeLayout>
 
-            <!-- Drawer list styling -->
+                    <ListView
+                        android:id="@+id/song_list"
+                        android:background="@android:color/transparent"
+                        android:layout_below="@+id/playlist_background"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="48dp"
+                        android:divider="#000000"
+                        android:dividerHeight="2dp"/>
+
+                    <ImageView
+                        android:id="@+id/playlist_play_button"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_above="@id/song_list"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                        android:layout_marginBottom="-32dp"
+                        android:src="@drawable/play_filled"/>
+                </RelativeLayout>
+
+            </FrameLayout>
+
             <ListView
                 android:id="@+id/menu_drawer_list"
                 android:layout_width="240dp"
@@ -79,8 +109,10 @@
                 android:divider="@android:color/transparent"
                 android:dividerHeight="0dp"
                 android:background="@color/gray"/>
+
         </android.support.v4.widget.DrawerLayout>
     </RelativeLayout>
+
 
     <!-- Song control bar (toggle) -->
     <RelativeLayout
@@ -161,7 +193,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/play_red"/>
+                    android:background="@drawable/play"/>
                 <ImageButton
                     android:id="@+id/forward_button"
                     android:layout_marginLeft="4dp"
@@ -176,7 +208,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/play_red"/>
+                    android:background="@drawable/play"/>
                 <SeekBar
                     android:id="@+id/progress_bar"
                     android:layout_width="0dp"

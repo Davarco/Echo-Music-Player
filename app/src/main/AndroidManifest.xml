@@ -36,13 +36,13 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name="com.lunchareas.divertio.activities.PlaylistActivity"
+            android:name="com.lunchareas.divertio.activities.PlaylistMenuActivity"
             android:configChanges="orientation|keyboardHidden|screenSize">
         </activity>
 
         <activity
-            android:name="com.lunchareas.divertio.activities.PlaylistControllerActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:name="com.lunchareas.divertio.activities.PlaylistActivity"
+            android:configChanges="keyboardHidden|screenSize">
         </activity>
     </application>
 

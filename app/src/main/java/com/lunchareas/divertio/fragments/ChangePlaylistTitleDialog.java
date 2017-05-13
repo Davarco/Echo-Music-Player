@@ -13,7 +13,7 @@ import android.widget.EditText;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
-import com.lunchareas.divertio.activities.PlaylistActivity;
+import com.lunchareas.divertio.activities.PlaylistMenuActivity;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.utils.PlaylistUtil;
 
@@ -50,7 +50,7 @@ public class ChangePlaylistTitleDialog extends DialogFragment {
                         inputText = newTitleInput.getText().toString();
 
                         // Change the playlist name
-                        PlaylistData playlistData = ((PlaylistActivity) getActivity()).getPlaylistInfoList().get(position);
+                        PlaylistData playlistData = ((PlaylistMenuActivity) getActivity()).getPlaylistInfoList().get(position);
                         PlaylistUtil playlistUtil = new PlaylistUtil(getActivity());
                         playlistUtil.changePlaylistName(playlistData, inputText);
 

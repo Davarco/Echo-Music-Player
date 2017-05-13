@@ -20,14 +20,10 @@ public class PlaylistQueueUtil implements MusicConductor {
 
     private static final String TAG = PlaylistQueueUtil.class.getName();
 
-    private int idx;
-    private int firstPos;
     private Context context;
     private List<SongData> songList;
 
-    public PlaylistQueueUtil(int firstPos, PlaylistData playlistData, Context context) {
-        this.idx = 0;
-        this.firstPos = firstPos;
+    public PlaylistQueueUtil(PlaylistData playlistData, Context context) {
         this.context = context;
         this.songList = playlistData.getSongList();
     }
@@ -44,9 +40,10 @@ public class PlaylistQueueUtil implements MusicConductor {
         Intent playlistCreateIntent = new Intent(context, PlayMusicService.class);
 
         // Shuffle list, get first song
-        SongData firstSong = songList.get(firstPos);
+        //SongData firstSong = songList.get(firstPos);
         Collections.shuffle(songList);
 
+        /*
         // Switch 0th with supposed first song
         for (int i = 0; i < songList.size(); i++) {
             if (songList.get(i).getSongName().equals(firstSong.getSongName())) {
@@ -57,6 +54,7 @@ public class PlaylistQueueUtil implements MusicConductor {
                 Log.d(TAG, "No swap.");
             }
         }
+        */
 
         // Create the string array
         String[] songPathList = new String[songList.size()];

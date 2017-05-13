@@ -18,7 +18,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -135,10 +134,10 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
         //songBarOn = false;
         if (am.isMusicActive()) {
             musicBound = true;
-            songCtrlButton.setBackgroundResource(R.drawable.pause_red);
+            songCtrlButton.setBackgroundResource(R.drawable.pause);
         } else {
             musicBound = false;
-            songCtrlButton.setBackgroundResource(R.drawable.play_red);
+            songCtrlButton.setBackgroundResource(R.drawable.play);
         }
 
         // Create the menu drawer
@@ -154,14 +153,14 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
         songCtrlButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Detected click on play_red button.");
+                Log.d(TAG, "Detected click on play button.");
                 if (musicBound) {
                     sendMusicPauseIntent();
-                    songCtrlButton.setBackgroundResource(R.drawable.play_red);
+                    songCtrlButton.setBackgroundResource(R.drawable.play);
                     musicBound = false;
                 } else {
                     sendMusicStartIntent();
-                    songCtrlButton.setBackgroundResource(R.drawable.pause_red);
+                    songCtrlButton.setBackgroundResource(R.drawable.pause);
                     musicBound = true;
                 }
             }
@@ -206,9 +205,9 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                // Resumes regular music from pause_red
+                // Resumes regular music from pause
                 sendMusicStartIntent();
-                songCtrlButton.setBackgroundResource(R.drawable.pause_red);
+                songCtrlButton.setBackgroundResource(R.drawable.pause);
             }
         });
 

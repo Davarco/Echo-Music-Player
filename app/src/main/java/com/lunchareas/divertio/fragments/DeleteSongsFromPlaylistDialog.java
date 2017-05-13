@@ -10,7 +10,7 @@ import android.util.Log;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
-import com.lunchareas.divertio.activities.PlaylistActivity;
+import com.lunchareas.divertio.activities.PlaylistMenuActivity;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.PlaylistUtil;
 
@@ -88,6 +88,6 @@ public class DeleteSongsFromPlaylistDialog extends DialogFragment {
 
         // Add the songs
         PlaylistUtil playlistUtil = new PlaylistUtil(getActivity());
-        playlistUtil.deleteSongsFromPlaylist(songDataList, ((PlaylistActivity) getActivity()).getPlaylistInfoList().get(position));
+        playlistUtil.deleteSongsFromPlaylist(songDataList, ((PlaylistMenuActivity) getActivity()).getPlaylistInfoList().get(position));
     }
 }

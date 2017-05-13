@@ -25,7 +25,6 @@ public class SongAdapter extends BaseAdapter {
     private List<SongData> songDataList;
     private LayoutInflater songListInflater;
     private Activity activity;
-    private int id;
 
     public SongAdapter(Activity activity, List<SongData> songList) {
         this.songDataList = songList;

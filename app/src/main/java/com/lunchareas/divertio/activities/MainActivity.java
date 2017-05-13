@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
@@ -15,7 +14,6 @@ import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Pair;
 import android.view.ActionMode;
 import android.view.Gravity;
 import android.view.Menu;
@@ -30,7 +28,6 @@ import com.lunchareas.divertio.fragments.AddSongDialog;
 import com.lunchareas.divertio.fragments.AddToPlaylistDialog;
 import com.lunchareas.divertio.fragments.ChangeSongArtistDialog;
 import com.lunchareas.divertio.fragments.ChangeSongTitleDialog;
-import com.lunchareas.divertio.fragments.CreatePlaylistDialog;
 import com.lunchareas.divertio.fragments.CreatePlaylistFromSongsDialog;
 import com.lunchareas.divertio.fragments.DeleteSongDialog;
 import com.lunchareas.divertio.R;
@@ -40,7 +37,6 @@ import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.fragments.DownloadSongDialog;
 import com.lunchareas.divertio.fragments.DownloadConnectionFailureDialog;
-import com.lunchareas.divertio.utils.PlaylistUtil;
 import com.lunchareas.divertio.utils.SongUtil;
 
 import org.jsoup.Jsoup;
@@ -108,7 +104,7 @@ public class MainActivity extends BaseActivity {
         songView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                songCtrlButton.setBackgroundResource(R.drawable.pause_red);
+                songCtrlButton.setBackgroundResource(R.drawable.pause);
                 String wantedPath = songInfoList.get(position).getSongPath();
                 sendMusicPauseIntent();
                 sendMusicCreateIntent(wantedPath);
@@ -343,7 +339,7 @@ public class MainActivity extends BaseActivity {
             }
             case 1: {
                 Log.d(TAG, "Starting new activity - playlist.");
-                Intent i = new Intent(this, PlaylistActivity.class);
+                Intent i = new Intent(this, PlaylistMenuActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
                 break;

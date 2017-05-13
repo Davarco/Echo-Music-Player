@@ -16,7 +16,7 @@ import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.activities.BaseActivity;
-import com.lunchareas.divertio.activities.PlaylistActivity;
+import com.lunchareas.divertio.activities.PlaylistMenuActivity;
 import com.lunchareas.divertio.utils.PlaylistUtil;
 
 import java.util.ArrayList;
@@ -109,7 +109,7 @@ public class CreatePlaylistDialog extends DialogFragment {
 
                     // Create dialog because name is invalid
                     Log.d(TAG, "Playlist name already exists.");
-                    ((PlaylistActivity) activity).createPlaylistNameFailureDialog();
+                    ((PlaylistMenuActivity) activity).createPlaylistNameFailureDialog();
                 }
             }
         });

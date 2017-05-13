@@ -10,7 +10,6 @@ import android.util.Log;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
-import com.lunchareas.divertio.activities.PlaylistActivity;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.PlaylistUtil;

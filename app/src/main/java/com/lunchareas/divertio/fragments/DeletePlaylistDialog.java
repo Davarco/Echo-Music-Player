@@ -11,7 +11,7 @@ import com.lunchareas.divertio.activities.BaseActivity;
 import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.R;
-import com.lunchareas.divertio.activities.PlaylistActivity;
+import com.lunchareas.divertio.activities.PlaylistMenuActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class DeletePlaylistDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         // Get playlists to remove from
-        playlistInfoList = ((PlaylistActivity)getActivity()).getPlaylistInfoList();
+        playlistInfoList = ((PlaylistMenuActivity)getActivity()).getPlaylistInfoList();
         playlistInfoTemp = new ArrayList<>();
         for (int i = 0; i < playlistInfoList.size(); i++) {
             playlistInfoTemp.add(playlistInfoList.get(i).getPlaylistName());
