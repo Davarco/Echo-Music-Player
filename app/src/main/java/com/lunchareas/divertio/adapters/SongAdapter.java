@@ -67,8 +67,7 @@ public class SongAdapter extends BaseAdapter {
         songItemArtist.setText(songItem.getSongArtist());
 
         // Assertions
-        Log.d(TAG, "Song Name: " + songItem.getSongName());
-        Log.d(TAG, "Song Artist: " + songItem.getSongArtist());
+        Log.d(TAG, songItem.toString());
 
         // Set on click listener for overflow
         songOverflowIcon.setOnClickListener(new View.OnClickListener() {

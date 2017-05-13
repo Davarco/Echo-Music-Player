@@ -14,6 +14,9 @@
         app:showAsAction="always">
         <menu>
             <item
+                android:id="@+id/song_menu_add"
+                android:title="@string/overflow_add_title"/>
+            <item
                 android:id="@+id/song_menu_upload"
                 android:title="@string/overflow_upload_title"/>
             <item

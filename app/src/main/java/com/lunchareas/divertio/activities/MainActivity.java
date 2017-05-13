@@ -26,6 +26,7 @@ import android.widget.*;
 import android.content.*;
 
 import com.lunchareas.divertio.adapters.SongSelectionAdapter;
+import com.lunchareas.divertio.fragments.AddSongDialog;
 import com.lunchareas.divertio.fragments.AddToPlaylistDialog;
 import com.lunchareas.divertio.fragments.ChangeSongArtistDialog;
 import com.lunchareas.divertio.fragments.ChangeSongTitleDialog;
@@ -308,6 +309,12 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(TAG, "Detected that position " + item.getItemId() + " was selected.");
         switch (item.getItemId()) {
+            case R.id.song_menu_add: {
+                Log.d(TAG, "Starting new dialog - add.");
+                DialogFragment addSongDialog = new AddSongDialog();
+                addSongDialog.show(getSupportFragmentManager(), "Add");
+                return true;
+            }
             case R.id.song_menu_upload: {
                 Log.d(TAG, "Starting new dialog - download.");
                 DialogFragment uploadDialog = new DownloadSongDialog();

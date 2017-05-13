@@ -21,6 +21,15 @@ public class SongUtil {
         this.context = context;
     }
 
+    public void addSongList(List<SongData> songDataList) {
+
+        // Add all the songs in the list to the database
+        SongDBHandler db = new SongDBHandler(context);
+        for (SongData songData: songDataList) {
+            db.addSongData(songData);
+        }
+    }
+
     public void changeSongName(SongData songData, String newTitle) {
 
         // Update all the playlists

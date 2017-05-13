@@ -64,10 +64,15 @@ public class SongData {
     @Override
     public boolean equals(Object other) {
         SongData otherSong = (SongData)other;
-        if (otherSong.getSongName().equals(this.getSongName())) {
+        if (otherSong.getSongName().equals(this.getSongName()) || otherSong.getSongPath().equals(this.getSongPath())) {
             return true;
         }
 
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return songName + "\n" + songPath + "\n" + songArtist + "\n";
     }
 }

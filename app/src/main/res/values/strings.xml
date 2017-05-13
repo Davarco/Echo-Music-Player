@@ -11,6 +11,7 @@
     <string name="default_time_text">0:00/0:00</string>
 
     <!-- Main menu strings -->
+    <string name="overflow_add_title">Add</string>
     <string name="overflow_upload_title">Download</string>
     <string name="overflow_delete_title">Delete</string>
 
@@ -75,5 +76,8 @@
 
     <!-- Delete playlist dialog strings -->
     <string name="delete_playlist_title">Playlists to Delete:</string>
+
+    <!-- Add songs dialog strings -->
+    <string name="add_songs_dialog_title">Add Songs:</string>
 
 </resources>

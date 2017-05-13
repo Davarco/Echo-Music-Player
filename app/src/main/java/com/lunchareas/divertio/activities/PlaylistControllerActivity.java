@@ -71,7 +71,7 @@ public class PlaylistControllerActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Log.d(TAG, "Detected click in playlist item in list view.");
-                Log.d(TAG, "Song: " + playlistData.getSongList().get(position).getSongName());
+                Log.d(TAG, "Song: " + playlistData.getSongList().get(position));
                 songCtrlButton.setBackgroundResource(R.drawable.pause_red);
                 sendMusicPauseIntent();
                 PlaylistQueueUtil queueController = new PlaylistQueueUtil(position, playlistData, PlaylistControllerActivity.this);

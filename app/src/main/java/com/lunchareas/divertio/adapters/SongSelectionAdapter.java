@@ -64,8 +64,7 @@ public class SongSelectionAdapter extends ArrayAdapter<SongData> {
         songItemArtist.setText(songItem.getSongArtist());
 
         // Assertions
-        Log.d(TAG, "Song Name: " + songItem.getSongName());
-        Log.d(TAG, "Song Artist: " + songItem.getSongArtist());
+        Log.d(TAG, songItem.toString());
 
         // Set listener if not selected
         if (!selected) {
