@@ -6,7 +6,7 @@ Divertio is an Android application which uses the YoutubeInMP3 API to convert yo
 
 **Requirements:**
 
- - An Android device (pref running 6.0+)
+ - An Android device (pref running 4.0+)
  - Android Studio to upload the app onto your phone
 
 In order to download Youtube videos and convert them to MP3 files, you will need an internet connection. However, most of the app, including standard MP3 player functions, will work without an internet connection. 
