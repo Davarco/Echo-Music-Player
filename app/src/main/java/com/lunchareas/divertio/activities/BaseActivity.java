@@ -61,27 +61,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected SongUtil songUtil;
     protected PlaylistUtil playlistUtil;
 
-    protected boolean drawerOpen;
-    protected String[] menuItemArr;
-    protected Button menuToggleButton;
-    protected RelativeLayout menuDrawerLayout;
-    protected DrawerLayout menuDrawer;
-    protected ListView menuList;
-
-    protected Toolbar mainBar;
-    protected BroadcastReceiver songBroadcastReceiver;
-    protected SeekBar songProgressManager;
-    protected ImageButton songCtrlButton;
-    protected ImageButton songLastButton;
-    protected ImageButton songNextButton;
-
     protected Intent musicCreateIntent;
     protected Intent musicStartIntent;
     protected Intent musicPauseIntent;
     protected Intent musicChangeIntent;
 
     protected boolean musicBound;
-    protected PlayMusicService musicSrv;
 
     protected Context context;
 
@@ -95,6 +80,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         // Add fonts
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
@@ -104,9 +90,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         // Differs due to different activities
         setContentView(id);
-        super.onCreate(savedInstanceState);
         setDisplay();
-        setBackground();
 
         // Get context
         context = getApplicationContext();
@@ -119,159 +103,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         PlaylistDBHandler dbPlaylist = new PlaylistDBHandler(this);
         playlistInfoList = dbPlaylist.getPlaylistDataList();
 
-        // Setup toolbar
-        mainBar = (Toolbar) findViewById(R.id.header_bar);
-        setSupportActionBar(mainBar);
-
-        // Set new font for title
-        /*
-        TextView barTitle = (TextView) findViewById(R.id.bar_title);
-        try {
-            barTitle.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/RobotoSlab-Regular.ttf"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(TAG, "Could not open the font.");
-        }
-        */
-
         // Get song info
         SongDBHandler db = new SongDBHandler(this);
         songInfoList = db.getSongDataList();
-
-        // Setup song bar
-        am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        songProgressManager = (SeekBar) findViewById(R.id.progress_bar);
-        songProgressManager.getProgressDrawable().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
-        songProgressManager.getThumb().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
-        songCtrlButton = (ImageButton) findViewById(R.id.play_button);
-        //songBarOn = false;
-        if (am.isMusicActive()) {
-            musicBound = true;
-            songCtrlButton.setBackgroundResource(R.drawable.pause);
-        } else {
-            musicBound = false;
-            songCtrlButton.setBackgroundResource(R.drawable.play);
-        }
-
-        // Create the menu drawer
-        menuDrawerLayout = (RelativeLayout) findViewById(R.id.menu_drawer_layout);
-        menuDrawer = (DrawerLayout) findViewById(R.id.menu_drawer);
-        //menuToggleButton = (Button) findViewById(R.id.menu_toggle);
-        menuList = (ListView) findViewById(R.id.menu_drawer_list);
-        menuItemArr = new String[]{"Songs", "Playlists", "Bluetooth", "Settings"};
-        menuList.setAdapter(new ArrayAdapter<>(this, R.layout.menu_drawer_list_item, menuItemArr));
-        menuDrawer.closeDrawers();
-        drawerOpen = false;
-
-        // Add hamburger icon to menu drawer
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, menuDrawer, mainBar, R.string.dialog_confirm, R.string.dialog_cancel);
-        menuDrawer.setDrawerListener(toggle);
-        toggle.setDrawerIndicatorEnabled(true);
-        toggle.syncState();
-        mainBar.setTitleTextColor(Color.WHITE);
-        mainBar.setTitle("Fuck");
-        mainBar.showOverflowMenu();
-
-        songCtrlButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Detected click on play button.");
-                if (musicBound) {
-                    sendMusicPauseIntent();
-                    songCtrlButton.setBackgroundResource(R.drawable.play);
-                    musicBound = false;
-                } else {
-                    sendMusicStartIntent();
-                    songCtrlButton.setBackgroundResource(R.drawable.pause);
-                    musicBound = true;
-                }
-            }
-        });
-
-        /*
-        menuToggleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Detected click on menu button.");
-                if (drawerOpen) {
-                    //menuDrawerLayout.setVisibility(View.GONE);
-                    menuDrawer.closeDrawer(GravityCompat.START);
-                    drawerOpen = false;
-                } else {
-                    //menuDrawerLayout.setVisibility(View.VISIBLE);
-                    menuDrawer.openDrawer(GravityCompat.START);
-                    drawerOpen = true;
-                }
-            }
-        });
-        */
-
-        menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                selectMenuItem(i);
-            }
-        });
-
-        songProgressManager.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar sb, int position, boolean userPressed) {
-                if (userPressed) {
-                    sendMusicChangeIntent(position);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // Prevents broken music during time change
-                sendMusicPauseIntent();
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // Resumes regular music from pause
-                sendMusicStartIntent();
-                songCtrlButton.setBackgroundResource(R.drawable.pause);
-            }
-        });
-
-        songBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                int songPosition = intent.getIntExtra(PlayMusicService.MUSIC_POSITION, 0);
-                int songDuration = intent.getIntExtra(PlayMusicService.MUSIC_DURATION, 0);
-
-                // Set location based on position/duration
-                songProgressManager.setMax(songDuration);
-                songProgressManager.setProgress(songPosition);
-
-                // Set new text in time
-                String songPositionTime = String.format(
-                        Locale.US, "%02d:%02d",
-                        TimeUnit.MILLISECONDS.toMinutes(songPosition),
-                        TimeUnit.MILLISECONDS.toSeconds(songPosition) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(songPosition))
-                );
-
-                String songDurationTime = String.format(
-                        Locale.US, "%02d:%02d",
-                        TimeUnit.MILLISECONDS.toMinutes(songDuration),
-                        TimeUnit.MILLISECONDS.toSeconds(songDuration) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(songDuration))
-                );
-
-                String totalSongTime = songPositionTime + "/" + songDurationTime;
-                TextView songTimeView = (TextView) findViewById(R.id.time_info);
-                songTimeView.setText(totalSongTime);
-            }
-        };
-    }
-
-    private void setBackground() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                findViewById(R.id.activity_main).setBackground(getResources().getDrawable(R.drawable.wallpaper));
-            }
-        });
     }
 
     public void sendMusicCreateIntent(String path) {
@@ -297,21 +131,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         musicChangeIntent = new Intent(this, PlayMusicService.class);
         musicChangeIntent.putExtra(PlayMusicService.MUSIC_CHANGE, position);
         this.startService(musicChangeIntent);
-    }
-
-    // For broadcast managing from play music service
-    @Override
-    protected void onStart() {
-        super.onStart();
-        LocalBroadcastManager.getInstance(this).registerReceiver((songBroadcastReceiver), new IntentFilter(PlayMusicService.MUSIC_RESULT));
-        Log.d(TAG, "Running start!");
-        menuDrawer.closeDrawers();
-    }
-
-    @Override
-    protected void onStop() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(songBroadcastReceiver);
-        super.onStop();
     }
 
     @Override

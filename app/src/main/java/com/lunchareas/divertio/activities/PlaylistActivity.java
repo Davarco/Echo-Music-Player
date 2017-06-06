@@ -2,10 +2,16 @@ package com.lunchareas.divertio.activities;
 
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -13,9 +19,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.lunchareas.divertio.R;
@@ -31,8 +39,10 @@ import com.lunchareas.divertio.utils.SongUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
-public class PlaylistActivity extends BaseActivity {
+public class PlaylistActivity extends BasePlayerActivity {
 
     private static final String TAG = PlaylistActivity.class.getName();
 
@@ -68,9 +78,6 @@ public class PlaylistActivity extends BaseActivity {
         playlistIcon = (ImageView) findViewById(R.id.playlist_icon);
         setMainView();
 
-        // Close bar
-        getSupportActionBar().hide();
-
         // Get play button
         playButton = (ImageView) findViewById(R.id.playlist_play_button);
 
@@ -86,21 +93,6 @@ public class PlaylistActivity extends BaseActivity {
             }
         });
 
-        /*
-        playlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Log.d(TAG, "Detected click in playlist item in list view.");
-                Log.d(TAG, "Song: " + playlistData.getSongList().get(position));
-                songCtrlButton.setBackgroundResource(R.drawable.pause);
-                sendMusicPauseIntent();
-                PlaylistQueueUtil queueController = new PlaylistQueueUtil(position, playlistData, PlaylistActivity.this);
-                queueController.startQueue();
-                musicBound = true;
-            }
-        });
-        */
-
         // Just for feeling
         playlistView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -110,6 +102,94 @@ public class PlaylistActivity extends BaseActivity {
                 return true;
             }
         });
+    }
+
+    @Override
+    protected void initSongbar() {
+
+        // Setup song bar
+        am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        songProgressManager = (SeekBar) findViewById(R.id.progress_bar);
+        songProgressManager.getProgressDrawable().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
+        songProgressManager.getThumb().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
+        songCtrlButton = (ImageButton) findViewById(R.id.play_button);
+        if (am.isMusicActive()) {
+            musicBound = true;
+            songCtrlButton.setBackgroundResource(R.drawable.pause);
+        } else {
+            musicBound = false;
+            songCtrlButton.setBackgroundResource(R.drawable.play);
+        }
+
+        // Setup play button
+        songCtrlButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Detected click on play button.");
+                if (musicBound) {
+                    sendMusicPauseIntent();
+                    songCtrlButton.setBackgroundResource(R.drawable.play);
+                    musicBound = false;
+                } else {
+                    sendMusicStartIntent();
+                    songCtrlButton.setBackgroundResource(R.drawable.pause);
+                    musicBound = true;
+                }
+            }
+        });
+
+        // Setup progress manager
+        songProgressManager.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar sb, int position, boolean userPressed) {
+                if (userPressed) {
+                    sendMusicChangeIntent(position);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Prevents broken music during time change
+                sendMusicPauseIntent();
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Resumes regular music from pause
+                sendMusicStartIntent();
+                songCtrlButton.setBackgroundResource(R.drawable.pause);
+            }
+        });
+
+        // Setup time manager
+        songBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int songPosition = intent.getIntExtra(PlayMusicService.MUSIC_POSITION, 0);
+                int songDuration = intent.getIntExtra(PlayMusicService.MUSIC_DURATION, 0);
+
+                // Set location based on position/duration
+                songProgressManager.setMax(songDuration);
+                songProgressManager.setProgress(songPosition);
+
+                // Set new text in time
+                String songPositionTime = String.format(
+                        Locale.US, "%02d:%02d",
+                        TimeUnit.MILLISECONDS.toMinutes(songPosition),
+                        TimeUnit.MILLISECONDS.toSeconds(songPosition) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(songPosition))
+                );
+
+                String songDurationTime = String.format(
+                        Locale.US, "%02d:%02d",
+                        TimeUnit.MILLISECONDS.toMinutes(songDuration),
+                        TimeUnit.MILLISECONDS.toSeconds(songDuration) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(songDuration))
+                );
+
+                String totalSongTime = songPositionTime + "/" + songDurationTime;
+                TextView songTimeView = (TextView) findViewById(R.id.time_info);
+                songTimeView.setText(totalSongTime);
+            }
+        };
     }
 
     @SuppressLint("NewApi")

@@ -33,7 +33,9 @@
         android:maxLines="1"
         android:ellipsize="end"
         android:layout_toLeftOf="@+id/song_overflow"
-        android:layout_toStartOf="@+id/song_overflow"/>
+        android:layout_toStartOf="@+id/song_overflow"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
 
     <TextView
         android:id="@+id/song_composer"
@@ -49,7 +51,9 @@
         android:maxLines="1"
         android:ellipsize="end"
         android:layout_toLeftOf="@+id/song_overflow"
-        android:layout_toStartOf="@+id/song_overflow" />
+        android:layout_toStartOf="@+id/song_overflow"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
 
     <ImageView
         android:id="@+id/song_overflow"
@@ -59,7 +63,7 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="8dp"
-        android:layout_marginEnd="8dp"/>
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
 
 </RelativeLayout>

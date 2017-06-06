@@ -9,16 +9,6 @@
     android:background="@drawable/wallpaper"
     tools:context="com.lunchareas.divertio.activities.PlaylistActivity">
 
-    <!-- Widget Toolbar -->
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/header_bar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/alt_blue"
-        android:elevation="4dp">
-    </android.support.v7.widget.Toolbar>
-
-
     <!-- Menu drawer (toggle) -->
     <RelativeLayout
         android:id="@+id/menu_drawer_layout"

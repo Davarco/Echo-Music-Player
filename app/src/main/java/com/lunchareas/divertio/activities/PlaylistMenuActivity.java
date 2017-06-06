@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 
-import com.lunchareas.divertio.adapters.PlaylistSelectionAdapter;
 import com.lunchareas.divertio.fragments.AddSongsToPlaylistDialog;
 import com.lunchareas.divertio.fragments.ChangePlaylistTitleDialog;
 import com.lunchareas.divertio.fragments.CreatePlaylistDialog;
@@ -28,15 +27,13 @@ import com.lunchareas.divertio.utils.PlaylistUtil;
 
 import java.util.List;
 
-public class PlaylistMenuActivity extends BaseActivity {
+public class PlaylistMenuActivity extends BaseListActivity {
 
     private static final String TAG = PlaylistMenuActivity.class.getName();
 
     public static final String PLAYLIST_NAME = "playlist_name";
 
-    private int currentPosition;
     private ListView playlistView;
-    private PlaylistSelectionAdapter selectionAdapter;
 
     public PlaylistMenuActivity() {
         super(R.layout.activity_playlist);
@@ -46,20 +43,16 @@ public class PlaylistMenuActivity extends BaseActivity {
     @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void initList() {
 
         // Create playlist
         playlistView = (ListView) findViewById(R.id.playlist_list);
         setMainView();
 
-        // Create the selection adapter
-        if (playlistInfoList == null) {
-            Log.d(TAG, "No playlist list found yet.");
-        }
-        selectionAdapter = new PlaylistSelectionAdapter(this, R.layout.playlist_layout, playlistInfoList);
-
-        // Current position is -1 because no playlist is playing
-        currentPosition = -1;
-
+        // Setup single click listener
         playlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -71,6 +64,7 @@ public class PlaylistMenuActivity extends BaseActivity {
             }
         });
 
+        // Simple long click listener
         playlistView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -79,55 +73,6 @@ public class PlaylistMenuActivity extends BaseActivity {
                 return true;
             }
         });
-
-        /*
-        // Set new mode and add listener
-        playlistView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        playlistView.setMultiChoiceModeListener(new ListView.MultiChoiceModeListener() {
-            @Override
-            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-                // Change the title to num of clicked items
-                Log.d(TAG, "Playlist item checked state changed.");
-                int numChecked = playlistView.getCheckedItemCount();
-                mode.setTitle(numChecked + " Selected");
-                selectionAdapter.toggleSelection(position);
-            }
-
-            @Override
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                // Create the menu for the overflow
-                Log.d(TAG, "Creating playlist action mode.");
-                MenuInflater inflater = getMenuInflater();
-                inflater.inflate(R.menu.playlist_selection_menu, menu);
-                return true;
-            }
-
-            @Override
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                // Set colored and hide bar
-                Log.d(TAG, "Preparing playlist action mode.");
-                playlistView.setAdapter(selectionAdapter);
-                getSupportActionBar().hide();
-                return true;
-            }
-
-            @Override
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                Log.d(TAG, "Playlist action item clicked.");
-                switch (item.getItemId()) {
-
-                }
-                return false;
-            }
-
-            @Override
-            public void onDestroyActionMode(ActionMode mode) {
-                Log.d(TAG, "Playlist action mode destroyed.");
-                selectionAdapter.resetSelection();
-                getSupportActionBar().show();
-            }
-        });
-        */
     }
 
     @SuppressLint("NewApi")
@@ -284,9 +229,5 @@ public class PlaylistMenuActivity extends BaseActivity {
 
     public List<PlaylistData> getPlaylistInfoList() {
         return this.playlistInfoList;
-    }
-
-    private void resetAdapter() {
-        selectionAdapter = new PlaylistSelectionAdapter(this, R.layout.playlist_layout, playlistInfoList);
     }
 }

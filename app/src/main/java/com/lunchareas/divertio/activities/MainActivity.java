@@ -59,14 +59,13 @@ import java.net.URL;
 import java.util.*;
 import java.lang.*;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseListActivity {
 
     private static final String TAG = MainActivity.class.getName();
 
     private final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 501;
     public static final String MUSIC_DIR_NAME = "Divertio";
 
-    private int currentPosition;
     private ListView songView;
     private SongSelectionAdapter selectionAdapter;
     private ProgressDialog progressDialog;
@@ -96,12 +95,19 @@ public class MainActivity extends BaseActivity {
             }
         }
 
+        // Create directory for files if it does not exist
+        File musicFolder = new File(Environment.getExternalStorageDirectory() + File.separator + MUSIC_DIR_NAME);
+        if (!musicFolder.exists()) {
+            musicFolder.mkdir();
+        }
+    }
+
+    @Override
+    protected void initList() {
+
         // Get song info and set the listview
         songView = (ListView) findViewById(R.id.song_list);
         setMainView();
-
-        mainBar.setTitle("Home");
-
 
         // Create the selection adapter
         if (songInfoList == null) {
@@ -109,16 +115,7 @@ public class MainActivity extends BaseActivity {
         }
         selectionAdapter = new SongSelectionAdapter(this, R.layout.song_layout, songInfoList);
 
-        // -1 because no song is playing
-        final AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        currentPosition = -1;
-
-        // Create directory for files if it does not exist
-        File musicFolder = new File(Environment.getExternalStorageDirectory() + File.separator + MUSIC_DIR_NAME);
-        if (!musicFolder.exists()) {
-            musicFolder.mkdir();
-        }
-
+        // Add single click listener
         songView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
