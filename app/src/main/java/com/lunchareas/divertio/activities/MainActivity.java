@@ -7,10 +7,14 @@ import android.app.ActivityManager;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
+import android.os.PowerManager;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,7 +47,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.*;
 import java.lang.*;
 
@@ -58,7 +68,10 @@ public class MainActivity extends BaseActivity {
     private ListView songView;
     private SongSelectionAdapter selectionAdapter;
     private ProgressDialog progressDialog;
+    private ProgressDialog downloadProgress;
+    private DownloadTask downloadTask;
     private Thread downloadThread;
+    private String downloadMusicLink;
 
     public MainActivity() {
         super(R.layout.activity_main);
@@ -363,26 +376,62 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void setMainView() {
-        Log.d(TAG, "Setting main view.");
-        updateSongInfoList();
-        SongAdapter songListAdapter = new SongAdapter(this, songInfoList);
-        songView.setAdapter(songListAdapter);
+        final Activity activity = this;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "Setting main view.");
+                updateSongInfoList();
+                SongAdapter songListAdapter = new SongAdapter(activity, songInfoList);
+                songView.setAdapter(songListAdapter);
+            }
+        });
     }
 
     public void addProgressCircle() {
         // Create a spinning wheel
-        Log.d(TAG, "Adding progress circle.");
-        progressDialog = new ProgressDialog(MainActivity.this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setMessage("Trying to get song...");
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "Adding progress circle.");
+                progressDialog = new ProgressDialog(MainActivity.this);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setMessage("Trying to get song...");
+                progressDialog.setIndeterminate(true);
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.show();
+            }
+        });
     }
 
     public void closeProgressCircle() {
-        Log.d(TAG, "Closing progress circle.");
-        progressDialog.dismiss();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "Closing progress circle.");
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    public void openDownloadProgress() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                downloadProgress = new ProgressDialog(MainActivity.this);
+                downloadProgress.setMessage("Converting song...");
+                downloadProgress.setIndeterminate(true);
+                downloadProgress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                downloadProgress.setCancelable(false);
+                downloadProgress.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        downloadTask.cancel(false);
+                        downloadProgress.dismiss();
+                    }
+                });
+            }
+        });
     }
 
     /*
@@ -390,23 +439,12 @@ public class MainActivity extends BaseActivity {
      */
     public void downloadSong(final String userLink, final String songFileName, final String songName, final String composerName) {
 
-        final Activity activity = this;
-
         downloadThread = new Thread(new Runnable() {
             @Override
             public void run() {
 
-                // Get start time
-                String downloadMusicLink;
-                long start = System.currentTimeMillis();
-
                 // Add spinning circle
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        addProgressCircle();
-                    }
-                });
+                addProgressCircle();
 
                 try {
                     String downloadInfoLink = "https://www.youtubeinmp3.com/download/?video=" + userLink;
@@ -430,90 +468,20 @@ public class MainActivity extends BaseActivity {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            closeProgressCircle();
-                        }
-                    });
+                    closeProgressCircle();
                     createDownloadFailureDialog();
                     return;
                 }
 
-                // Get jsoup time
-                long jsoup = System.currentTimeMillis();
+                // Close the circle, open bar
+                closeProgressCircle();
 
-                // Replace with error dialog if this fails
-                DownloadManager.Request youtubeConvertRequest;
-                try {
-                    // Insert link into api and setup download
-                    youtubeConvertRequest = new DownloadManager.Request(Uri.parse(downloadMusicLink));
-                    youtubeConvertRequest.setDescription("Converting and downloading...");
-                    youtubeConvertRequest.setTitle(songFileName + " Download");
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                        youtubeConvertRequest.allowScanningByMediaScanner();
-                        youtubeConvertRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                    }
-                } catch (Exception e) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            closeProgressCircle();
-                        }
-                    });
-                    createDownloadFailureDialog();
-                    return;
-                }
+                // Open download progress
+                openDownloadProgress();
 
-                // Download into music files directory
-                youtubeConvertRequest.setDestinationInExternalPublicDir("/Divertio", songFileName);
-                DownloadManager youtubeConvertManager = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
-                youtubeConvertManager.enqueue(youtubeConvertRequest);
-
-                // Get download time
-                long download = System.currentTimeMillis();
-
-                // Update database
-                String musicFilePath = Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName;
-                SongDBHandler db = new SongDBHandler(activity);
-                try {
-                    SongData songData = new SongData(songName, musicFilePath, composerName);
-                    Log.d(TAG, "Composer name: " + composerName);
-                    db.addSongData(songData);
-                    Log.d(TAG, "Successfully updated song database.");
-                } catch (Exception e) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            closeProgressCircle();
-                        }
-                    });
-                    Log.d(TAG, "Song database update failure.");
-                }
-
-                // Get end time
-                long end = System.currentTimeMillis();
-
-                // Reset the song list view
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        setMainView();
-                    }
-                });
-
-                // Print times
-                Log.d(TAG, "JSOUP: " + Long.toString(jsoup - start));
-                Log.d(TAG, "Download: " + Long.toString(download - jsoup));
-                Log.d(TAG, "Database: " + Long.toString(end - jsoup));
-
-                // Close progress circle
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        closeProgressCircle();
-                    }
-                });
+                // Download the song
+                downloadTask = new DownloadTask(MainActivity.this, songFileName, songName);
+                downloadTask.execute(downloadMusicLink);
             }
         });
         downloadThread.start();
@@ -534,5 +502,120 @@ public class MainActivity extends BaseActivity {
 
     private void resetAdapter() {
         selectionAdapter = new SongSelectionAdapter(this, R.layout.song_layout, songInfoList);
+    }
+
+    /*
+    Class that manages download.
+     */
+    private class DownloadTask extends AsyncTask<String, Integer, String> {
+
+        private Context context;
+        private String songFileName;
+        private String songName;
+        private PowerManager.WakeLock mWakeLock;
+
+        public DownloadTask(Context context, String songFileName, String songName) {
+            this.context = context;
+            this.songFileName = songFileName;
+            this.songName = songName;
+        }
+
+        @Override
+        protected String doInBackground(String... sUrl) {
+            InputStream input = null;
+            OutputStream output = null;
+            HttpURLConnection connection = null;
+            try {
+                URL url = new URL(sUrl[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+
+                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    return "Server returned HTTP " + connection.getResponseCode()
+                            + " " + connection.getResponseMessage();
+                }
+
+                // Download the file
+                int fileLength = connection.getContentLength();
+                input = connection.getInputStream();
+                output = new FileOutputStream(Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName);
+
+                byte data[] = new byte[4096];
+                long total = 0;
+                int count;
+                while ((count = input.read(data)) != -1) {
+                    if (isCancelled()) {
+                        input.close();
+                        return null;
+                    }
+                    total += count;
+                    if (fileLength > 0) {
+                        publishProgress((int) (total * 100 / fileLength));
+                    }
+                    output.write(data, 0, count);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                    getClass().getName());
+            mWakeLock.acquire();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    downloadProgress.show();
+                }
+            });
+        }
+
+        @Override
+        protected void onProgressUpdate(final Integer... progress) {
+            super.onProgressUpdate(progress);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    downloadProgress.setIndeterminate(false);
+                    downloadProgress.setMax(100);
+                    downloadProgress.setProgress(progress[0]);
+                    if (progress[0] > 0) {
+                        downloadProgress.setMessage("Downloading song...");
+                    }
+                }
+            });
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            mWakeLock.release();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    downloadProgress.dismiss();
+                }
+            });
+
+            // Get metadata
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            retriever.setDataSource(Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName);
+            String artist = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+            System.out.println(artist);
+            String path = Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName;
+            Drawable cover = Drawable.createFromStream(new ByteArrayInputStream(retriever.getEmbeddedPicture()), null);
+
+            // Add to database
+            SongData songData = new SongData(songName, path, artist, cover);
+            SongDBHandler db = new SongDBHandler(getApplicationContext());
+            db.addSongData(songData);
+
+            // Reset the song list view
+            setMainView();
+        }
     }
 }

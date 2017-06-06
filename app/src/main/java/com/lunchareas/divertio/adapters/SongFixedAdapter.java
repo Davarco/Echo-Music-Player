@@ -1,7 +1,6 @@
 package com.lunchareas.divertio.adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lunchareas.divertio.R;
-import com.lunchareas.divertio.activities.BaseActivity;
-import com.lunchareas.divertio.activities.MainActivity;
 import com.lunchareas.divertio.models.SongData;
 
 import java.util.List;
@@ -60,7 +57,7 @@ public class SongFixedAdapter extends BaseAdapter {
 
         // Set the parts equal to the corresponding song
         SongData songItem = songDataList.get(position);
-        songItemIcon.setImageDrawable(songItem.getSongIcon());
+        songItemIcon.setImageDrawable(songItem.getSongCover());
         songItemName.setText(songItem.getSongName());
         songItemArtist.setText(songItem.getSongArtist());
 

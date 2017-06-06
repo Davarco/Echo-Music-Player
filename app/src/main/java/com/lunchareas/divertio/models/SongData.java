@@ -1,21 +1,19 @@
 package com.lunchareas.divertio.models;
 
 import android.graphics.drawable.Drawable;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 public class SongData {
 
     private String songName;
     private String songPath;
     private String songArtist;
-    private Drawable songIcon;
+    private Drawable songCover;
 
     public SongData(String name, String path, String artist, Drawable icon) {
         this.songName = name;
         this.songPath = path;
         this.songArtist = artist;
-        this.songIcon = icon;
+        this.songCover = icon;
     }
 
     public SongData(String name, String path, String artist) {
@@ -41,8 +39,8 @@ public class SongData {
         return this.songArtist;
     }
 
-    public Drawable getSongIcon() {
-        return this.songIcon;
+    public Drawable getSongCover() {
+        return this.songCover;
     }
 
     public void setSongName(String name) {
@@ -57,8 +55,8 @@ public class SongData {
         this.songArtist = artist;
     }
 
-    public void setSongIcon(Drawable icon) {
-        this.songIcon = icon;
+    public void setSongCover(Drawable icon) {
+        this.songCover = icon;
     }
 
     @Override

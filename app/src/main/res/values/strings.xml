@@ -54,11 +54,11 @@
     <!-- Download song dialog strings -->
     <string name="download_confirm">Download</string>
     <string name="download_name_title">File Name:</string>
-    <string name="download_name_hint">(Don\'t include .mp3)</string>
+    <string name="download_name_hint">(Optional)</string>
     <string name="download_link_title">Via Youtube:</string>
     <string name="download_link_hint">Youtube Link</string>
     <string name="download_composer_title">Composer:</string>
-    <string name="download_composer_hint">Name</string>
+    <string name="download_composer_hint">(Optional)</string>
     <string name="download_failure_message">Failed to download.\nCheck internet status and link?</string>
     <string name="download_name_failure_msg">The song name is either empty or already in use.</string>
 

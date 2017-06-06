@@ -8,6 +8,8 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -20,6 +22,8 @@ import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.SongUtil;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,11 +63,18 @@ public class AddSongDialog extends DialogFragment {
             int pathCol = musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA);
 
             do {
-                // Get title and artist
+                // Get data
                 String title = musicCursor.getString(titleCol);
                 String artist = musicCursor.getString(artistCol);
                 String path = musicCursor.getString(pathCol);
-                SongData songData = new SongData(title, path, artist);
+
+                // Get cover from path
+                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                retriever.setDataSource(path);
+                Drawable cover = Drawable.createFromStream(new ByteArrayInputStream(retriever.getEmbeddedPicture()), null);
+
+                // Create the song data
+                SongData songData = new SongData(title, path, artist, cover);
                 Log.d(TAG, songData.toString());
 
                 // Ensure it doesn't already exist
@@ -75,7 +86,7 @@ public class AddSongDialog extends DialogFragment {
         }
 
         // List the songs
-        Log.d(TAG, "Possible songs to add: " + songList.toString());
+        //Log.d(TAG, "Possible songs to add: " + songList.toString());
 
         // Get the names of the songs
         List<String> songNameList = new ArrayList<>();

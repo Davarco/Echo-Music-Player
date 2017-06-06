@@ -29,7 +29,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.lunchareas.divertio.fragments.CreatePlaylistNameFailureDialog;
-import com.lunchareas.divertio.interfaces.MusicConductor;
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
@@ -44,7 +43,7 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 
-public abstract class BaseActivity extends AppCompatActivity implements MusicConductor {
+public abstract class BaseActivity extends AppCompatActivity {
 
     private static final String TAG = BaseActivity.class.getName();
 
@@ -250,12 +249,6 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
         });
     }
 
-    @Override
-    public void sendPlaylistCreateIntent(List<SongData> songList) {
-        // Useless here
-    }
-
-    @Override
     public void sendMusicCreateIntent(String path) {
         musicCreateIntent = new Intent(this, PlayMusicService.class);
         Log.d(TAG, "Passing string to create intent: " + path);
@@ -263,21 +256,18 @@ public abstract class BaseActivity extends AppCompatActivity implements MusicCon
         this.startService(musicCreateIntent);
     }
 
-    @Override
     public void sendMusicStartIntent() {
         musicStartIntent = new Intent(this, PlayMusicService.class);
         musicStartIntent.putExtra(PlayMusicService.MUSIC_START, 0);
         this.startService(musicStartIntent);
     }
 
-    @Override
     public void sendMusicPauseIntent() {
         musicPauseIntent = new Intent(this, PlayMusicService.class);
         musicPauseIntent.putExtra(PlayMusicService.MUSIC_PAUSE, 0);
         this.startService(musicPauseIntent);
     }
 
-    @Override
     public void sendMusicChangeIntent(int position) {
         musicChangeIntent = new Intent(this, PlayMusicService.class);
         musicChangeIntent.putExtra(PlayMusicService.MUSIC_CHANGE, position);

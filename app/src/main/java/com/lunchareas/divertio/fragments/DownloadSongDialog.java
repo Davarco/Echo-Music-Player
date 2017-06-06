@@ -1,19 +1,12 @@
 package com.lunchareas.divertio.fragments;
 
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DownloadManager;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
@@ -23,16 +16,11 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.lunchareas.divertio.R;
-import com.lunchareas.divertio.activities.BaseActivity;
-import com.lunchareas.divertio.models.SongDBHandler;
-import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.activities.MainActivity;
 import com.lunchareas.divertio.utils.SongUtil;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -51,7 +39,6 @@ public class DownloadSongDialog extends DialogFragment {
     private String songName;
     private String userLink;
     private String composerName;
-    private String downloadMusicLink;
     private String songFileName;
     private boolean internetConnectionStatus;
     private SongUtil songUtil;
@@ -70,7 +57,7 @@ public class DownloadSongDialog extends DialogFragment {
 
         AlertDialog.Builder uploadBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        uploadDialogView = inflater.inflate(R.layout.upload_song_dialog, null);
+        uploadDialogView = inflater.inflate(R.layout.download_song_dialog, null);
         uploadBuilder
             .setView(uploadDialogView)
             .setPositiveButton(R.string.download_confirm, new DialogInterface.OnClickListener() {
@@ -141,9 +128,6 @@ public class DownloadSongDialog extends DialogFragment {
         // Only go ahead if there is internet
         if (internetConnectionStatus) {
 
-            // Get start
-            long start = System.currentTimeMillis();
-
             // Get song name and link
             songNameInput = (EditText) uploadDialogView.findViewById(R.id.dialog_upload_name);
             userLinkInput = (EditText) uploadDialogView.findViewById(R.id.dialog_upload_link);
@@ -151,7 +135,17 @@ public class DownloadSongDialog extends DialogFragment {
             songName = songNameInput.getText().toString().trim();
             userLink = userLinkInput.getText().toString().trim();
             composerName = composerNameInput.getText().toString().trim();
-            downloadMusicLink = "";
+
+            // Set defaults
+            if (songName == null || songName.equals("")) {
+                songName = getYoutubeTitle(userLink);
+            }
+
+            if (composerName == null || composerName.equals("")) {
+                composerName = "<Unknown>";
+            }
+
+            // Get download link and file name
             songFileName = songName + ".mp3";
             Log.d(TAG, "Inserted link is " + userLink + ".");
 
@@ -160,48 +154,6 @@ public class DownloadSongDialog extends DialogFragment {
 
                 // Download from activity
                 ((MainActivity) getActivity()).downloadSong(userLink, songFileName, songName, composerName);
-
-                // Using advanced api to get link line\
-                /*
-                try {
-                    String downloadInfoLink = "http://api.youtube6download.top/api/?id=" + getYoutubeId(userLink);
-                    Log.d(TAG, "The link is: " + downloadInfoLink);
-
-                    // Use jsoup to find the download link
-                    Document doc = Jsoup
-                            .connect(downloadInfoLink)
-                            .header("Accept-Encoding", "gzip, deflate")
-                            .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
-                            .maxBodySize(0)
-                            .timeout(6000)
-                            .get();
-                    if (doc == null) {
-                        Log.d(TAG, "The doc is empty.");
-                    } else {
-                        Log.d(TAG, "The doc is not empty.");
-                    }
-                    Elements musicLinkElements = doc.getElementsByClass("q320");
-                    while (musicLinkElements.size() == 0) {
-                        doc = Jsoup
-                                .connect(downloadInfoLink)
-                                .header("Accept-Encoding", "gzip, deflate")
-                                .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36")
-                                .maxBodySize(0)
-                                .timeout(6000)
-                                .get();
-                        musicLinkElements = doc.getElementsByClass("q320");
-                        Thread.sleep(200);
-                    }
-                    downloadMusicLink = musicLinkElements.get(0).attr("href");
-                    Log.d(TAG, "Final Download Link: " + downloadMusicLink);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                */
-
-                // Close progress circle
-                //((MainActivity) getActivity()).closeProgressCircle();
 
             } else {
 
@@ -225,6 +177,17 @@ public class DownloadSongDialog extends DialogFragment {
         }
 
         Log.d(TAG, "Failed to get ID.");
+        return null;
+    }
+
+    private String getYoutubeTitle(String url) {
+        try {
+            URL youtubeURL = new URL("http://www.youtube.com/oembed?url=" + url + "&format=json");
+            return new JSONObject(IOUtils.toString(youtubeURL)).getString("title");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 }

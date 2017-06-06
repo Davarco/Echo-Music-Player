@@ -6,9 +6,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,11 +42,13 @@ public class SongDBHandler extends SQLiteOpenHelper {
     private static final String KEY_NAME = "name";
     private static final String KEY_PATH = "path";
     private static final String KEY_ARTIST = "artist";
+    private static final String KEY_COVER = "cover";
 
     // Numbers correspond to keys
     private static final int KEY_NAME_IDX = 0;
     private static final int KEY_PATH_IDX = 1;
     private static final int KEY_ARTIST_IDX = 2;
+    private static final int KEY_COVER_IDX = 3;
 
     public SongDBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -50,7 +56,8 @@ public class SongDBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_SONG_DATABASE = "CREATE TABLE " + TABLE_SONGS + "(" + KEY_NAME + " TEXT," + KEY_PATH + " TEXT," + KEY_ARTIST + " TEXT" + ")";
+        String CREATE_SONG_DATABASE =
+                "CREATE TABLE " + TABLE_SONGS + "(" + KEY_NAME + " TEXT," + KEY_PATH + " TEXT," + KEY_ARTIST + " TEXT," + KEY_COVER + " TEXT" + ")";
         db.execSQL(CREATE_SONG_DATABASE);
     }
 
@@ -68,10 +75,18 @@ public class SongDBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
+        // Get byte array from image
+        Drawable cover = songData.getSongCover();
+        Bitmap bitmap = ((BitmapDrawable) cover).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] img = stream.toByteArray();
+
         // Insert new data from song data
         values.put(KEY_NAME, songData.getSongName());
         values.put(KEY_PATH, songData.getSongPath());
         values.put(KEY_ARTIST, songData.getSongArtist());
+        values.put(KEY_COVER, img);
         db.insert(TABLE_SONGS, null, values);
         db.close();
     }
@@ -80,12 +95,17 @@ public class SongDBHandler extends SQLiteOpenHelper {
 
         // Get table data
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.query(TABLE_SONGS, new String[] { KEY_NAME, KEY_PATH, KEY_ARTIST }, KEY_NAME + "=?", new String[] { String.valueOf(name) }, null, null, null, null);
+        Cursor cursor = db.query(TABLE_SONGS, new String[] { KEY_NAME, KEY_PATH, KEY_ARTIST, KEY_COVER }, KEY_NAME + "=?", new String[] { String.valueOf(name) }, null, null, null, null);
 
         // Search through database
         if (cursor != null) {
             cursor.moveToFirst();
-            SongData songData = new SongData(cursor.getString(KEY_NAME_IDX), cursor.getString(KEY_PATH_IDX), cursor.getString(KEY_ARTIST_IDX));
+
+            // Get image from byte arr
+            byte[] img = cursor.getBlob(KEY_COVER_IDX);
+            Drawable cover = Drawable.createFromStream(new ByteArrayInputStream(img), null);
+
+            SongData songData = new SongData(cursor.getString(KEY_NAME_IDX), cursor.getString(KEY_PATH_IDX), cursor.getString(KEY_ARTIST_IDX), cover);
             db.close();
             //cursor.close();
             return songData;
@@ -108,7 +128,11 @@ public class SongDBHandler extends SQLiteOpenHelper {
         // Go through database and all to list
         if (cursor.moveToFirst()) {
             do {
-                SongData songData = new SongData(cursor.getString(KEY_NAME_IDX), cursor.getString(KEY_PATH_IDX), cursor.getString(KEY_ARTIST_IDX));
+                // Get image from byte arr
+                byte[] img = cursor.getBlob(KEY_COVER_IDX);
+                Drawable cover = Drawable.createFromStream(new ByteArrayInputStream(img), null);
+
+                SongData songData = new SongData(cursor.getString(KEY_NAME_IDX), cursor.getString(KEY_PATH_IDX), cursor.getString(KEY_ARTIST_IDX), cover);
                 songDataList.add(songData);
             } while (cursor.moveToNext());
         }
@@ -125,10 +149,18 @@ public class SongDBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
+        // Get byte array from image
+        Drawable cover = songData.getSongCover();
+        Bitmap bitmap = ((BitmapDrawable) cover).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] img = stream.toByteArray();
+
         // Update data
         values.put(KEY_NAME, songData.getSongName());
         values.put(KEY_PATH, songData.getSongPath());
         values.put(KEY_ARTIST, songData.getSongArtist());
+        values.put(KEY_COVER, img);
         return db.update(TABLE_SONGS, values, KEY_NAME + " = ?", new String[]{String.valueOf(songData.getSongName())});
     }
 
@@ -139,10 +171,18 @@ public class SongDBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
+        // Get byte array from image
+        Drawable cover = songData.getSongCover();
+        Bitmap bitmap = ((BitmapDrawable) cover).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] img = stream.toByteArray();
+
         // Update data
         values.put(KEY_NAME, songData.getSongName());
         values.put(KEY_PATH, songData.getSongPath());
         values.put(KEY_ARTIST, songData.getSongArtist());
+        values.put(KEY_COVER, img);
         return db.update(TABLE_SONGS, values, KEY_NAME + " = ?", new String[]{String.valueOf(oldName)});
     }
 

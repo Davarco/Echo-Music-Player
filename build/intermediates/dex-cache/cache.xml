@@ -2,13 +2,22 @@
 <items version="2" >
 
     <item
-        is-multidex="false"
-        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/libs/gson-2.3.1.jar"
-        jumboMode="false"
+        is-multidex="true"
+        jar="/home/davidzhang/.android/build-cache/f44fed3fc7a6ae1f9b4ec164b16064ce1a72ddbb/output/jars/classes.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="ecb6e1f8e4b0e84c4b886c2f14a1500caf309757">
-        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/pre-dexed/debug/gson-2.3.1_7dcdcf59faf0b24ebda217d0fc5a53b4ad9f2cde.jar" />
+        sha1="65d086ee9daaf87b5af62ad24471edafa433354c">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_1aabcd31242b3bb85692fcf06d18b663e4d20e86/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/davidzhang/.android/build-cache/d566435ed4a55404e1907df21e2777200a4c97aa/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="8e673cdfadd8f2d98fdb2fda2285c30f6e449782">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_dd24912b11098bdabaa4f262aca3006e36ed6291/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -18,6 +27,15 @@
         revision="25.0.0"
         sha1="ecb6e1f8e4b0e84c4b886c2f14a1500caf309757">
         <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/2/gson-2.3.1_7dcdcf59faf0b24ebda217d0fc5a53b4ad9f2cde/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/davidzhang/.android/build-cache/6f496dc91982f67d2bab10d10687dd3564e1aa5c/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="fef2b3e4b6b1b0e5fe7b69fa137a5fa55a3182ab">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_f18331c4d61ff8e054413c377a8cdf8f2b3b493d/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -38,13 +56,13 @@
         <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/2/jsoup-1.10.1_277ab8e3941831204ec03a9069abc604fa96de35/classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/libs/jsoup-1.10.1.jar"
-        jumboMode="false"
+        is-multidex="true"
+        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/libs/commons-io-2.4.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="6b471012876a440ae746860d80738be2dd104655">
-        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/pre-dexed/debug/jsoup-1.10.1_277ab8e3941831204ec03a9069abc604fa96de35.jar" />
+        sha1="b1b6ea3b7e4aa4f492509a4952029cd8e48019ad">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/2/commons-io-2.4_a6310d27f8faee284acb20f0139488d9bdfa558a/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -52,7 +70,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="43dace7743eaaaac37ba8a46d94acd7acaa86431">
+        sha1="3e2104662e27ade4ce10468f5b9030c939f17dc0">
         <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_9b9cb346219f67886aa8e141101e566f4d05b1f6/classes.dex" />
     </item>
     <item

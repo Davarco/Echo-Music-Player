@@ -14,11 +14,9 @@ import android.widget.TextView;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
-import com.lunchareas.divertio.activities.MainActivity;
 import com.lunchareas.divertio.models.SongData;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class SongSelectionAdapter extends ArrayAdapter<SongData> {
@@ -59,7 +57,7 @@ public class SongSelectionAdapter extends ArrayAdapter<SongData> {
 
         // Set the parts equal to the corresponding song
         SongData songItem = songDataList.get(position);
-        songItemIcon.setImageDrawable(songItem.getSongIcon());
+        songItemIcon.setImageDrawable(songItem.getSongCover());
         songItemName.setText(songItem.getSongName());
         songItemArtist.setText(songItem.getSongArtist());
 

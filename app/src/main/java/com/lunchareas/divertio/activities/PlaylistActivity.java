@@ -258,8 +258,8 @@ public class PlaylistActivity extends BaseActivity {
                 Collections.shuffle(songList);
                 boolean found = false;
                 for (SongData songData : songList) {
-                    if (songData.getSongIcon() != null) {
-                        playlistIcon.setImageDrawable(songData.getSongIcon());
+                    if (songData.getSongCover() != null) {
+                        playlistIcon.setImageDrawable(songData.getSongCover());
                         found = true;
                     }
                 }

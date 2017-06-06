@@ -5,14 +5,13 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.lunchareas.divertio.activities.PlayMusicService;
-import com.lunchareas.divertio.interfaces.MusicConductor;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.models.SongData;
 
 import java.util.Collections;
 import java.util.List;
 
-public class PlaylistQueueUtil implements MusicConductor {
+public class PlaylistQueueUtil {
 
     /*
     TODO: Need to test if playlist manager is actually going through all the songs
@@ -34,7 +33,6 @@ public class PlaylistQueueUtil implements MusicConductor {
         sendPlaylistCreateIntent(songList);
     }
 
-    @Override
     public void sendPlaylistCreateIntent(List<SongData> songList) {
         Log.d(TAG, "Trying to send playlist create intent.");
         Intent playlistCreateIntent = new Intent(context, PlayMusicService.class);
@@ -68,30 +66,12 @@ public class PlaylistQueueUtil implements MusicConductor {
         context.startService(playlistCreateIntent);
     }
 
-    @Override
-    public void sendMusicCreateIntent(String path) {
-        Log.d(TAG, "Trying to send music create intent.");
-        Intent musicCreateIntent = new Intent(context, PlayMusicService.class);
-        Log.d(TAG, "Passing string to create intent: " + path);
-        musicCreateIntent.putExtra(PlayMusicService.MUSIC_CREATE, path);
-        context.startService(musicCreateIntent);
-    }
-
-    @Override
-    public void sendMusicStartIntent() {
-        Intent musicStartIntent = new Intent(context, PlayMusicService.class);
-        musicStartIntent.putExtra(PlayMusicService.MUSIC_START, 0);
-        context.startService(musicStartIntent);
-    }
-
-    @Override
     public void sendMusicPauseIntent() {
         Intent musicPauseIntent = new Intent(context, PlayMusicService.class);
         musicPauseIntent.putExtra(PlayMusicService.MUSIC_PAUSE, 0);
         context.startService(musicPauseIntent);
     }
 
-    @Override
     public void sendMusicChangeIntent(int position) {
         Intent musicChangeIntent = new Intent(context, PlayMusicService.class);
         musicChangeIntent.putExtra(PlayMusicService.MUSIC_CHANGE, position);
