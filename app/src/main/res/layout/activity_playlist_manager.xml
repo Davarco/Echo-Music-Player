@@ -9,6 +9,16 @@
     android:background="@drawable/wallpaper"
     tools:context="com.lunchareas.divertio.activities.PlaylistActivity">
 
+    <!-- Widget Toolbar -->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/header_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/alt_blue"
+        android:elevation="4dp">
+    </android.support.v7.widget.Toolbar>
+
+
     <!-- Menu drawer (toggle) -->
     <RelativeLayout
         android:id="@+id/menu_drawer_layout"
@@ -35,9 +45,12 @@
                         android:alpha="0.7">
                         <ImageView
                             android:id="@+id/playlist_icon"
-                            android:layout_width="156dp"
-                            android:layout_height="156dp"
-                            android:layout_centerInParent="true"/>
+                            android:layout_width="216dp"
+                            android:layout_height="216dp"
+                            android:layout_centerInParent="true"
+                            android:scaleType="fitXY"
+                            android:background="@color/black"
+                            android:padding="2dp"/>
                     </RelativeLayout>
 
                     <ListView

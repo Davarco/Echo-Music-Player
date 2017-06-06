@@ -17,6 +17,7 @@ import android.os.Environment;
 import android.os.PowerManager;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.MenuBuilder;
 import android.util.Log;
 import android.view.ActionMode;
@@ -98,6 +99,9 @@ public class MainActivity extends BaseActivity {
         // Get song info and set the listview
         songView = (ListView) findViewById(R.id.song_list);
         setMainView();
+
+        mainBar.setTitle("Home");
+
 
         // Create the selection adapter
         if (songInfoList == null) {

@@ -17,6 +17,8 @@
         android:textSize="16sp"
         android:gravity="bottom"
         android:text="@string/song_default_name"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textColor="@color/white"/>
 
     <TextView
@@ -30,6 +32,8 @@
         android:textSize="14sp"
         android:gravity="center_vertical"
         android:text="@string/song_default_composer"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textColor="@color/white" />
 
 </RelativeLayout>

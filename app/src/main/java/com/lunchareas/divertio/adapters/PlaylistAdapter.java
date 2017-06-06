@@ -50,16 +50,20 @@ public class PlaylistAdapter extends BaseAdapter {
         final RelativeLayout playlistLayout = (RelativeLayout) playlistInflater.inflate(R.layout.playlist_layout, parentView, false);
 
         // Get the parts of a playlist layout
-        ImageView playlistItemIcon = (ImageView) playlistLayout.findViewById(R.id.playlist_icon);
+        //ImageView playlistItemIcon = (ImageView) playlistLayout.findViewById(R.id.playlist_icon);
         ImageView playlistOverflowIcon = (ImageView) playlistLayout.findViewById(R.id.playlist_overflow);
         TextView playlistItemName = (TextView) playlistLayout.findViewById(R.id.playlist_name);
         TextView playlistItemSize = (TextView) playlistLayout.findViewById(R.id.playlist_size);
 
         // Set the parts equal to the corresponding playlist
         PlaylistData playlistItem = playlistDataList.get(position);
-        playlistItemIcon.setImageDrawable(playlistItem.getPlaylistIcon());
+        //playlistItemIcon.setImageDrawable(playlistItem.getPlaylistIcon());
         playlistItemName.setText(playlistItem.getPlaylistName());
-        playlistItemSize.setText(Integer.toString(playlistItem.getNumSongs()) + " songs");
+        if (playlistItem.getNumSongs() != 1) {
+            playlistItemSize.setText(Integer.toString(playlistItem.getNumSongs()) + " songs");
+        } else {
+            playlistItemSize.setText(Integer.toString(playlistItem.getNumSongs()) + " song");
+        }
 
         // Set on click listener for overflow
         playlistOverflowIcon.setOnClickListener(new View.OnClickListener() {

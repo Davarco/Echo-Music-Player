@@ -68,6 +68,9 @@ public class PlaylistActivity extends BaseActivity {
         playlistIcon = (ImageView) findViewById(R.id.playlist_icon);
         setMainView();
 
+        // Close bar
+        getSupportActionBar().hide();
+
         // Get play button
         playButton = (ImageView) findViewById(R.id.playlist_play_button);
 

@@ -15,11 +15,6 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/alt_blue"
         android:elevation="4dp">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical">
-        </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
     <!-- Menu drawer (toggle) -->
