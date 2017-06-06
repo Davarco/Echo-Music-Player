@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -51,7 +53,7 @@ public class PlaylistAdapter extends BaseAdapter {
 
         // Get the parts of a playlist layout
         //ImageView playlistItemIcon = (ImageView) playlistLayout.findViewById(R.id.playlist_icon);
-        ImageView playlistOverflowIcon = (ImageView) playlistLayout.findViewById(R.id.playlist_overflow);
+        ImageButton playlistOverflowIcon = (ImageButton) playlistLayout.findViewById(R.id.playlist_overflow);
         TextView playlistItemName = (TextView) playlistLayout.findViewById(R.id.playlist_name);
         TextView playlistItemSize = (TextView) playlistLayout.findViewById(R.id.playlist_size);
 

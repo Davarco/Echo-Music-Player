@@ -28,15 +28,13 @@ import com.lunchareas.divertio.utils.PlaylistUtil;
 
 import java.util.List;
 
-public class PlaylistMenuActivity extends BaseActivity {
+public class PlaylistMenuActivity extends BaseListActivity {
 
     private static final String TAG = PlaylistMenuActivity.class.getName();
 
     public static final String PLAYLIST_NAME = "playlist_name";
 
-    private int currentPosition;
     private ListView playlistView;
-    private PlaylistSelectionAdapter selectionAdapter;
 
     public PlaylistMenuActivity() {
         super(R.layout.activity_playlist);
@@ -47,38 +45,10 @@ public class PlaylistMenuActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Create playlist
-        playlistView = (ListView) findViewById(R.id.playlist_list);
-        setMainView();
-
         // Create the selection adapter
         if (playlistInfoList == null) {
             Log.d(TAG, "No playlist list found yet.");
         }
-        selectionAdapter = new PlaylistSelectionAdapter(this, R.layout.playlist_layout, playlistInfoList);
-
-        // Current position is -1 because no playlist is playing
-        currentPosition = -1;
-
-        playlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Log.d(TAG, "Detected click in playlist item in list view, starting modifier.");
-                Intent i = new Intent(view.getContext(), PlaylistActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                i.putExtra(PLAYLIST_NAME, playlistInfoList.get(position).getPlaylistName());
-                startActivity(i);
-            }
-        });
-
-        playlistView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "Detected LONG click on playlist.");
-                showChoiceMenu(view, position);
-                return true;
-            }
-        });
 
         /*
         // Set new mode and add listener
@@ -128,6 +98,36 @@ public class PlaylistMenuActivity extends BaseActivity {
             }
         });
         */
+    }
+
+    @Override
+    protected void initList() {
+
+        // Setup xml
+        playlistView = (ListView) findViewById(R.id.playlist_list);
+        setMainView();
+
+        // Setup single click listener
+        playlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Log.d(TAG, "Detected click in playlist item in list view, starting modifier.");
+                Intent i = new Intent(view.getContext(), PlaylistActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                i.putExtra(PLAYLIST_NAME, playlistInfoList.get(position).getPlaylistName());
+                startActivity(i);
+            }
+        });
+
+        // Setup long click listener
+        playlistView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "Detected LONG click on playlist.");
+                showChoiceMenu(view, position);
+                return true;
+            }
+        });
     }
 
     @SuppressLint("NewApi")
@@ -284,9 +284,5 @@ public class PlaylistMenuActivity extends BaseActivity {
 
     public List<PlaylistData> getPlaylistInfoList() {
         return this.playlistInfoList;
-    }
-
-    private void resetAdapter() {
-        selectionAdapter = new PlaylistSelectionAdapter(this, R.layout.playlist_layout, playlistInfoList);
     }
 }

@@ -37,9 +37,8 @@ public class ChangeSongTitleDialog extends DialogFragment {
         AlertDialog.Builder titleChangeDialogBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         changeTitleView = inflater.inflate(R.layout.change_song_title_dialog, null);
-        titleChangeDialogBuilder
-                .setView(changeTitleView)
-                .setPositiveButton(R.string.dialog_change, new DialogInterface.OnClickListener() {
+        titleChangeDialogBuilder.setView(changeTitleView);
+        titleChangeDialogBuilder.setPositiveButton(R.string.dialog_change, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d(TAG, "Got click on positive title change button.");
@@ -56,8 +55,8 @@ public class ChangeSongTitleDialog extends DialogFragment {
                         // Re-update the view
                         ((BaseActivity) getActivity()).setMainView();
                     }
-                })
-                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                });
+        titleChangeDialogBuilder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d(TAG, "Canceled title change.");

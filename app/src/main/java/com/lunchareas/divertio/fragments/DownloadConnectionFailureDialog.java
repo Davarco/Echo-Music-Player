@@ -14,9 +14,8 @@ public class DownloadConnectionFailureDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder uploadFailureBuilder = new AlertDialog.Builder(getActivity());
-        uploadFailureBuilder
-            .setMessage(R.string.download_failure_message)
-            .setPositiveButton(R.string.dialog_confirm, new DialogInterface.OnClickListener() {
+        uploadFailureBuilder.setMessage(R.string.download_failure_message);
+        uploadFailureBuilder.setPositiveButton(R.string.dialog_confirm, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
 

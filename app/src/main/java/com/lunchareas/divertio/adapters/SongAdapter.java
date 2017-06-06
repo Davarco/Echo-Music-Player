@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -53,7 +55,7 @@ public class SongAdapter extends BaseAdapter {
 
         // Get the parts of a song layout
         //ImageView songItemIcon = (ImageView) songListLayout.findViewById(R.id.song_icon);
-        ImageView songOverflowIcon = (ImageView) songListLayout.findViewById(R.id.song_overflow);
+        ImageButton songOverflowIcon = (ImageButton) songListLayout.findViewById(R.id.song_overflow);
         TextView songItemName = (TextView) songListLayout.findViewById(R.id.song_name);
         TextView songItemArtist = (TextView) songListLayout.findViewById(R.id.song_composer);
 
@@ -64,7 +66,7 @@ public class SongAdapter extends BaseAdapter {
         songItemArtist.setText(songItem.getSongArtist());
 
         // Assertions
-        Log.d(TAG, songItem.toString());
+        //Log.d(TAG, songItem.toString());
 
         // Set on click listener for overflow
         songOverflowIcon.setOnClickListener(new View.OnClickListener() {

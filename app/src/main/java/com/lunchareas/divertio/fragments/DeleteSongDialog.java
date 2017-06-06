@@ -41,9 +41,8 @@ public class DeleteSongDialog extends DialogFragment {
         // Get songs to delete with multiple choice boxes
         selectedSongs = new ArrayList<>();
         AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(getActivity());
-        deleteBuilder
-            .setTitle(R.string.delete_dialog_title)
-            .setMultiChoiceItems(songList, null, new DialogInterface.OnMultiChoiceClickListener() {
+        deleteBuilder.setTitle(R.string.delete_dialog_title);
+        deleteBuilder.setMultiChoiceItems(songList, null, new DialogInterface.OnMultiChoiceClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
                     if (isChecked) {
@@ -54,8 +53,8 @@ public class DeleteSongDialog extends DialogFragment {
                         Log.d(TAG, "Removing position " + position);
                     }
                 }
-            })
-            .setPositiveButton(R.string.delete_confirm, new DialogInterface.OnClickListener() {
+            });
+        deleteBuilder.setPositiveButton(R.string.delete_confirm, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int which) {
                     for (int i = 0; i < selectedSongs.size(); i++) {
@@ -67,8 +66,8 @@ public class DeleteSongDialog extends DialogFragment {
                     }
                     ((BaseActivity) getActivity()).setMainView();
                 }
-            })
-            .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+            });
+        deleteBuilder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int which) {
                     Log.d(TAG, "Canceled deletion...");

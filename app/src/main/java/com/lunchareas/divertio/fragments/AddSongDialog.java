@@ -63,30 +63,33 @@ public class AddSongDialog extends DialogFragment {
             int pathCol = musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA);
 
             do {
-                // Get data
-                String title = musicCursor.getString(titleCol);
-                String artist = musicCursor.getString(artistCol);
-                String path = musicCursor.getString(pathCol);
+                try {
+                    // Get data
+                    String title = musicCursor.getString(titleCol);
+                    String artist = musicCursor.getString(artistCol);
+                    String path = musicCursor.getString(pathCol);
 
-                // Get cover from path
-                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-                retriever.setDataSource(path);
-                byte[] bytes = retriever.getEmbeddedPicture();
-                Drawable cover;
-                if (bytes == null) {
-                    cover = getResources().getDrawable(R.drawable.default_song_icon);
-                } else {
-                    cover = Drawable.createFromStream(new ByteArrayInputStream(bytes), null);
-                }
+                    // Get cover from path
+                    Log.d(TAG, "Path: " + path);
+                    MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                    retriever.setDataSource(path);
+                    byte[] bytes = retriever.getEmbeddedPicture();
+                    Drawable cover;
+                    if (bytes == null) {
+                        cover = getResources().getDrawable(R.drawable.default_song_icon);
+                    } else {
+                        cover = Drawable.createFromStream(new ByteArrayInputStream(bytes), null);
+                    }
 
-                // Create the song data
-                SongData songData = new SongData(title, path, artist, cover);
-                Log.d(TAG, songData.toString());
+                    // Create the song data
+                    SongData songData = new SongData(title, path, artist, cover);
+                    Log.d(TAG, songData.toString());
 
-                // Ensure it doesn't already exist
-                if (!existingSongList.contains(songData)) {
-                    songList.add(songData);
-                }
+                    // Ensure it doesn't already exist
+                    if (!existingSongList.contains(songData)) {
+                        songList.add(songData);
+                    }
+                } catch (Exception ignored) {}
 
             } while (musicCursor.moveToNext());
         }
@@ -103,9 +106,8 @@ public class AddSongDialog extends DialogFragment {
         songNameArr = songNameList.toArray(songNameArr);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder
-                .setTitle(R.string.add_songs_dialog_title)
-                .setMultiChoiceItems(songNameArr, null, new DialogInterface.OnMultiChoiceClickListener() {
+        builder.setTitle(R.string.add_songs_dialog_title);
+        builder.setMultiChoiceItems(songNameArr, null, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (isChecked) {
@@ -116,15 +118,15 @@ public class AddSongDialog extends DialogFragment {
                             Log.d(TAG, "Removing position " + which);
                         }
                     }
-                })
-                .setPositiveButton(R.string.overflow_add_title, new DialogInterface.OnClickListener() {
+                });
+        builder.setPositiveButton(R.string.overflow_add_title, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         addSelectedSongs();
                         ((BaseActivity) activity).setMainView();
                     }
-                })
-                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                });
+        builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d(TAG, "Canceled adding...");

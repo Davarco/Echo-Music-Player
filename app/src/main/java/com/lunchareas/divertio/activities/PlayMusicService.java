@@ -147,40 +147,42 @@ public class PlayMusicService extends Service {
 
     private void beginPlaylistQueue(final String[] songPathList) {
 
-        // Play the first song
-        initMusicPlayer(songPathList[0]);
-        mp.start();
-        musicUpdaterThread.start();
+        try {
+            // Play the first song
+            initMusicPlayer(songPathList[0]);
+            mp.start();
+            musicUpdaterThread.start();
 
-        // Setup for completion
-        idx = 1;
-        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                if (idx < songPathList.length) {
-                    try {
+            // Setup for completion
+            idx = 1;
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    if (idx < songPathList.length) {
+                        try {
 
-                        // Make sure the updater thread waits
-                        musicReset = true;
-                        mp.reset();
-                        mp.setDataSource(songPathList[idx]);
-                        mp.prepare();
-                        mp.start();
-                        musicReset = false;
-                        musicUpdaterThread.start();
+                            // Make sure the updater thread waits
+                            musicReset = true;
+                            mp.reset();
+                            mp.setDataSource(songPathList[idx]);
+                            mp.prepare();
+                            mp.start();
+                            musicReset = false;
+                            musicUpdaterThread.start();
 
-                        //musicUpdaterThread.start();
-                        idx += 1;
-                        Log.d(TAG, "Playing next song, number " + Integer.toString(idx));
+                            //musicUpdaterThread.start();
+                            idx += 1;
+                            Log.d(TAG, "Playing next song, number " + Integer.toString(idx));
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Log.d(TAG, "Finished playlist.");
                     }
-                } else {
-                    Log.d(TAG, "Finished playlist.");
                 }
-            }
-        });
+            });
+        } catch (Exception ignored) {}
     }
 
     @Override

@@ -1,17 +1,21 @@
 package com.lunchareas.divertio.activities;
 
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
@@ -40,6 +44,7 @@ import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.PlaylistUtil;
 import com.lunchareas.divertio.utils.SongUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -48,32 +53,21 @@ import java.util.concurrent.TimeUnit;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+import static com.lunchareas.divertio.activities.MainActivity.MUSIC_DIR_NAME;
+
 
 public abstract class BaseActivity extends AppCompatActivity {
 
     private static final String TAG = BaseActivity.class.getName();
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 501;
 
-    private int id;
+    protected int id;
     protected AudioManager am;
     protected List<SongData> songInfoList;
     protected List<PlaylistData> playlistInfoList;
 
     protected SongUtil songUtil;
     protected PlaylistUtil playlistUtil;
-
-    protected boolean drawerOpen;
-    protected String[] menuItemArr;
-    protected Button menuToggleButton;
-    protected RelativeLayout menuDrawerLayout;
-    protected DrawerLayout menuDrawer;
-    protected ListView menuList;
-
-    protected Toolbar mainBar;
-    protected BroadcastReceiver songBroadcastReceiver;
-    protected SeekBar songProgressManager;
-    protected ImageButton songCtrlButton;
-    protected ImageButton songLastButton;
-    protected ImageButton songNextButton;
 
     protected Intent musicCreateIntent;
     protected Intent musicStartIntent;
@@ -96,6 +90,24 @@ public abstract class BaseActivity extends AppCompatActivity {
     @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
 
+        // External storage permissions
+        if (Build.VERSION.SDK_INT < 23) {
+            Log.d(TAG, "Don't need permissions.");
+        } else {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    Log.d(TAG, "PERMISSIONS: App needs permissions to read external storage.");
+                }
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+            }
+        }
+
+        // Create directory for files if it does not exist
+        File musicFolder = new File(Environment.getExternalStorageDirectory() + File.separator + MUSIC_DIR_NAME);
+        if (!musicFolder.exists()) {
+            musicFolder.mkdir();
+        }
+
         // Add fonts
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
         .setDefaultFontPath("fonts/Lato-Medium.ttf")
@@ -106,7 +118,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(id);
         super.onCreate(savedInstanceState);
         setDisplay();
-        setBackground();
 
         // Get context
         context = getApplicationContext();
@@ -119,160 +130,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         PlaylistDBHandler dbPlaylist = new PlaylistDBHandler(this);
         playlistInfoList = dbPlaylist.getPlaylistDataList();
 
-        // Setup toolbar
-        mainBar = (Toolbar) findViewById(R.id.header_bar);
-        setSupportActionBar(mainBar);
-
-        // Set new font for title
-        /*
-        TextView barTitle = (TextView) findViewById(R.id.bar_title);
-        try {
-            barTitle.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/RobotoSlab-Regular.ttf"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(TAG, "Could not open the font.");
-        }
-        */
-
-        // Get song info
+        // Get all songs
         SongDBHandler db = new SongDBHandler(this);
         songInfoList = db.getSongDataList();
-
-        // Setup song bar
-        am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        songProgressManager = (SeekBar) findViewById(R.id.progress_bar);
-        songProgressManager.getProgressDrawable().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
-        songProgressManager.getThumb().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
-        songCtrlButton = (ImageButton) findViewById(R.id.play_button);
-        //songBarOn = false;
-        if (am.isMusicActive()) {
-            musicBound = true;
-            songCtrlButton.setBackgroundResource(R.drawable.pause);
-        } else {
-            musicBound = false;
-            songCtrlButton.setBackgroundResource(R.drawable.play);
-        }
-
-        // Create the menu drawer
-        menuDrawerLayout = (RelativeLayout) findViewById(R.id.menu_drawer_layout);
-        menuDrawer = (DrawerLayout) findViewById(R.id.menu_drawer);
-        //menuToggleButton = (Button) findViewById(R.id.menu_toggle);
-        menuList = (ListView) findViewById(R.id.menu_drawer_list);
-        menuItemArr = new String[]{"Songs", "Playlists", "Bluetooth", "Settings"};
-        menuList.setAdapter(new ArrayAdapter<>(this, R.layout.menu_drawer_list_item, menuItemArr));
-        menuDrawer.closeDrawers();
-        drawerOpen = false;
-
-        // Add hamburger icon to menu drawer
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, menuDrawer, mainBar, R.string.dialog_confirm, R.string.dialog_cancel);
-        menuDrawer.setDrawerListener(toggle);
-        toggle.setDrawerIndicatorEnabled(true);
-        toggle.syncState();
-        mainBar.setTitleTextColor(Color.WHITE);
-        mainBar.setTitle("Fuck");
-        mainBar.showOverflowMenu();
-
-        songCtrlButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Detected click on play button.");
-                if (musicBound) {
-                    sendMusicPauseIntent();
-                    songCtrlButton.setBackgroundResource(R.drawable.play);
-                    musicBound = false;
-                } else {
-                    sendMusicStartIntent();
-                    songCtrlButton.setBackgroundResource(R.drawable.pause);
-                    musicBound = true;
-                }
-            }
-        });
-
-        /*
-        menuToggleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Detected click on menu button.");
-                if (drawerOpen) {
-                    //menuDrawerLayout.setVisibility(View.GONE);
-                    menuDrawer.closeDrawer(GravityCompat.START);
-                    drawerOpen = false;
-                } else {
-                    //menuDrawerLayout.setVisibility(View.VISIBLE);
-                    menuDrawer.openDrawer(GravityCompat.START);
-                    drawerOpen = true;
-                }
-            }
-        });
-        */
-
-        menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                selectMenuItem(i);
-            }
-        });
-
-        songProgressManager.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar sb, int position, boolean userPressed) {
-                if (userPressed) {
-                    sendMusicChangeIntent(position);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // Prevents broken music during time change
-                sendMusicPauseIntent();
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // Resumes regular music from pause
-                sendMusicStartIntent();
-                songCtrlButton.setBackgroundResource(R.drawable.pause);
-            }
-        });
-
-        songBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                int songPosition = intent.getIntExtra(PlayMusicService.MUSIC_POSITION, 0);
-                int songDuration = intent.getIntExtra(PlayMusicService.MUSIC_DURATION, 0);
-
-                // Set location based on position/duration
-                songProgressManager.setMax(songDuration);
-                songProgressManager.setProgress(songPosition);
-
-                // Set new text in time
-                String songPositionTime = String.format(
-                        Locale.US, "%02d:%02d",
-                        TimeUnit.MILLISECONDS.toMinutes(songPosition),
-                        TimeUnit.MILLISECONDS.toSeconds(songPosition) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(songPosition))
-                );
-
-                String songDurationTime = String.format(
-                        Locale.US, "%02d:%02d",
-                        TimeUnit.MILLISECONDS.toMinutes(songDuration),
-                        TimeUnit.MILLISECONDS.toSeconds(songDuration) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(songDuration))
-                );
-
-                String totalSongTime = songPositionTime + "/" + songDurationTime;
-                TextView songTimeView = (TextView) findViewById(R.id.time_info);
-                songTimeView.setText(totalSongTime);
-            }
-        };
     }
 
-    private void setBackground() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                findViewById(R.id.activity_main).setBackground(getResources().getDrawable(R.drawable.wallpaper));
-            }
-        });
-    }
+    protected abstract void initSongBar();
 
     public void sendMusicCreateIntent(String path) {
         musicCreateIntent = new Intent(this, PlayMusicService.class);
@@ -297,21 +160,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         musicChangeIntent = new Intent(this, PlayMusicService.class);
         musicChangeIntent.putExtra(PlayMusicService.MUSIC_CHANGE, position);
         this.startService(musicChangeIntent);
-    }
-
-    // For broadcast managing from play music service
-    @Override
-    protected void onStart() {
-        super.onStart();
-        LocalBroadcastManager.getInstance(this).registerReceiver((songBroadcastReceiver), new IntentFilter(PlayMusicService.MUSIC_RESULT));
-        Log.d(TAG, "Running start!");
-        menuDrawer.closeDrawers();
-    }
-
-    @Override
-    protected void onStop() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(songBroadcastReceiver);
-        super.onStop();
     }
 
     @Override
@@ -340,12 +188,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void updateSongInfoList() {
-        SongDBHandler db = new SongDBHandler(getApplicationContext());
+        SongDBHandler db = new SongDBHandler(context);
         this.songInfoList = db.getSongDataList();
     }
 
     public void updatePlaylistInfoList() {
-        PlaylistDBHandler db = new PlaylistDBHandler(getApplicationContext());
+        PlaylistDBHandler db = new PlaylistDBHandler(context);
         this.playlistInfoList = db.getPlaylistDataList();
     }
 

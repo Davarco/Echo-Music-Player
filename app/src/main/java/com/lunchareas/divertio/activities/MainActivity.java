@@ -2,23 +2,17 @@ package com.lunchareas.divertio.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.DownloadManager;
-import android.app.ProgressDialog;
+import android.app.*;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.PowerManager;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.widget.*;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Gravity;
@@ -28,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import android.content.*;
+import android.widget.PopupMenu;
 
 import com.lunchareas.divertio.adapters.SongSelectionAdapter;
 import com.lunchareas.divertio.fragments.AddSongDialog;
@@ -59,14 +54,13 @@ import java.net.URL;
 import java.util.*;
 import java.lang.*;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseListActivity {
 
     private static final String TAG = MainActivity.class.getName();
 
     private final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 501;
     public static final String MUSIC_DIR_NAME = "Divertio";
 
-    private int currentPosition;
     private ListView songView;
     private SongSelectionAdapter selectionAdapter;
     private ProgressDialog progressDialog;
@@ -83,25 +77,83 @@ public class MainActivity extends BaseActivity {
     @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
-        // External storage permissions
-        if (Build.VERSION.SDK_INT < 23) {
-            Log.d(TAG, "Don't need permissions.");
-        } else {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    Log.d(TAG, "PERMISSIONS: App needs permissions to read external storage.");
+    @SuppressLint("NewApi")
+    public void showChoiceMenu(View view, final int pos) {
+        final PopupMenu popupMenu = new PopupMenu(context, view, Gravity.END);
+        final SongData selectedSong = songInfoList.get(pos);
+
+        // Handle individual clicks
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.song_rename_title: {
+                        Log.d(TAG, "Renaming song title!");
+
+                        // Create popup for new title
+                        DialogFragment changeSongTitleDialog = new ChangeSongTitleDialog();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(ChangeSongTitleDialog.MUSIC_POS, pos);
+                        changeSongTitleDialog.setArguments(bundle);
+                        changeSongTitleDialog.show(getSupportFragmentManager(), "ChangeTitle");
+
+                        return true;
+                    }
+                    case R.id.song_delete_title: {
+                        Log.d(TAG, "Deleting song!");
+
+                        // Remove song from list and re-update view
+                        SongUtil songController = new SongUtil(context);
+                        songController.deleteSong(selectedSong);
+                        setMainView();
+
+                        return true;
+                    }
+                    case R.id.song_change_artist: {
+                        Log.d(TAG, "Changing song artist!");
+
+                        // Create popup for new artist
+                        DialogFragment changeSongArtistDialog = new ChangeSongArtistDialog();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(ChangeSongArtistDialog.MUSIC_POS, pos);
+                        changeSongArtistDialog.setArguments(bundle);
+                        changeSongArtistDialog.show(getSupportFragmentManager(), "ChangeArtist");
+
+                        return true;
+                    }
+                    case R.id.song_to_playlist: {
+                        Log.d(TAG, "Adding song to playlist!");
+
+                        // Create popup to add to playlist
+                        DialogFragment addToPlaylistDialog = new AddToPlaylistDialog();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(AddToPlaylistDialog.MUSIC_POS, pos);
+                        addToPlaylistDialog.setArguments(bundle);
+                        addToPlaylistDialog.show(getSupportFragmentManager(), "AddSongToPlaylist");
+
+                        return true;
+                    }
+                    default: {
+                        return false;
+                    }
                 }
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
             }
-        }
+        });
+
+        // Create menu and show
+        MenuInflater menuInflater = popupMenu.getMenuInflater();
+        menuInflater.inflate(R.menu.song_choice_menu, popupMenu.getMenu());
+        popupMenu.show();
+    }
+
+    @Override
+    protected void initList() {
 
         // Get song info and set the listview
         songView = (ListView) findViewById(R.id.song_list);
         setMainView();
-
-        mainBar.setTitle("Home");
-
 
         // Create the selection adapter
         if (songInfoList == null) {
@@ -109,16 +161,7 @@ public class MainActivity extends BaseActivity {
         }
         selectionAdapter = new SongSelectionAdapter(this, R.layout.song_layout, songInfoList);
 
-        // -1 because no song is playing
-        final AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        currentPosition = -1;
-
-        // Create directory for files if it does not exist
-        File musicFolder = new File(Environment.getExternalStorageDirectory() + File.separator + MUSIC_DIR_NAME);
-        if (!musicFolder.exists()) {
-            musicFolder.mkdir();
-        }
-
+        // Add play listener
         songView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -130,7 +173,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        // Set new mode and add listener
+        // Add multi-choice listener
         songView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         songView.setMultiChoiceModeListener(new ListView.MultiChoiceModeListener() {
             @Override
@@ -216,75 +259,6 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    @SuppressLint("NewApi")
-    public void showChoiceMenu(View view, final int pos) {
-        final PopupMenu popupMenu = new PopupMenu(context, view, Gravity.END);
-        final SongData selectedSong = songInfoList.get(pos);
-
-        // Handle individual clicks
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.song_rename_title: {
-                        Log.d(TAG, "Renaming song title!");
-
-                        // Create popup for new title
-                        DialogFragment changeSongTitleDialog = new ChangeSongTitleDialog();
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(ChangeSongTitleDialog.MUSIC_POS, pos);
-                        changeSongTitleDialog.setArguments(bundle);
-                        changeSongTitleDialog.show(getSupportFragmentManager(), "ChangeTitle");
-
-                        return true;
-                    }
-                    case R.id.song_delete_title: {
-                        Log.d(TAG, "Deleting song!");
-
-                        // Remove song from list and re-update view
-                        SongUtil songController = new SongUtil(context);
-                        songController.deleteSong(selectedSong);
-                        setMainView();
-
-                        return true;
-                    }
-                    case R.id.song_change_artist: {
-                        Log.d(TAG, "Changing song artist!");
-
-                        // Create popup for new artist
-                        DialogFragment changeSongArtistDialog = new ChangeSongArtistDialog();
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(ChangeSongArtistDialog.MUSIC_POS, pos);
-                        changeSongArtistDialog.setArguments(bundle);
-                        changeSongArtistDialog.show(getSupportFragmentManager(), "ChangeArtist");
-
-                        return true;
-                    }
-                    case R.id.song_to_playlist: {
-                        Log.d(TAG, "Adding song to playlist!");
-
-                        // Create popup to add to playlist
-                        DialogFragment addToPlaylistDialog = new AddToPlaylistDialog();
-                        Bundle bundle = new Bundle();
-                        bundle.putInt(AddToPlaylistDialog.MUSIC_POS, pos);
-                        addToPlaylistDialog.setArguments(bundle);
-                        addToPlaylistDialog.show(getSupportFragmentManager(), "AddSongToPlaylist");
-
-                        return true;
-                    }
-                    default: {
-                        return false;
-                    }
-                }
-            }
-        });
-
-        // Create menu and show
-        MenuInflater menuInflater = popupMenu.getMenuInflater();
-        menuInflater.inflate(R.menu.song_choice_menu, popupMenu.getMenu());
-        popupMenu.show();
-    }
-
     @Override
     protected void setDisplay() {
         setContentView(R.layout.activity_main);
@@ -303,11 +277,6 @@ public class MainActivity extends BaseActivity {
 
     public void createNameFailureDialog(DialogFragment d) {
         d.dismiss();
-        DialogFragment nameFailureDialog = new DownloadNameFailureDialog();
-        nameFailureDialog.show(getSupportFragmentManager(), "NameFailure");
-    }
-
-    public void createNameFailureDialog() {
         DialogFragment nameFailureDialog = new DownloadNameFailureDialog();
         nameFailureDialog.show(getSupportFragmentManager(), "NameFailure");
     }
@@ -448,10 +417,11 @@ public class MainActivity extends BaseActivity {
             @Override
             public void run() {
 
-                // Add spinning circle
-                addProgressCircle();
-
                 try {
+                    // Add spinning circle
+                    addProgressCircle();
+
+                    // Prepare for download
                     String downloadInfoLink = "https://www.youtubeinmp3.com/download/?video=" + userLink;
                     Log.d(TAG, "The link is: " + downloadInfoLink);
 
@@ -462,11 +432,6 @@ public class MainActivity extends BaseActivity {
                             .maxBodySize(0)
                             .timeout(6000)
                             .get();
-                    if (doc == null) {
-                        Log.d(TAG, "The doc is empty.");
-                    } else {
-                        Log.d(TAG, "The doc is not empty.");
-                    }
                     Element musicLinkElement = doc.getElementById("download");
                     downloadMusicLink = "https://youtubeinmp3.com" + musicLinkElement.attr("href");
                     Log.d(TAG, "Final Download Link: " + downloadMusicLink);
@@ -610,7 +575,7 @@ public class MainActivity extends BaseActivity {
             MediaMetadataRetriever retriever = new MediaMetadataRetriever();
             retriever.setDataSource(Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName);
             String artist = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-            System.out.println(artist);
+            songFileName = songFileName.replace("/", "|");
             String path = Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName;
             Drawable cover = Drawable.createFromStream(new ByteArrayInputStream(retriever.getEmbeddedPicture()), null);
 

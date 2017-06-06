@@ -18,9 +18,8 @@ public class CreatePlaylistNameFailureDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder
-                .setMessage(R.string.create_playlist_name_failure_msg)
-                .setPositiveButton(R.string.dialog_confirm, new DialogInterface.OnClickListener() {
+        builder.setMessage(R.string.create_playlist_name_failure_msg);
+        builder.setPositiveButton(R.string.dialog_confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d(TAG, "Detected ok click on name failure.");

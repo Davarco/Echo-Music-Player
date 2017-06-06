@@ -39,9 +39,8 @@ public class ChangeSongArtistDialog extends DialogFragment {
         AlertDialog.Builder artistChangeDialogBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         artistChangeView = inflater.inflate(R.layout.change_song_artist_dialog, null);
-        artistChangeDialogBuilder
-                .setView(artistChangeView)
-                .setPositiveButton(R.string.dialog_change, new DialogInterface.OnClickListener() {
+        artistChangeDialogBuilder.setView(artistChangeView);
+        artistChangeDialogBuilder.setPositiveButton(R.string.dialog_change, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d(TAG, "Got click on positive change artist button.");
@@ -59,8 +58,8 @@ public class ChangeSongArtistDialog extends DialogFragment {
                         // Re-update the view
                         ((BaseActivity) getActivity()).setMainView();
                     }
-                })
-                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                });
+        artistChangeDialogBuilder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d(TAG, "Canceled artist change.");

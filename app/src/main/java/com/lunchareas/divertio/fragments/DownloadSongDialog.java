@@ -56,9 +56,8 @@ public class DownloadSongDialog extends DialogFragment {
         AlertDialog.Builder uploadBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         uploadDialogView = inflater.inflate(R.layout.download_song_dialog, null);
-        uploadBuilder
-            .setView(uploadDialogView)
-            .setPositiveButton(R.string.download_confirm, new DialogInterface.OnClickListener() {
+        uploadBuilder.setView(uploadDialogView);
+        uploadBuilder.setPositiveButton(R.string.download_confirm, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -79,8 +78,8 @@ public class DownloadSongDialog extends DialogFragment {
                     // Run the download procedure
                     executeDialogDownload();
                 }
-            })
-            .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+            });
+        uploadBuilder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Log.d(TAG, "Canceled MP3 upload.");
@@ -139,10 +138,11 @@ public class DownloadSongDialog extends DialogFragment {
 
             // Get download link and file name
             songFileName = songName + ".mp3";
+            songFileName = songFileName.replace('/', '|');
             Log.d(TAG, "Inserted link is " + userLink + ".");
 
             // Catch if name is empty
-            if (!songName.equals("") && !songUtil.nameAlreadyExists(songName)) {
+            if (songName != null && !songName.equals("") && !songUtil.nameAlreadyExists(songName)) {
 
                 // Download from activity
                 ((MainActivity) getActivity()).downloadSong(userLink, songFileName, songName);

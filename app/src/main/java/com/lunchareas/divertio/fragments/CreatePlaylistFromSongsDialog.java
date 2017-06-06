@@ -46,9 +46,8 @@ public class CreatePlaylistFromSongsDialog extends DialogFragment {
         playlistUtil = new PlaylistUtil(getActivity());
 
         AlertDialog.Builder createPlaylistBuilder = new AlertDialog.Builder(getActivity());
-        createPlaylistBuilder
-                .setView(dialogView)
-                .setPositiveButton(R.string.playlist_create_title, new DialogInterface.OnClickListener() {
+        createPlaylistBuilder.setView(dialogView);
+        createPlaylistBuilder.setPositiveButton(R.string.playlist_create_title, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -66,8 +65,8 @@ public class CreatePlaylistFromSongsDialog extends DialogFragment {
                             ((BaseActivity) getActivity()).createPlaylistNameFailureDialog();
                         }
                     }
-                })
-                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                });
+        createPlaylistBuilder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d(TAG, "Canceled creation...");

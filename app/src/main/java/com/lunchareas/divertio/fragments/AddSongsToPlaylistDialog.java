@@ -57,9 +57,8 @@ public class AddSongsToPlaylistDialog extends DialogFragment {
         Log.d(TAG, "Position: " + position);
 
         AlertDialog.Builder addSongsDialogBuilder = new AlertDialog.Builder(getActivity());
-        addSongsDialogBuilder
-                .setTitle(R.string.playlist_add_songs_title)
-                .setMultiChoiceItems(songList, null, new DialogInterface.OnMultiChoiceClickListener() {
+        addSongsDialogBuilder.setTitle(R.string.playlist_add_songs_title);
+        addSongsDialogBuilder.setMultiChoiceItems(songList, null, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (isChecked) {
@@ -70,15 +69,15 @@ public class AddSongsToPlaylistDialog extends DialogFragment {
                             Log.d(TAG, "Removing position " + which);
                         }
                     }
-                })
-                .setPositiveButton(R.string.song_to_playlist_confirm, new DialogInterface.OnClickListener() {
+                });
+        addSongsDialogBuilder.setPositiveButton(R.string.song_to_playlist_confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         addSongsToPlaylist();
                         ((BaseActivity) getActivity()).setMainView();
                     }
-                })
-                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                });
+        addSongsDialogBuilder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d(TAG, "Canceled adding...");

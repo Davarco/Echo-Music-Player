@@ -40,9 +40,8 @@ public class DeletePlaylistDialog extends DialogFragment {
         // Get playlists to delete
         selectedPlaylists = new ArrayList<>();
         AlertDialog.Builder deletePlaylistBuilder = new AlertDialog.Builder(getActivity());
-        deletePlaylistBuilder
-                .setTitle(R.string.delete_playlist_title)
-                .setMultiChoiceItems(playlistList, null, new DialogInterface.OnMultiChoiceClickListener() {
+        deletePlaylistBuilder.setTitle(R.string.delete_playlist_title);
+        deletePlaylistBuilder.setMultiChoiceItems(playlistList, null, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
                         if (isChecked) {
@@ -53,8 +52,8 @@ public class DeletePlaylistDialog extends DialogFragment {
                             Log.d(TAG, "Removing position " + position);
                         }
                     }
-                })
-                .setPositiveButton(R.string.delete_confirm, new DialogInterface.OnClickListener() {
+                });
+        deletePlaylistBuilder.setPositiveButton(R.string.delete_confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
                         for (int i = 0; i < selectedPlaylists.size(); i++) {
@@ -66,8 +65,8 @@ public class DeletePlaylistDialog extends DialogFragment {
                         }
                         ((BaseActivity) getActivity()).setMainView();
                     }
-                })
-                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                });
+        deletePlaylistBuilder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Log.d(TAG, "Canceled deletion...");

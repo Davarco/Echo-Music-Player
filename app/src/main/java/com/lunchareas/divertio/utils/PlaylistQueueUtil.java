@@ -38,7 +38,6 @@ public class PlaylistQueueUtil {
         Intent playlistCreateIntent = new Intent(context, PlayMusicService.class);
 
         // Shuffle list, get first song
-        //SongData firstSong = songList.get(firstPos);
         Collections.shuffle(songList);
 
         /*
