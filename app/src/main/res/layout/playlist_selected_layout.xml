@@ -11,7 +11,7 @@
         android:id="@+id/playlist_icon"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:background="@drawable/default_song_icon"/>
+        android:src="@drawable/default_song_icon"/>
 
     <TextView
         android:id="@+id/playlist_name"

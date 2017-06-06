@@ -43,6 +43,17 @@ public class PlayMusicService extends Service {
             intentCmd = workIntent.getExtras();
         }
 
+        // Start music broadcaster
+        initBroadcaster();
+
+        // Start handler
+        initHandler();
+
+        return START_STICKY;
+    }
+
+    private void initBroadcaster() {
+
         // Create the thread to update progress bar
         musicUpdater = LocalBroadcastManager.getInstance(this);
         musicUpdaterThread = new Thread(new Runnable() {
@@ -83,7 +94,11 @@ public class PlayMusicService extends Service {
                 } while (mp != null && mp.getCurrentPosition() <= songDuration);
             }
         });
+    }
 
+    private void initHandler() {
+
+        // Handle different events
         if (intentCmd != null) {
             if (intentCmd.containsKey(PlayMusicService.MUSIC_CREATE)) {
 
@@ -128,7 +143,6 @@ public class PlayMusicService extends Service {
             }
         }
 
-        return START_STICKY;
     }
 
     private void beginPlaylistQueue(final String[] songPathList) {

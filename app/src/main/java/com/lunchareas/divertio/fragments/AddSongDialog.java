@@ -71,7 +71,13 @@ public class AddSongDialog extends DialogFragment {
                 // Get cover from path
                 MediaMetadataRetriever retriever = new MediaMetadataRetriever();
                 retriever.setDataSource(path);
-                Drawable cover = Drawable.createFromStream(new ByteArrayInputStream(retriever.getEmbeddedPicture()), null);
+                byte[] bytes = retriever.getEmbeddedPicture();
+                Drawable cover;
+                if (bytes == null) {
+                    cover = getResources().getDrawable(R.drawable.default_song_icon);
+                } else {
+                    cover = Drawable.createFromStream(new ByteArrayInputStream(bytes), null);
+                }
 
                 // Create the song data
                 SongData songData = new SongData(title, path, artist, cover);
