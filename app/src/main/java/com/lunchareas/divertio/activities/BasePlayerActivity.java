@@ -31,7 +31,6 @@ public abstract class BasePlayerActivity extends BaseActivity {
 
     protected abstract void initSongbar();
 
-
     @Override
     protected void onStart() {
         super.onStart();

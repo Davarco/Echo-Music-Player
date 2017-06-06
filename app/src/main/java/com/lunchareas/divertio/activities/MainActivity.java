@@ -282,11 +282,6 @@ public class MainActivity extends BaseListActivity {
         popupMenu.show();
     }
 
-    @Override
-    protected void setDisplay() {
-        setContentView(R.layout.activity_main);
-    }
-
     public void createDownloadFailureDialog(DialogFragment d) {
         d.dismiss();
         DialogFragment uploadFailureDialog = new DownloadConnectionFailureDialog();

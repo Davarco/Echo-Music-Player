@@ -90,7 +90,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         // Differs due to different activities
         setContentView(id);
-        setDisplay();
 
         // Get context
         context = getApplicationContext();
@@ -137,14 +136,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
-
-    protected abstract void selectMenuItem(int position);
-
-    protected abstract void setDisplay();
-
-    public abstract void showChoiceMenu(View view, final int pos);
-
-    public abstract boolean onCreateOptionsMenu(Menu menu);
     
     public abstract void setMainView();
 

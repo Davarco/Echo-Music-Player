@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
+import com.lunchareas.divertio.activities.BaseListActivity;
 import com.lunchareas.divertio.models.SongData;
 
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class SongSelectionAdapter extends ArrayAdapter<SongData> {
             songOverflowIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((BaseActivity) activity).showChoiceMenu(songListLayout, position);
+                    ((BaseListActivity) activity).showChoiceMenu(songListLayout, position);
                 }
             });
         }

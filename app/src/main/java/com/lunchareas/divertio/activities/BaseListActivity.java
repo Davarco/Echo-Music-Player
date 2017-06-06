@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -188,6 +189,12 @@ public abstract class BaseListActivity extends BaseActivity {
     }
 
     protected abstract void initList();
+
+    public abstract boolean onCreateOptionsMenu(Menu menu);
+
+    protected abstract void selectMenuItem(int position);
+
+    public abstract void showChoiceMenu(View view, final int pos);
 
     // For broadcast managing from play music service
     @Override

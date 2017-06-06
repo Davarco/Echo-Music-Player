@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
+import com.lunchareas.divertio.activities.BaseListActivity;
 import com.lunchareas.divertio.models.PlaylistData;
 
 import java.util.ArrayList;
@@ -50,14 +51,12 @@ public class PlaylistSelectionAdapter extends ArrayAdapter<PlaylistData> {
         final RelativeLayout playlistListLayout = playlistLayout;
         
         // Get the parts of a playlist layout
-        ImageView playlistItemIcon = (ImageView) playlistLayout.findViewById(R.id.playlist_icon);
         ImageView playlistOverflowIcon = (ImageView) playlistLayout.findViewById(R.id.playlist_overflow);
         TextView playlistItemName = (TextView) playlistLayout.findViewById(R.id.playlist_name);
         TextView playlistItemSize = (TextView) playlistLayout.findViewById(R.id.playlist_size);
 
         // Set the parts equal to the corresponding playlist
         PlaylistData playlistItem = playlistDataList.get(position);
-        playlistItemIcon.setImageDrawable(playlistItem.getPlaylistIcon());
         playlistItemName.setText(playlistItem.getPlaylistName());
         playlistItemSize.setText(playlistItem.getNumSongs());
 
@@ -67,7 +66,7 @@ public class PlaylistSelectionAdapter extends ArrayAdapter<PlaylistData> {
             playlistOverflowIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((BaseActivity) activity).showChoiceMenu(playlistLayout, position);
+                    ((BaseListActivity) activity).showChoiceMenu(playlistLayout, position);
                 }
             });
         }

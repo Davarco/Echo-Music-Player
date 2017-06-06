@@ -153,11 +153,6 @@ public class PlaylistMenuActivity extends BaseListActivity {
     }
 
     @Override
-    protected void setDisplay() {
-        setContentView(R.layout.activity_playlist);
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.playlist_overflow_menu, menu);
