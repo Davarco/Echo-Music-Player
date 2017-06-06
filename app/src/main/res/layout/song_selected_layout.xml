@@ -8,17 +8,10 @@
     android:background="@color/blue"
     android:alpha="0.7">
 
-    <ImageView
-        android:id="@+id/song_icon"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:src="@drawable/default_song_icon"/>
-
     <TextView
         android:id="@+id/song_name"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_toRightOf="@id/song_icon"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
@@ -31,7 +24,6 @@
         android:id="@+id/song_composer"
         android:layout_width="match_parent"
         android:layout_height="24dp"
-        android:layout_toRightOf="@id/song_icon"
         android:layout_below="@id/song_name"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"

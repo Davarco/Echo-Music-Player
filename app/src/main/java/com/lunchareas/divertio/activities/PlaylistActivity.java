@@ -62,10 +62,6 @@ public class PlaylistActivity extends BaseActivity {
         PlaylistDBHandler db = new PlaylistDBHandler(this);
         playlistData = db.getPlaylistData(playlistName);
 
-        // Change title
-        TextView titleText = (TextView) findViewById(R.id.bar_title);
-        titleText.setText(playlistData.getPlaylistName());
-
         // Songs in playlist
         songInfoList = new ArrayList<>();
         playlistView = (ListView) findViewById(R.id.song_list);

@@ -1,27 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/song_overflow_menu"
-        android:orderInCategory="100"
-        android:title=""
-        android:icon="@drawable/overflow_icon"
-        android:layout_height="28dp"
-        android:layout_width="28dp"
-        app:showAsAction="always">
-        <menu>
-            <item
-                android:id="@+id/song_menu_add"
-                android:title="@string/overflow_add_title"/>
-            <item
-                android:id="@+id/song_menu_upload"
-                android:title="@string/overflow_upload_title"/>
-            <item
-                android:id="@+id/song_menu_delete"
-                android:title="@string/overflow_delete_title"/>
-        </menu>
-    </item>
+        android:id="@+id/song_menu_add"
+        android:title="@string/overflow_add_title"/>
+    <item
+        android:id="@+id/song_menu_upload"
+        android:title="@string/overflow_upload_title"/>
+    <item
+        android:id="@+id/song_menu_delete"
+        android:title="@string/overflow_delete_title"/>
+
 </menu>

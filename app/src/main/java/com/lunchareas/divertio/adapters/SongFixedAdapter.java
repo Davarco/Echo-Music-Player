@@ -51,13 +51,13 @@ public class SongFixedAdapter extends BaseAdapter {
         final RelativeLayout songListLayout = (RelativeLayout) songListInflater.inflate(R.layout.song_fixed_layout, parentView, false);
 
         // Get the parts of a song layout
-        ImageView songItemIcon = (ImageView) songListLayout.findViewById(R.id.song_icon);
+        //ImageView songItemIcon = (ImageView) songListLayout.findViewById(R.id.song_icon);
         TextView songItemName = (TextView) songListLayout.findViewById(R.id.song_name);
         TextView songItemArtist = (TextView) songListLayout.findViewById(R.id.song_composer);
 
         // Set the parts equal to the corresponding song
         SongData songItem = songDataList.get(position);
-        songItemIcon.setImageDrawable(songItem.getSongCover());
+        //songItemIcon.setImageDrawable(songItem.getSongCover());
         songItemName.setText(songItem.getSongName());
         songItemArtist.setText(songItem.getSongArtist());
 

@@ -35,10 +35,8 @@ public class DownloadSongDialog extends DialogFragment {
     private View uploadDialogView;
     private EditText songNameInput;
     private EditText userLinkInput;
-    private EditText composerNameInput;
     private String songName;
     private String userLink;
-    private String composerName;
     private String songFileName;
     private boolean internetConnectionStatus;
     private SongUtil songUtil;
@@ -131,18 +129,12 @@ public class DownloadSongDialog extends DialogFragment {
             // Get song name and link
             songNameInput = (EditText) uploadDialogView.findViewById(R.id.dialog_upload_name);
             userLinkInput = (EditText) uploadDialogView.findViewById(R.id.dialog_upload_link);
-            composerNameInput = (EditText) uploadDialogView.findViewById(R.id.dialog_upload_composer);
             songName = songNameInput.getText().toString().trim();
             userLink = userLinkInput.getText().toString().trim();
-            composerName = composerNameInput.getText().toString().trim();
 
             // Set defaults
             if (songName == null || songName.equals("")) {
                 songName = getYoutubeTitle(userLink);
-            }
-
-            if (composerName == null || composerName.equals("")) {
-                composerName = "<Unknown>";
             }
 
             // Get download link and file name
@@ -153,7 +145,7 @@ public class DownloadSongDialog extends DialogFragment {
             if (!songName.equals("") && !songUtil.nameAlreadyExists(songName)) {
 
                 // Download from activity
-                ((MainActivity) getActivity()).downloadSong(userLink, songFileName, songName, composerName);
+                ((MainActivity) getActivity()).downloadSong(userLink, songFileName, songName);
 
             } else {
 

@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.media.AudioManager;
@@ -14,6 +15,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -41,6 +43,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -90,6 +95,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
 
+        // Add fonts
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+        .setDefaultFontPath("fonts/Lato-Medium.ttf")
+        .setFontAttrId(R.attr.fontPath)
+        .build());
+
         // Differs due to different activities
         setContentView(id);
         super.onCreate(savedInstanceState);
@@ -112,6 +123,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setSupportActionBar(mainBar);
 
         // Set new font for title
+        /*
         TextView barTitle = (TextView) findViewById(R.id.bar_title);
         try {
             barTitle.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/RobotoSlab-Regular.ttf"));
@@ -119,6 +131,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             e.printStackTrace();
             Log.e(TAG, "Could not open the font.");
         }
+        */
 
         // Get song info
         SongDBHandler db = new SongDBHandler(this);
@@ -142,12 +155,21 @@ public abstract class BaseActivity extends AppCompatActivity {
         // Create the menu drawer
         menuDrawerLayout = (RelativeLayout) findViewById(R.id.menu_drawer_layout);
         menuDrawer = (DrawerLayout) findViewById(R.id.menu_drawer);
-        menuToggleButton = (Button) findViewById(R.id.menu_toggle);
+        //menuToggleButton = (Button) findViewById(R.id.menu_toggle);
         menuList = (ListView) findViewById(R.id.menu_drawer_list);
         menuItemArr = new String[]{"Songs", "Playlists", "Bluetooth", "Settings"};
         menuList.setAdapter(new ArrayAdapter<>(this, R.layout.menu_drawer_list_item, menuItemArr));
         menuDrawer.closeDrawers();
         drawerOpen = false;
+
+        // Add hamburger icon to menu drawer
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, menuDrawer, mainBar, R.string.dialog_confirm, R.string.dialog_cancel);
+        menuDrawer.setDrawerListener(toggle);
+        toggle.setDrawerIndicatorEnabled(true);
+        toggle.syncState();
+        mainBar.setTitleTextColor(Color.WHITE);
+        mainBar.setTitle("Fuck");
+        mainBar.showOverflowMenu();
 
         songCtrlButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,6 +187,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         });
 
+        /*
         menuToggleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,6 +203,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             }
         });
+        */
 
         menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -287,6 +311,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onStop() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(songBroadcastReceiver);
         super.onStop();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     protected abstract void selectMenuItem(int position);

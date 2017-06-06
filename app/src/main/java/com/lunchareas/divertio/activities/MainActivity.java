@@ -17,6 +17,7 @@ import android.os.Environment;
 import android.os.PowerManager;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v7.view.menu.MenuBuilder;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Gravity;
@@ -437,7 +438,7 @@ public class MainActivity extends BaseActivity {
     /*
     This needs to be entirely rewritten if there is time.
      */
-    public void downloadSong(final String userLink, final String songFileName, final String songName, final String composerName) {
+    public void downloadSong(final String userLink, final String songFileName, final String songName) {
 
         downloadThread = new Thread(new Runnable() {
             @Override
@@ -608,6 +609,11 @@ public class MainActivity extends BaseActivity {
             System.out.println(artist);
             String path = Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName;
             Drawable cover = Drawable.createFromStream(new ByteArrayInputStream(retriever.getEmbeddedPicture()), null);
+
+            // Change artist if empty
+            if (artist == null || artist.equals("")) {
+                artist = "Unknown";
+            }
 
             // Add to database
             SongData songData = new SongData(songName, path, artist, cover);
