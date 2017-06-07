@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
+import com.lunchareas.divertio.activities.BaseListActivity;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.PlaylistUtil;
@@ -75,7 +76,7 @@ public class AddSongsToPlaylistDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         addSongsToPlaylist();
-                        ((BaseActivity) getActivity()).setMainView();
+                        ((BaseListActivity) getActivity()).setMainView();
                     }
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {

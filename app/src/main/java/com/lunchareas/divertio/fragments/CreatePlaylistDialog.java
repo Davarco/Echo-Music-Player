@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import com.lunchareas.divertio.activities.BaseListActivity;
 import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.R;
@@ -143,6 +144,6 @@ public class CreatePlaylistDialog extends DialogFragment {
             Log.e(TAG, "Playlist database update failure.", e);
         }
 
-        ((BaseActivity) activity).setMainView();
+        ((BaseListActivity) activity).setMainView();
     }
 }

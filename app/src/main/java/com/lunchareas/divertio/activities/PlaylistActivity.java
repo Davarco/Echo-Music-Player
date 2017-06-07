@@ -64,22 +64,10 @@ public class PlaylistActivity extends BasePlayerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Get playlist data
-        if (getIntent() == null) {
-            Log.e(TAG, "Cannot find intent?");
-        }
-        if (getIntent().getExtras() == null) {
-            Log.e(TAG, "Extras were not passed to playlist manager.");
-        }
-        String playlistName = getIntent().getStringExtra(PlaylistMenuActivity.PLAYLIST_NAME);
-        PlaylistDBHandler db = new PlaylistDBHandler(this);
-        playlistData = db.getPlaylistData(playlistName);
-
         // Songs in playlist
         songInfoList = new ArrayList<>();
         playlistView = (ListView) findViewById(R.id.song_list);
         playlistBackground = (RelativeLayout) findViewById(R.id.playlist_background);
-        setMainView();
 
         // Get play button
         playButton = (ImageView) findViewById(R.id.playlist_play_button);
@@ -122,13 +110,13 @@ public class PlaylistActivity extends BasePlayerActivity {
         songProgressManager = (SeekBar) findViewById(R.id.progress_bar);
         songProgressManager.getProgressDrawable().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
         songProgressManager.getThumb().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
-        songCtrlButton = (ImageButton) findViewById(R.id.play_button);
+        songCtrlButton = (ImageView) findViewById(R.id.play_button);
         if (am.isMusicActive()) {
             musicBound = true;
-            songCtrlButton.setBackgroundResource(R.drawable.pause);
+            songCtrlButton.setImageResource(R.drawable.pause);
         } else {
             musicBound = false;
-            songCtrlButton.setBackgroundResource(R.drawable.play);
+            songCtrlButton.setImageResource(R.drawable.play);
         }
 
         // Setup play button
@@ -138,11 +126,11 @@ public class PlaylistActivity extends BasePlayerActivity {
                 Log.d(TAG, "Detected click on play button.");
                 if (musicBound) {
                     sendMusicPauseIntent();
-                    songCtrlButton.setBackgroundResource(R.drawable.play);
+                    songCtrlButton.setImageResource(R.drawable.play);
                     musicBound = false;
                 } else {
                     sendMusicStartIntent();
-                    songCtrlButton.setBackgroundResource(R.drawable.pause);
+                    songCtrlButton.setImageResource(R.drawable.pause);
                     musicBound = true;
                 }
             }
@@ -203,7 +191,22 @@ public class PlaylistActivity extends BasePlayerActivity {
     }
 
     @Override
-    public void setMainView() {
+    protected void getDispData() {
+
+        // Get playlist data
+        if (getIntent() == null) {
+            Log.e(TAG, "Cannot find intent?");
+        }
+        if (getIntent().getExtras() == null) {
+            Log.e(TAG, "Extras were not passed to playlist manager.");
+        }
+        String playlistName = getIntent().getStringExtra(PlaylistMenuActivity.PLAYLIST_NAME);
+        PlaylistDBHandler db = new PlaylistDBHandler(this);
+        playlistData = db.getPlaylistData(playlistName);
+    }
+
+    @Override
+    protected void showDispData() {
         Log.d(TAG, "Resetting main view for playlist controller activity.");
         getSongsForActivity();
         SongFixedAdapter songListAdapter = new SongFixedAdapter(this, songInfoList);

@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
+import com.lunchareas.divertio.activities.BaseListActivity;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.PlaylistUtil;
 
@@ -58,7 +59,7 @@ public class CreatePlaylistFromSongsDialog extends DialogFragment {
                         if (!playlistUtil.nameAlreadyExists(playlistName)) {
                             Log.d(TAG, "Playlist name: " + playlistName);
                             playlistUtil.createPlaylist(playlistName, songList);
-                            ((BaseActivity) getActivity()).setMainView();
+                            ((BaseListActivity) getActivity()).setMainView();
                         } else {
 
                             // Create dialog because name is invalid

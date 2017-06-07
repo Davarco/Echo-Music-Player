@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
+import com.lunchareas.divertio.activities.BaseListActivity;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.activities.MainActivity;
 import com.lunchareas.divertio.utils.SongUtil;
@@ -65,7 +66,7 @@ public class DeleteSongDialog extends DialogFragment {
                         SongUtil songController = new SongUtil(getActivity());
                         songController.deleteSong(songData);
                     }
-                    ((BaseActivity) getActivity()).setMainView();
+                    ((BaseListActivity) getActivity()).setMainView();
                 }
             })
             .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {

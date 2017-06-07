@@ -3,60 +3,6 @@
 
     <item
         is-multidex="true"
-        jar="/home/davidzhang/.android/build-cache/f44fed3fc7a6ae1f9b4ec164b16064ce1a72ddbb/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="65d086ee9daaf87b5af62ad24471edafa433354c">
-        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_1aabcd31242b3bb85692fcf06d18b663e4d20e86/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/davidzhang/.android/build-cache/18eb591dafaca8f0834b0a00a43f82f126321f9b/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="052f5f840f21174a3ecf6544130194e2652cbb73">
-        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_2022d31f4145ab6ec082ef0574a88914a3c7b503/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="2684a3496a452076fd848096634aa079aed0463d">
-        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_9b9cb346219f67886aa8e141101e566f4d05b1f6/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/davidzhang/.android/build-cache/420febfc77b19d4ee3a17a93f141ac5d9a23cb19/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="6ef31f1555bb4cc513ec8d52711365a8b89f3600">
-        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_c96e437124f64633b9537fc7b48d09baf379e671/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="510aa6efc159983dfbffa676a0dae37568c0a46f">
-        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_ab0126d49b3a07606b7f1f3c46bebb05fa5e99b3/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/home/davidzhang/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/25.3.1/support-annotations-25.3.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="bf8841d29fa39e077730e7a91222c2ce269fa7c9">
-        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.3.1_4e9bb2fc2d8a53f03bff2cf41d44a92110a1648b/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="/home/davidzhang/.android/build-cache/fe65999a4b17e0d890a3f737b6182f7c905ce0ab/output/jars/classes.jar"
         jumboMode="true"
         optimize="true"
@@ -72,6 +18,15 @@
         revision="25.0.0"
         sha1="150252b33b00274cc868578ade018fda0d43a3eb">
         <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_bf4049b16b87d7452f3c193ddbac33ca7e07803a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/davidzhang/.android/build-cache/f44fed3fc7a6ae1f9b4ec164b16064ce1a72ddbb/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="65d086ee9daaf87b5af62ad24471edafa433354c">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_1aabcd31242b3bb85692fcf06d18b663e4d20e86/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -129,6 +84,15 @@
     </item>
     <item
         is-multidex="true"
+        jar="/home/davidzhang/.android/build-cache/18eb591dafaca8f0834b0a00a43f82f126321f9b/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="052f5f840f21174a3ecf6544130194e2652cbb73">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_2022d31f4145ab6ec082ef0574a88914a3c7b503/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/libs/commons-io-2.4.jar"
         jumboMode="true"
         optimize="true"
@@ -147,6 +111,15 @@
     </item>
     <item
         is-multidex="true"
+        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="2e1e47807ed22d256995a88de2371703534f187f">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_9b9cb346219f67886aa8e141101e566f4d05b1f6/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="/home/davidzhang/.android/build-cache/2c5302ae27ec5beb96e1b9b7083c33036607bb61/output/jars/classes.jar"
         jumboMode="true"
         optimize="true"
@@ -156,12 +129,39 @@
     </item>
     <item
         is-multidex="true"
+        jar="/home/davidzhang/.android/build-cache/420febfc77b19d4ee3a17a93f141ac5d9a23cb19/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="6ef31f1555bb4cc513ec8d52711365a8b89f3600">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_c96e437124f64633b9537fc7b48d09baf379e671/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/libs/gson-2.3.1.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="ecb6e1f8e4b0e84c4b886c2f14a1500caf309757">
         <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/2/gson-2.3.1_7dcdcf59faf0b24ebda217d0fc5a53b4ad9f2cde/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="510aa6efc159983dfbffa676a0dae37568c0a46f">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_ab0126d49b3a07606b7f1f3c46bebb05fa5e99b3/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/davidzhang/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/25.3.1/support-annotations-25.3.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="bf8841d29fa39e077730e7a91222c2ce269fa7c9">
+        <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.3.1_4e9bb2fc2d8a53f03bff2cf41d44a92110a1648b/classes.dex" />
     </item>
     <item
         is-multidex="true"

@@ -165,7 +165,7 @@ public abstract class BaseListActivity extends BaseActivity {
         menuDrawerLayout = (RelativeLayout) findViewById(R.id.menu_drawer_layout);
         menuDrawer = (DrawerLayout) findViewById(R.id.menu_drawer);
         menuList = (ListView) findViewById(R.id.menu_drawer_list);
-        menuItemArr = new String[]{"Songs", "Playlists", "Bluetooth", "Settings"};
+        menuItemArr = new String[]{"Library", "Playlists", "Now Playing"};
         menuList.setAdapter(new ArrayAdapter<>(this, R.layout.menu_drawer_list_item, menuItemArr));
         menuDrawer.closeDrawers();
         drawerOpen = false;
@@ -176,7 +176,6 @@ public abstract class BaseListActivity extends BaseActivity {
         toggle.setDrawerIndicatorEnabled(true);
         toggle.syncState();
         mainBar.setTitleTextColor(Color.WHITE);
-        mainBar.setTitle("Fuck");
         mainBar.showOverflowMenu();
 
         // Set listener
@@ -187,6 +186,8 @@ public abstract class BaseListActivity extends BaseActivity {
             }
         });
     }
+
+    public abstract void setMainView();
 
     protected abstract void initList();
 

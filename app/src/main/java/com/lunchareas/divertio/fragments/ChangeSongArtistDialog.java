@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
+import com.lunchareas.divertio.activities.BaseListActivity;
 import com.lunchareas.divertio.activities.MainActivity;
 import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
@@ -57,7 +58,7 @@ public class ChangeSongArtistDialog extends DialogFragment {
                         songController.changeSongArtist(songData, inputText);
 
                         // Re-update the view
-                        ((BaseActivity) getActivity()).setMainView();
+                        ((BaseListActivity) getActivity()).setMainView();
                     }
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {

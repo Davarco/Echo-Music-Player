@@ -136,8 +136,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
-    
-    public abstract void setMainView();
 
     public List<SongData> getSongInfoList() {
         updateSongInfoList();

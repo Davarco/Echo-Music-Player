@@ -119,11 +119,18 @@ public class MainActivity extends BaseListActivity {
         songView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                // Pause and change icon
                 songCtrlButton.setBackgroundResource(R.drawable.pause);
                 String wantedPath = songInfoList.get(position).getSongPath();
                 sendMusicPauseIntent();
                 sendMusicCreateIntent(wantedPath);
                 musicBound = true;
+
+                // Start new song activity
+                Intent i = new Intent(getApplicationContext(), MusicActivity.class);
+                i.putExtra(MusicActivity.MUSIC_NAME, songInfoList.get(position).getSongName());
+                startActivity(i);
             }
         });
 
