@@ -5,38 +5,25 @@ import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.sax.RootElement;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.adapters.SongFixedAdapter;
-import com.lunchareas.divertio.fragments.ChangeSongArtistDialog;
-import com.lunchareas.divertio.fragments.ChangeSongTitleDialog;
 import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.PlaylistQueueUtil;
-import com.lunchareas.divertio.utils.SongUtil;
 //https://www.youtube.com/watch?v=1UlRIbpYTwk
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,19 +51,12 @@ public class PlaylistActivity extends BasePlayerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Songs in playlist
-        songInfoList = new ArrayList<>();
-        playlistView = (ListView) findViewById(R.id.song_list);
-        playlistBackground = (RelativeLayout) findViewById(R.id.playlist_background);
-
         // Get play button
-        playButton = (ImageView) findViewById(R.id.playlist_play_button);
-
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG,"Playing playlist.");
-                songCtrlButton.setBackgroundResource(R.drawable.pause);
+                songCtrlButton.setImageResource(R.drawable.ic_pause);
                 sendMusicPauseIntent();
                 PlaylistQueueUtil queueUtil = new PlaylistQueueUtil(playlistData, PlaylistActivity.this);
                 queueUtil.startQueue();
@@ -85,6 +65,8 @@ public class PlaylistActivity extends BasePlayerActivity {
         });
 
         // Just for feeling
+        SongFixedAdapter songListAdapter = new SongFixedAdapter(this, songInfoList);
+        playlistView.setAdapter(songListAdapter);
         playlistView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -98,8 +80,12 @@ public class PlaylistActivity extends BasePlayerActivity {
         playlistBackground.getBackground().setAlpha(150);
 
         // Add playlist name
-        playlistViewName = (TextView) findViewById(R.id.playlist_name);
         playlistViewName.setText(playlistData.getPlaylistName());
+    }
+
+    @Override
+    protected void initToolbar() {
+
     }
 
     @Override
@@ -113,10 +99,10 @@ public class PlaylistActivity extends BasePlayerActivity {
         songCtrlButton = (ImageView) findViewById(R.id.play_button);
         if (am.isMusicActive()) {
             musicBound = true;
-            songCtrlButton.setImageResource(R.drawable.pause);
+            songCtrlButton.setImageResource(R.drawable.ic_pause);
         } else {
             musicBound = false;
-            songCtrlButton.setImageResource(R.drawable.play);
+            songCtrlButton.setImageResource(R.drawable.ic_play);
         }
 
         // Setup play button
@@ -126,11 +112,11 @@ public class PlaylistActivity extends BasePlayerActivity {
                 Log.d(TAG, "Detected click on play button.");
                 if (musicBound) {
                     sendMusicPauseIntent();
-                    songCtrlButton.setImageResource(R.drawable.play);
+                    songCtrlButton.setImageResource(R.drawable.ic_play);
                     musicBound = false;
                 } else {
                     sendMusicStartIntent();
-                    songCtrlButton.setImageResource(R.drawable.pause);
+                    songCtrlButton.setImageResource(R.drawable.ic_pause);
                     musicBound = true;
                 }
             }
@@ -155,7 +141,7 @@ public class PlaylistActivity extends BasePlayerActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 // Resumes regular music from pause
                 sendMusicStartIntent();
-                songCtrlButton.setBackgroundResource(R.drawable.pause);
+                songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
             }
         });
 
@@ -191,6 +177,21 @@ public class PlaylistActivity extends BasePlayerActivity {
     }
 
     @Override
+    protected void initViews() {
+
+        // Init views
+        songInfoList = new ArrayList<>();
+        playlistView = (ListView) findViewById(R.id.song_list);
+        playlistBackground = (RelativeLayout) findViewById(R.id.playlist_background);
+
+        // Large red button
+        playButton = (ImageView) findViewById(R.id.playlist_play_button);
+
+        // Large name
+        playlistViewName = (TextView) findViewById(R.id.playlist_name);
+    }
+
+    @Override
     protected void getDispData() {
 
         // Get playlist data
@@ -203,14 +204,12 @@ public class PlaylistActivity extends BasePlayerActivity {
         String playlistName = getIntent().getStringExtra(PlaylistMenuActivity.PLAYLIST_NAME);
         PlaylistDBHandler db = new PlaylistDBHandler(this);
         playlistData = db.getPlaylistData(playlistName);
+        songInfoList = playlistData.getSongList();
     }
 
     @Override
     protected void showDispData() {
         Log.d(TAG, "Resetting main view for playlist controller activity.");
-        getSongsForActivity();
-        SongFixedAdapter songListAdapter = new SongFixedAdapter(this, songInfoList);
-        playlistView.setAdapter(songListAdapter);
 
         // Set center icon image
         if (playlistBackground != null) {
@@ -230,7 +229,7 @@ public class PlaylistActivity extends BasePlayerActivity {
 
                 // Songs had no icon too
                 if (!found) {
-                    Drawable drawable = getResources().getDrawable(R.drawable.default_song_icon);
+                    Drawable drawable = getResources().getDrawable(R.drawable.ic_media_icon);
                     playlistBackground.setBackground(drawable);
                 }
 
@@ -238,11 +237,5 @@ public class PlaylistActivity extends BasePlayerActivity {
                 playlistBackground.setBackground(playlistData.getPlaylistIcon());
             }
         }
-    }
-
-    public void getSongsForActivity() {
-
-        // Get database and song list
-        songInfoList = playlistData.getSongList();
     }
 }

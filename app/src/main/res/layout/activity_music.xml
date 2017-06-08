@@ -64,7 +64,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.8"
-                            android:textSize="24sp"
+                            android:textSize="20sp"
                             android:textColor="@color/white"
                             android:gravity="bottom|center_horizontal"
                             android:text="@string/song_default_name"/>
@@ -73,7 +73,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="0.6"
-                            android:textSize="18sp"
+                            android:textSize="16sp"
                             android:gravity="center_vertical|center_horizontal"
                             android:textColor="@color/white"
                             android:text="@string/song_default_composer"/>
@@ -109,9 +109,9 @@
                             android:id="@+id/play_button"
                             android:layout_width="0dp"
                             android:layout_weight="1.2"
-                            android:layout_height="wrap_content"
+                            android:layout_height="fill_parent"
                             android:layout_gravity="center"
-                            android:src="@drawable/play_filled"/>
+                            android:src="@drawable/ic_play"/>
                         <ImageView
                             android:layout_width="0dp"
                             android:layout_weight="1"
@@ -159,7 +159,9 @@
                 </LinearLayout>
             </FrameLayout>
 
+            <!--
             <ListView
+                android:layout_marginTop="?attr/actionBarSize"
                 android:id="@+id/menu_drawer_list"
                 android:layout_width="240dp"
                 android:layout_height="match_parent"
@@ -169,7 +171,8 @@
                 android:choiceMode="singleChoice"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="0dp"
-                android:background="@color/gray"/>
+                android:background="@android:color/transparent" />
+                -->
         </android.support.v4.widget.DrawerLayout>
     </RelativeLayout>
 

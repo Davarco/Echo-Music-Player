@@ -82,10 +82,10 @@ public abstract class BaseListActivity extends BaseActivity {
         songCtrlButton = (ImageButton) findViewById(R.id.play_button);
         if (am.isMusicActive()) {
             musicBound = true;
-            songCtrlButton.setBackgroundResource(R.drawable.pause);
+            songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
         } else {
             musicBound = false;
-            songCtrlButton.setBackgroundResource(R.drawable.play);
+            songCtrlButton.setBackgroundResource(R.drawable.ic_play);
         }
 
         // Setup play button
@@ -95,11 +95,11 @@ public abstract class BaseListActivity extends BaseActivity {
                 Log.d(TAG, "Detected click on play button.");
                 if (musicBound) {
                     sendMusicPauseIntent();
-                    songCtrlButton.setBackgroundResource(R.drawable.play);
+                    songCtrlButton.setBackgroundResource(R.drawable.ic_play);
                     musicBound = false;
                 } else {
                     sendMusicStartIntent();
-                    songCtrlButton.setBackgroundResource(R.drawable.pause);
+                    songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
                     musicBound = true;
                 }
             }
@@ -124,7 +124,7 @@ public abstract class BaseListActivity extends BaseActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 // Resumes regular music from pause
                 sendMusicStartIntent();
-                songCtrlButton.setBackgroundResource(R.drawable.pause);
+                songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
             }
         });
 

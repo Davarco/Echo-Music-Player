@@ -10,6 +10,7 @@
         <item name="colorPrimary">@color/blue</item>
         <item name="colorAccent">@color/blue</item>
         <item name="android:textColorSecondary">@color/white</item>
+        <item name="windowActionModeOverlay">true</item>
     </style>
 
 </resources>

@@ -4,21 +4,16 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.PowerManager;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.MenuBuilder;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Gravity;
@@ -121,7 +116,7 @@ public class MainActivity extends BaseListActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 // Pause and change icon
-                songCtrlButton.setBackgroundResource(R.drawable.pause);
+                songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
                 String wantedPath = songInfoList.get(position).getSongPath();
                 sendMusicPauseIntent();
                 sendMusicCreateIntent(wantedPath);
@@ -150,7 +145,7 @@ public class MainActivity extends BaseListActivity {
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
                 // Create the menu for the overflow
                 Log.d(TAG, "Creating song action mode.");
-                MenuInflater inflater = getMenuInflater();
+                MenuInflater inflater = mode.getMenuInflater();
                 inflater.inflate(R.menu.song_selection_menu, menu);
                 return true;
             }
@@ -161,7 +156,7 @@ public class MainActivity extends BaseListActivity {
                 Log.d(TAG, "Preparing song action mode.");
                 resetAdapter();
                 songView.setAdapter(selectionAdapter);
-                getSupportActionBar().hide();
+                //getSupportActionBar().hide();
                 return true;
             }
 
@@ -230,6 +225,17 @@ public class MainActivity extends BaseListActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
+                    case R.id.song_play: {
+
+                        // Pause and change icon
+                        songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
+                        String wantedPath = songInfoList.get(pos).getSongPath();
+                        sendMusicPauseIntent();
+                        sendMusicCreateIntent(wantedPath);
+                        musicBound = true;
+
+                        return true;
+                    }
                     case R.id.song_rename_title: {
                         Log.d(TAG, "Renaming song title!");
 

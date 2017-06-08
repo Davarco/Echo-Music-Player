@@ -5,20 +5,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.lunchareas.divertio.R;
-import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 
@@ -46,20 +43,25 @@ public class MusicActivity extends BasePlayerActivity {
     }
 
     @Override
+    protected void initToolbar() {
+
+        // Get toolbar
+        mainBar = (Toolbar) findViewById(R.id.main_bar);
+
+        // Add back icon
+
+    }
+
+    @Override
     protected void initSongbar() {
 
         // Setup song bar
-        am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        songProgressManager = (SeekBar) findViewById(R.id.progress_bar);
-        songProgressManager.getProgressDrawable().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
-        songProgressManager.getThumb().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
-        songCtrlButton = (ImageView) findViewById(R.id.play_button);
         if (am.isMusicActive()) {
             musicBound = true;
-            songCtrlButton.setImageResource(R.drawable.pause_filled);
+            songCtrlButton.setImageResource(R.drawable.ic_pause);
         } else {
             musicBound = false;
-            songCtrlButton.setImageResource(R.drawable.play_filled);
+            songCtrlButton.setImageResource(R.drawable.ic_play);
         }
 
         // Setup play button
@@ -69,11 +71,11 @@ public class MusicActivity extends BasePlayerActivity {
                 Log.d(TAG, "Detected click on play button.");
                 if (musicBound) {
                     sendMusicPauseIntent();
-                    songCtrlButton.setImageResource(R.drawable.play_filled);
+                    songCtrlButton.setImageResource(R.drawable.ic_play);
                     musicBound = false;
                 } else {
                     sendMusicStartIntent();
-                    songCtrlButton.setImageResource(R.drawable.pause_filled);
+                    songCtrlButton.setImageResource(R.drawable.ic_pause);
                     musicBound = true;
                 }
             }
@@ -98,7 +100,7 @@ public class MusicActivity extends BasePlayerActivity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 // Resumes regular music from pause
                 sendMusicStartIntent();
-                songCtrlButton.setImageResource(R.drawable.pause_filled);
+                songCtrlButton.setImageResource(R.drawable.ic_pause);
             }
         });
 
@@ -134,6 +136,24 @@ public class MusicActivity extends BasePlayerActivity {
     }
 
     @Override
+    protected void initViews() {
+
+        // Song bar
+        am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        songProgressManager = (SeekBar) findViewById(R.id.progress_bar);
+        songProgressManager.getProgressDrawable().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
+        songProgressManager.getThumb().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
+        songCtrlButton = (ImageView) findViewById(R.id.play_button);
+
+        // Names
+        songName = (TextView) findViewById(R.id.song_name);
+        artistName = (TextView) findViewById(R.id.song_composer);
+
+        // Cover
+        songCover = (LinearLayout) findViewById(R.id.song_cover);
+    }
+
+    @Override
     protected void getDispData() {
 
         // Get song name
@@ -152,13 +172,10 @@ public class MusicActivity extends BasePlayerActivity {
     protected void showDispData() {
 
         // Change the names
-        songName = (TextView) findViewById(R.id.song_name);
-        artistName = (TextView) findViewById(R.id.song_composer);
         songName.setText(songData.getSongName());
         artistName.setText(songData.getSongArtist());
 
         // Change the picture
-        songCover = (LinearLayout) findViewById(R.id.song_cover);
         songCover.setBackground(songData.getSongCover());
     }
 }

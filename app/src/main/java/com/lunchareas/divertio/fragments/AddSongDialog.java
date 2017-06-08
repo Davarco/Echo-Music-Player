@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
@@ -17,14 +16,12 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 
 import com.lunchareas.divertio.R;
-import com.lunchareas.divertio.activities.BaseActivity;
 import com.lunchareas.divertio.activities.BaseListActivity;
 import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.SongUtil;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +72,7 @@ public class AddSongDialog extends DialogFragment {
                 byte[] bytes = retriever.getEmbeddedPicture();
                 Drawable cover;
                 if (bytes == null) {
-                    cover = getResources().getDrawable(R.drawable.default_song_icon);
+                    cover = getResources().getDrawable(R.drawable.ic_media_icon);
                 } else {
                     cover = Drawable.createFromStream(new ByteArrayInputStream(bytes), null);
                 }

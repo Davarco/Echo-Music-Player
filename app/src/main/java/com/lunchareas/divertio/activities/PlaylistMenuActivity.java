@@ -137,7 +137,7 @@ public class PlaylistMenuActivity extends BaseListActivity {
                         // Create queue controller to run
                         PlaylistQueueUtil queueManager = new PlaylistQueueUtil(playlistData, context);
                         queueManager.startQueue();
-                        songCtrlButton.setBackgroundResource(R.drawable.pause);
+                        songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
                     }
                     default: {
                         return false;

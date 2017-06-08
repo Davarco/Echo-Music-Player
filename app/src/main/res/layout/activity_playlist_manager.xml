@@ -22,15 +22,19 @@
             <FrameLayout
                 android:id="@+id/menu_drawer_frame"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginBottom="48dp">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
                     <RelativeLayout
                         android:id="@+id/playlist_background"
                         android:layout_width="match_parent"
-                        android:layout_height="256dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
                         android:background="@color/black">
                         <TextView
                             android:id="@+id/playlist_name"
@@ -54,28 +58,26 @@
                     <ListView
                         android:id="@+id/song_list"
                         android:background="@android:color/transparent"
-                        android:layout_below="@+id/playlist_background"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="48dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
                         android:divider="#000000"
                         android:dividerHeight="2dp"/>
 
-                    <ImageView
-                        android:id="@+id/playlist_play_button"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:layout_above="@id/song_list"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/activity_horizontal_margin"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                        android:layout_marginBottom="-32dp"
-                        android:src="@drawable/play_filled"/>
-                </RelativeLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/playlist_play_button"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_gravity="center_vertical|right"
+                    android:src="@drawable/ic_play"/>
 
             </FrameLayout>
 
+            <!--
             <ListView
                 android:id="@+id/menu_drawer_list"
                 android:layout_width="240dp"
@@ -87,6 +89,7 @@
                 android:divider="@android:color/transparent"
                 android:dividerHeight="0dp"
                 android:background="@color/gray"/>
+                -->
 
         </android.support.v4.widget.DrawerLayout>
     </RelativeLayout>
@@ -186,7 +189,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/play"/>
+                    android:background="@drawable/ic_play"/>
                 <SeekBar
                     android:id="@+id/progress_bar"
                     android:layout_width="0dp"
@@ -203,4 +206,14 @@
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/main_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent">
+
+    </android.support.v7.widget.Toolbar>
+
 </RelativeLayout>

@@ -5,6 +5,9 @@
     android:orientation="vertical"
     android:layout_width="wrap_content">
     <item
+        android:id="@+id/song_play"
+        android:title="@string/song_play_title"/>
+    <item
         android:id="@+id/song_rename_title"
         android:title="@string/song_rename_title"/>
     <item
