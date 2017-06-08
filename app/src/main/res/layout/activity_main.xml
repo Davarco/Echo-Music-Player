@@ -15,7 +15,7 @@
         android:id="@+id/header_bar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/alt_blue"
+        android:background="@color/blue"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
         app:contentInsetStartWithNavigation="0dp"

@@ -115,7 +115,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="2e1e47807ed22d256995a88de2371703534f187f">
+        sha1="010f5478ae88789d5af1bab97ee9f9fac85a4612">
         <dex dex="/home/davidzhang/AndroidStudioProjects/Divertio/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_9b9cb346219f67886aa8e141101e566f4d05b1f6/classes.dex" />
     </item>
     <item
