@@ -20,6 +20,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.lunchareas.divertio.R;
+import com.lunchareas.divertio.fragments.AddToPlaylistDialog;
 import com.lunchareas.divertio.fragments.ChangeSongArtistDialog;
 import com.lunchareas.divertio.fragments.ChangeSongTitleDialog;
 import com.lunchareas.divertio.models.SongDBHandler;
@@ -39,6 +40,7 @@ public class MusicActivity extends BasePlayerActivity {
     private TextView artistName;
     private ImageView songCover;
     private int position;
+    private String currSong;
 
     public MusicActivity() {
         super(R.layout.activity_music);
@@ -120,6 +122,7 @@ public class MusicActivity extends BasePlayerActivity {
             public void onReceive(Context context, Intent intent) {
                 int songPosition = intent.getIntExtra(PlayMusicService.MUSIC_POSITION, 0);
                 int songDuration = intent.getIntExtra(PlayMusicService.MUSIC_DURATION, 0);
+                currSong = intent.getStringExtra(PlayMusicService.MUSIC_CURR);
 
                 // Set location based on position/duration
                 songProgressManager.setMax(songDuration);
@@ -167,16 +170,17 @@ public class MusicActivity extends BasePlayerActivity {
     protected void getDispData() {
 
         // Get song name
-        if (getIntent() == null) {
-            Log.e(TAG, "Cannot find intent?");
+        if (getIntent().getExtras() != null) {
+            Log.d(TAG, "Extras were passed to now playing manager.");
+            String songName = getIntent().getStringExtra(MUSIC_NAME);
+            SongDBHandler db = new SongDBHandler(this);
+            songData = db.getSongData(songName);
+            position = songInfoList.indexOf(songData);
+        } else {
+            Log.d(TAG, "Extras were not passed to now playing manager.");
+            songData = new SongDBHandler(this).getSongData(currSong);
+            position = songInfoList.indexOf(songData);
         }
-        if (getIntent().getExtras() == null) {
-            Log.e(TAG, "Extras were not passed to playlist manager.");
-        }
-        String playlistName = getIntent().getStringExtra(MUSIC_NAME);
-        SongDBHandler db = new SongDBHandler(this);
-        songData = db.getSongData(playlistName);
-        position = songInfoList.indexOf(songData);
     }
 
     @Override
@@ -224,7 +228,18 @@ public class MusicActivity extends BasePlayerActivity {
             case R.id.song_change_artist: {
                 // Create popup for new artist
                 DialogFragment dialogFragment = new ChangeSongArtistDialog();
-
+                Bundle bundle = new Bundle();
+                bundle.putString(ChangeSongArtistDialog.MUSIC_POS, songData.getSongName());
+                dialogFragment.setArguments(bundle);
+                dialogFragment.show(getSupportFragmentManager(), "ChangeArtist");
+            }
+            case R.id.song_to_playlist: {
+                // Create popup to add to playlist
+                DialogFragment addToPlaylistDialog = new AddToPlaylistDialog();
+                Bundle bundle = new Bundle();
+                bundle.putString(AddToPlaylistDialog.MUSIC_POS, songData.getSongName());
+                addToPlaylistDialog.setArguments(bundle);
+                addToPlaylistDialog.show(getSupportFragmentManager(), "AddSongToPlaylist");
             }
             default:
                 return super.onOptionsItemSelected(item);

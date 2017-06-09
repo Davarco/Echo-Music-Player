@@ -117,9 +117,9 @@ public class MainActivity extends BaseListActivity {
 
                 // Pause and change icon
                 songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
-                String wantedPath = songInfoList.get(position).getSongPath();
+                String name = songInfoList.get(position).getSongName();
                 sendMusicPauseIntent();
-                sendMusicCreateIntent(wantedPath);
+                sendMusicCreateIntent(name);
                 musicBound = true;
 
                 // Start new song activity
@@ -230,9 +230,9 @@ public class MainActivity extends BaseListActivity {
 
                         // Pause and change icon
                         songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
-                        String wantedPath = songInfoList.get(pos).getSongPath();
+                        String name = songInfoList.get(pos).getSongName();
                         sendMusicPauseIntent();
-                        sendMusicCreateIntent(wantedPath);
+                        sendMusicCreateIntent(name);
                         musicBound = true;
 
                         return true;
@@ -265,7 +265,7 @@ public class MainActivity extends BaseListActivity {
                         // Create popup for new artist
                         DialogFragment changeSongArtistDialog = new ChangeSongArtistDialog();
                         Bundle bundle = new Bundle();
-                        bundle.putInt(ChangeSongArtistDialog.MUSIC_POS, pos);
+                        bundle.putString(ChangeSongArtistDialog.MUSIC_POS, songInfoList.get(pos).getSongName());
                         changeSongArtistDialog.setArguments(bundle);
                         changeSongArtistDialog.show(getSupportFragmentManager(), "ChangeArtist");
 
@@ -277,7 +277,7 @@ public class MainActivity extends BaseListActivity {
                         // Create popup to add to playlist
                         DialogFragment addToPlaylistDialog = new AddToPlaylistDialog();
                         Bundle bundle = new Bundle();
-                        bundle.putInt(AddToPlaylistDialog.MUSIC_POS, pos);
+                        bundle.putString(AddToPlaylistDialog.MUSIC_POS, songInfoList.get(pos).getSongName());
                         addToPlaylistDialog.setArguments(bundle);
                         addToPlaylistDialog.show(getSupportFragmentManager(), "AddSongToPlaylist");
 
@@ -364,6 +364,13 @@ public class MainActivity extends BaseListActivity {
             case 1: {
                 Log.d(TAG, "Starting new activity - playlist.");
                 Intent i = new Intent(this, PlaylistMenuActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
+                break;
+            }
+            case 2: {
+                Log.d(TAG, "Starting new activity - now playing.");
+                Intent i = new Intent(this, MusicActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
                 break;

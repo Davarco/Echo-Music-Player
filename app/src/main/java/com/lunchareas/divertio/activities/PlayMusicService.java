@@ -12,7 +12,8 @@ import android.os.PowerManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import java.io.IOException;
+import com.lunchareas.divertio.models.SongDBHandler;
+import com.lunchareas.divertio.models.SongData;
 
 public class PlayMusicService extends Service {
 
@@ -21,6 +22,8 @@ public class PlayMusicService extends Service {
     public static final String MUSIC_RESULT = "REQUEST_PROCESSED";
     public static final String MUSIC_POSITION = "POSITION";
     public static final String MUSIC_DURATION = "DURATION";
+    public static final String MUSIC_CURR = "CURR_SONG";
+
     public static final String MUSIC_CREATE = "CREATE";
     public static final String MUSIC_CHANGE = "CHANGE";
     public static final String MUSIC_START = "START";
@@ -36,6 +39,8 @@ public class PlayMusicService extends Service {
     private LocalBroadcastManager musicUpdater;
     private Thread musicUpdaterThread;
     private boolean musicReset;
+    private String currSong;
+    private SongData songData;
 
     @Override
     public int onStartCommand(Intent workIntent, int flags, int startId) {
@@ -82,11 +87,11 @@ public class PlayMusicService extends Service {
                     Intent songIntent = new Intent(MUSIC_RESULT);
                     songIntent.putExtra(MUSIC_POSITION, songPosition);
                     songIntent.putExtra(MUSIC_DURATION, songDuration);
-                    musicUpdater.sendBroadcast(songIntent);
+                    songIntent.putExtra(MUSIC_CURR, currSong);
                     musicUpdater.sendBroadcast(songIntent);
 
                     try {
-                        Thread.sleep(200);
+                        Thread.sleep(100);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -104,7 +109,9 @@ public class PlayMusicService extends Service {
 
                 // Create single song
                 Log.d(TAG, "Create Key: " + intentCmd.getString(PlayMusicService.MUSIC_CREATE));
-                initMusicPlayer(intentCmd.getString(PlayMusicService.MUSIC_CREATE));
+                currSong = intentCmd.getString(PlayMusicService.MUSIC_CREATE);
+                songData = new SongDBHandler(this).getSongData(currSong);
+                initMusicPlayer();
                 mp.start();
                 musicUpdaterThread.start();
 
@@ -145,10 +152,14 @@ public class PlayMusicService extends Service {
 
     }
 
-    private void beginPlaylistQueue(final String[] songPathList) {
+    private void beginPlaylistQueue(final String[] songNameList) {
+
+        // Get original song
+        currSong = songNameList[0];
+        songData = new SongDBHandler(this).getSongData(currSong);
 
         // Play the first song
-        initMusicPlayer(songPathList[0]);
+        initMusicPlayer();
         mp.start();
         musicUpdaterThread.start();
 
@@ -157,13 +168,17 @@ public class PlayMusicService extends Service {
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                if (idx < songPathList.length) {
+                if (idx < songNameList.length) {
                     try {
+
+                        // Set new song
+                        currSong = songNameList[idx];
+                        songData = new SongDBHandler(getApplicationContext()).getSongData(currSong);
 
                         // Make sure the updater thread waits
                         musicReset = true;
                         mp.reset();
-                        mp.setDataSource(songPathList[idx]);
+                        mp.setDataSource(songData.getSongPath());
                         mp.prepare();
                         mp.start();
                         musicReset = false;
@@ -196,22 +211,12 @@ public class PlayMusicService extends Service {
         musicUpdaterThread.interrupt();
     }
 
-    public void initMusicPlayer(String path) {
-        if (path != null) {
-            mp = MediaPlayer.create(this, Uri.parse(path));
-            if (mp != null) {
-                mp.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
-                mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            }
+    public void initMusicPlayer() {
+        mp = MediaPlayer.create(this, Uri.parse(songData.getSongPath()));
+        if (mp != null) {
+            mp.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
+            mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
         }
-    }
-
-    public Thread getMusicUpdaterThread() {
-        return musicUpdaterThread;
-    }
-
-    public void setMusicUpdaterThread (Thread t) {
-        musicUpdaterThread = t;
     }
 
     /*

@@ -2,34 +2,13 @@ package com.lunchareas.divertio.activities;
 
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.lunchareas.divertio.fragments.CreatePlaylistNameFailureDialog;
 import com.lunchareas.divertio.R;
@@ -42,8 +21,6 @@ import com.lunchareas.divertio.utils.SongUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -109,10 +86,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public abstract void setMainView();
 
-    public void sendMusicCreateIntent(String path) {
+    public void sendMusicCreateIntent(String name) {
         musicCreateIntent = new Intent(this, PlayMusicService.class);
-        Log.d(TAG, "Passing string to create intent: " + path);
-        musicCreateIntent.putExtra(PlayMusicService.MUSIC_CREATE, path);
+        Log.d(TAG, "Passing string to create intent: " + name);
+        musicCreateIntent.putExtra(PlayMusicService.MUSIC_CREATE, name);
         this.startService(musicCreateIntent);
     }
 

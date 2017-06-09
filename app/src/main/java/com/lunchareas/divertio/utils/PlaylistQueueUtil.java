@@ -55,14 +55,14 @@ public class PlaylistQueueUtil {
         */
 
         // Create the string array
-        String[] songPathList = new String[songList.size()];
+        String[] songNameList = new String[songList.size()];
         for (int i = 0; i < songList.size(); i++) {
-            songPathList[i] = songList.get(i).getSongPath();
-            Log.d(TAG, "Song " + Integer.toString(i+1) + ": " + songPathList[i]);
+            songNameList[i] = songList.get(i).getSongName();
+            Log.d(TAG, "Song " + Integer.toString(i+1) + ": " + songNameList[i]);
         }
 
         // Send the intent
-        playlistCreateIntent.putExtra(PlayMusicService.PLAYLIST_CREATE, songPathList);
+        playlistCreateIntent.putExtra(PlayMusicService.PLAYLIST_CREATE, songNameList);
         context.startService(playlistCreateIntent);
     }
 

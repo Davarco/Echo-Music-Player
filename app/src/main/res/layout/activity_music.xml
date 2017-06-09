@@ -56,18 +56,18 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1"
+                        android:layout_weight="0.75"
                         android:orientation="vertical">
                         <TextView
                             android:id="@+id/song_name"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:layout_weight="0.8"
-                            android:textSize="22sp"
+                            android:layout_weight="1"
+                            android:textSize="18sp"
                             android:maxLines="1"
                             android:ellipsize="end"
                             android:textColor="@color/white"
-                            android:gravity="bottom|center_horizontal"
+                            android:gravity="center_vertical|center_horizontal"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
                             android:layout_marginRight="@dimen/activity_horizontal_margin"
                             android:text="@string/song_default_name"/>
@@ -75,8 +75,8 @@
                             android:id="@+id/song_composer"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:layout_weight="0.6"
-                            android:textSize="18sp"
+                            android:layout_weight="1"
+                            android:textSize="14sp"
                             android:layout_marginLeft="@dimen/activity_horizontal_margin"
                             android:layout_marginRight="@dimen/activity_horizontal_margin"
                             android:maxLines="1"
@@ -92,7 +92,7 @@
                         android:id="@+id/button_panel"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1"
+                        android:layout_weight="0.75"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_marginRight="@dimen/activity_horizontal_margin"
                         android:gravity="center_horizontal">
@@ -115,7 +115,7 @@
                         <ImageView
                             android:id="@+id/play_button"
                             android:layout_width="0dp"
-                            android:layout_weight="1.2"
+                            android:layout_weight="1"
                             android:layout_height="fill_parent"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_play"/>

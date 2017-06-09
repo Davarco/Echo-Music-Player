@@ -3,17 +3,15 @@ package com.lunchareas.divertio.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
-import android.view.LayoutInflater;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
-import com.lunchareas.divertio.activities.MainActivity;
 import com.lunchareas.divertio.models.PlaylistData;
+import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.PlaylistUtil;
 
@@ -24,12 +22,12 @@ public class AddToPlaylistDialog extends DialogFragment {
 
     private static final String TAG = AddToPlaylistDialog.class.getName();
 
-    private static final int NOT_FOUND = -1;
+    private static final String NOT_FOUND = "FAIL";
 
     public static final String MUSIC_POS = "music_pos";
     public static final String MUSIC_LIST = "music_list";
 
-    private int position;
+    private String name;
     private List<Integer> songPosList;
     private List<PlaylistData> playlistInfoList;
     private List<String> playlistInfoTemp;
@@ -55,12 +53,12 @@ public class AddToPlaylistDialog extends DialogFragment {
         playlistList = playlistInfoTemp.toArray(playlistList);
         selectedPlaylists = new ArrayList<>();
 
-        // Get correct position
+        // Get correct name
         if (getArguments().containsKey(MUSIC_POS)) {
-            position = (int) getArguments().get(MUSIC_POS);
-            Log.d(TAG, "Position: " + position);
+            name = (String) getArguments().get(MUSIC_POS);
+            Log.d(TAG, "Position: " + name);
         } else {
-            position = NOT_FOUND;
+            name = NOT_FOUND;
         }
 
         // Or get the list of songs
@@ -79,10 +77,10 @@ public class AddToPlaylistDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (isChecked) {
                             selectedPlaylists.add(which);
-                            Log.d(TAG, "Adding position " + which);
+                            Log.d(TAG, "Adding name " + which);
                         } else {
                             selectedPlaylists.remove(Integer.valueOf(which));
-                            Log.d(TAG, "Removing position " + which);
+                            Log.d(TAG, "Removing name " + which);
                         }
                     }
                 })
@@ -108,8 +106,8 @@ public class AddToPlaylistDialog extends DialogFragment {
         List<SongData> baseSongList = ((BaseActivity) getActivity()).getSongInfoList();
 
         // Position exists
-        if (position != NOT_FOUND) {
-            songData = baseSongList.get(position);
+        if (name != NOT_FOUND) {
+            songData = new SongDBHandler(getActivity()).getSongData(name);
 
             // Add song to playlists
             PlaylistUtil playlistUtil = new PlaylistUtil(getActivity());

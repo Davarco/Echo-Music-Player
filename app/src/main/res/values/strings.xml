@@ -21,6 +21,7 @@
 
     <!-- Song choice menu strings -->
     <string name="song_play_title">Play</string>
+    <string name="song_share_title">Share</string>
     <string name="song_rename_title">Rename Song</string>
     <string name="song_delete_title">Delete Song</string>
     <string name="song_change_artist">Change Artist</string>

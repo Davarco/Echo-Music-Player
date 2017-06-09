@@ -13,8 +13,6 @@ import android.widget.EditText;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
-import com.lunchareas.divertio.activities.BaseListActivity;
-import com.lunchareas.divertio.activities.MainActivity;
 import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.SongUtil;
@@ -28,14 +26,14 @@ public class ChangeSongArtistDialog extends DialogFragment {
     private View artistChangeView;
     private EditText newArtistInput;
     private String inputText;
-    private int position;
+    private String name;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        // Get correct position
-        position = (int) getArguments().get(MUSIC_POS);
-        Log.d(TAG, "Position: " + position);
+        // Get correct name
+        name = (String) getArguments().get(MUSIC_POS);
+        Log.d(TAG, "Position: " + name);
 
         AlertDialog.Builder artistChangeDialogBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -47,13 +45,12 @@ public class ChangeSongArtistDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d(TAG, "Got click on positive change artist button.");
 
-
                         // Get user input
                         newArtistInput = (EditText) artistChangeView.findViewById(R.id.change_song_artist_hint);
                         inputText = newArtistInput.getText().toString();
 
                         // Change the song name
-                        SongData songData = ((BaseActivity) getActivity()).getSongInfoList().get(position);
+                        SongData songData = new SongDBHandler(getActivity()).getSongData(name);
                         SongUtil songController = new SongUtil(getActivity());
                         songController.changeSongArtist(songData, inputText);
 

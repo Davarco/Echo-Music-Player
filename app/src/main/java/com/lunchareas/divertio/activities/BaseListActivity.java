@@ -195,11 +195,11 @@ public abstract class BaseListActivity extends BaseActivity {
 
     public abstract void showChoiceMenu(View view, final int pos);
 
-    // For broadcast managing from play music service
     @Override
     protected void onStart() {
         super.onStart();
         LocalBroadcastManager.getInstance(this).registerReceiver((songBroadcastReceiver), new IntentFilter(PlayMusicService.MUSIC_RESULT));
+        menuDrawer.closeDrawers();
         Log.d(TAG, "Running start!");
     }
 
