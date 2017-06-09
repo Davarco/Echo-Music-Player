@@ -2,7 +2,8 @@
                        Version 3, 29 June 2007
 
  Copyright (C) 2017 by David Zhang
- Everyone is permitted to copy and distribute verbatim copies
+
+Everyone is permitted to copy and distribute verbatim copies
  of this license document, but changing it is not allowed.
 
                             Preamble
