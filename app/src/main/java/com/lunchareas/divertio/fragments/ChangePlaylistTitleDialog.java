@@ -56,7 +56,7 @@ public class ChangePlaylistTitleDialog extends DialogFragment {
                         playlistUtil.changePlaylistName(playlistData, inputText);
 
                         // Re-update the view
-                        ((BaseListActivity) getActivity()).setMainView();
+                        ((BaseActivity) getActivity()).setMainView();
                     }
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {

@@ -1,5 +1,6 @@
 package com.lunchareas.divertio.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
@@ -13,7 +14,7 @@ import android.widget.EditText;
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
 import com.lunchareas.divertio.activities.BaseListActivity;
-import com.lunchareas.divertio.activities.MainActivity;
+import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.SongUtil;
 
@@ -26,14 +27,14 @@ public class ChangeSongTitleDialog extends DialogFragment {
     private View changeTitleView;
     private EditText newTitleInput;
     private String inputText;
-    private int position;
+    private String name;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        // Get correct position
-        position = (int) getArguments().get(MUSIC_POS);
-        Log.d(TAG, "Position: " + position);
+        // Get correct name
+        name = (String) getArguments().get(MUSIC_POS);
+        Log.d(TAG, "Position: " + name);
 
         AlertDialog.Builder titleChangeDialogBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -50,12 +51,12 @@ public class ChangeSongTitleDialog extends DialogFragment {
                         inputText = newTitleInput.getText().toString();
 
                         // Change the song name
-                        SongData songData = ((BaseActivity) getActivity()).getSongInfoList().get(position);
+                        SongData songData = new SongDBHandler(getActivity()).getSongData(name);
                         SongUtil songController = new SongUtil(getActivity());
                         songController.changeSongName(songData, inputText);
 
                         // Re-update the view
-                        ((BaseListActivity) getActivity()).setMainView();
+                        ((BaseActivity) getActivity()).setMainView();
                     }
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {

@@ -59,7 +59,7 @@ public class CreatePlaylistFromSongsDialog extends DialogFragment {
                         if (!playlistUtil.nameAlreadyExists(playlistName)) {
                             Log.d(TAG, "Playlist name: " + playlistName);
                             playlistUtil.createPlaylist(playlistName, songList);
-                            ((BaseListActivity) getActivity()).setMainView();
+                            ((BaseActivity) getActivity()).setMainView();
                         } else {
 
                             // Create dialog because name is invalid

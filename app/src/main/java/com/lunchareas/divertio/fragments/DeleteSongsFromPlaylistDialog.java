@@ -66,7 +66,7 @@ public class DeleteSongsFromPlaylistDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         removeSongsFromPlaylist();
-                        ((BaseListActivity) getActivity()).setMainView();
+                        ((BaseActivity) getActivity()).setMainView();
                     }
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {

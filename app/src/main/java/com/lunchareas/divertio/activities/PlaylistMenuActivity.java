@@ -58,9 +58,9 @@ public class PlaylistMenuActivity extends BaseListActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Log.d(TAG, "Detected click in playlist item in list view, starting modifier.");
                 Intent i = new Intent(view.getContext(), PlaylistActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 i.putExtra(PLAYLIST_NAME, playlistInfoList.get(position).getPlaylistName());
                 startActivity(i);
+                finish();
             }
         });
 
@@ -115,7 +115,7 @@ public class PlaylistMenuActivity extends BaseListActivity {
                         Bundle bundle = new Bundle();
                         bundle.putInt(AddSongsToPlaylistDialog.MUSIC_POS, pos);
                         addSongsDialog.setArguments(bundle);
-                        addSongsDialog.show(getSupportFragmentManager(), "AddSongsToPlaylist");
+                        addSongsDialog.show(getSupportFragmentManager(), "AddSongsToPlaylist:");
 
                         return true;
                     }
@@ -148,14 +148,14 @@ public class PlaylistMenuActivity extends BaseListActivity {
 
         // Show popup menu
         MenuInflater inflater = popupMenu.getMenuInflater();
-        inflater.inflate(R.menu.playlist_choice_menu, popupMenu.getMenu());
+        inflater.inflate(R.menu.playlist_menu_choice_menu, popupMenu.getMenu());
         popupMenu.show();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.playlist_overflow_menu, menu);
+        menuInflater.inflate(R.menu.playlist_menu_overflow_menu, menu);
         return true;
     }
 
@@ -189,8 +189,8 @@ public class PlaylistMenuActivity extends BaseListActivity {
             case 0: {
                 Log.d(TAG, "Starting new activity - main.");
                 Intent i = new Intent(this, MainActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
+                finish();
                 break;
             }
             case 1: {

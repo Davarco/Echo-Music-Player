@@ -187,8 +187,6 @@ public abstract class BaseListActivity extends BaseActivity {
         });
     }
 
-    public abstract void setMainView();
-
     protected abstract void initList();
 
     public abstract boolean onCreateOptionsMenu(Menu menu);

@@ -66,7 +66,7 @@ public class DeleteSongDialog extends DialogFragment {
                         SongUtil songController = new SongUtil(getActivity());
                         songController.deleteSong(songData);
                     }
-                    ((BaseListActivity) getActivity()).setMainView();
+                    ((BaseActivity) getActivity()).setMainView();
                 }
             })
             .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {

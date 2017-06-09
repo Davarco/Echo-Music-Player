@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/overflow"
+        android:title=""
+        android:icon="@drawable/ic_overflow_black"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/song_selection_delete"
+                android:title="@string/song_selection_delete_title"
+                app:showAsAction="never"/>
+            <item
+                android:id="@+id/song_selection_create_playlist"
+                android:title="@string/song_selection_create_playlist_title"
+                app:showAsAction="never"/>
+            <item
+                android:id="@+id/song_selection_add_to"
+                android:title="@string/song_selection_add_to_playlist_title"
+                app:showAsAction="never"/>
+            <item
+                android:id="@+id/song_selection_reset"
+                android:title="@string/song_selection_reset_title"
+                app:showAsAction="never"/>
+        </menu>
+    </item>
+</menu>

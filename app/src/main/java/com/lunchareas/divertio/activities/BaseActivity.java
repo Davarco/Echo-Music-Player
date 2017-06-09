@@ -107,6 +107,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         songInfoList = db.getSongDataList();
     }
 
+    public abstract void setMainView();
+
     public void sendMusicCreateIntent(String path) {
         musicCreateIntent = new Intent(this, PlayMusicService.class);
         Log.d(TAG, "Passing string to create intent: " + path);

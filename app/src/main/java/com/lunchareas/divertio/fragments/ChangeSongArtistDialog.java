@@ -58,7 +58,7 @@ public class ChangeSongArtistDialog extends DialogFragment {
                         songController.changeSongArtist(songData, inputText);
 
                         // Re-update the view
-                        ((BaseListActivity) getActivity()).setMainView();
+                        ((BaseActivity) getActivity()).setMainView();
                     }
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {

@@ -65,7 +65,7 @@ public class DeletePlaylistDialog extends DialogFragment {
                             PlaylistDBHandler db = new PlaylistDBHandler(getActivity());
                             db.deletePlaylistData(playlistData);
                         }
-                        ((BaseListActivity) getActivity()).setMainView();
+                        ((BaseActivity) getActivity()).setMainView();
                     }
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {

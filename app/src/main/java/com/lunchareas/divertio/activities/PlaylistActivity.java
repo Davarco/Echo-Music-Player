@@ -9,7 +9,9 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -41,6 +43,7 @@ public class PlaylistActivity extends BasePlayerActivity {
     private RelativeLayout playlistBackground;
     private PlaylistData playlistData;
     private TextView playlistViewName;
+    private int position;
 
     public PlaylistActivity() {
         super(R.layout.activity_playlist_manager);
@@ -86,6 +89,14 @@ public class PlaylistActivity extends BasePlayerActivity {
     @Override
     protected void initToolbar() {
 
+        // Get toolbar
+        mainBar = (Toolbar) findViewById(R.id.main_bar);
+        setSupportActionBar(mainBar);
+
+        // Add back icon
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
     }
 
     @Override
@@ -205,6 +216,14 @@ public class PlaylistActivity extends BasePlayerActivity {
         PlaylistDBHandler db = new PlaylistDBHandler(this);
         playlistData = db.getPlaylistData(playlistName);
         songInfoList = playlistData.getSongList();
+        position = playlistInfoList.indexOf(playlistData);
+    }
+
+    @Override
+    protected void updateDispData() {
+
+        // Get the new playlist data
+        playlistData = getPlaylistInfoList().get(position);
     }
 
     @Override
@@ -236,6 +255,20 @@ public class PlaylistActivity extends BasePlayerActivity {
             } else {
                 playlistBackground.setBackground(playlistData.getPlaylistIcon());
             }
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: {
+                Intent i = new Intent(this, PlaylistMenuActivity.class);
+                startActivity(i);
+                finish();
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

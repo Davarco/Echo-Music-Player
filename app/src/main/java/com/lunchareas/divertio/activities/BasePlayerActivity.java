@@ -62,44 +62,18 @@ public abstract class BasePlayerActivity extends BaseActivity {
 
     protected abstract void initViews();
 
+    protected abstract void initSongbar();
+
     protected abstract void getDispData();
+
+    protected abstract void updateDispData();
 
     protected abstract void showDispData();
 
-    protected abstract void initSongbar();
-
-    protected void selectMenuItem(int position) {
-        Log.d(TAG, "Detected click on position " + position + ".");
-        switch (position) {
-            case 0: {
-                Log.d(TAG, "Starting new activity - main!");
-                Intent i = new Intent(this, MainActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);
-                break;
-            }
-            case 1: {
-                Log.d(TAG, "Starting new activity - playlist.");
-                Intent i = new Intent(this, PlaylistMenuActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(i);
-                break;
-            }
-            /*
-            case 2: {
-                Log.d(TAG, "Starting new activity - bluetooth.");
-                Intent i = new Intent(this, BluetoothActivity.class);
-                startActivity(i);
-                break;
-            }
-            case 3: {
-                Log.d(TAG, "Starting new activity - settings.");
-                Intent i = new Intent(this, SettingsActivity.class);
-                startActivity(i);
-                break;
-            }
-            */
-        }
+    @Override
+    public void setMainView() {
+        updateDispData();
+        showDispData();
     }
 
     @Override

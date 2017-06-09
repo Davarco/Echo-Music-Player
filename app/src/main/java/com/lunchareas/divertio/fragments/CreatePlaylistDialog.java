@@ -144,6 +144,6 @@ public class CreatePlaylistDialog extends DialogFragment {
             Log.e(TAG, "Playlist database update failure.", e);
         }
 
-        ((BaseListActivity) activity).setMainView();
+        ((BaseActivity) activity).setMainView();
     }
 }

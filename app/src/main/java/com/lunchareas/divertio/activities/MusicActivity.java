@@ -7,8 +7,12 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,6 +20,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.lunchareas.divertio.R;
+import com.lunchareas.divertio.fragments.ChangeSongArtistDialog;
+import com.lunchareas.divertio.fragments.ChangeSongTitleDialog;
 import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 
@@ -31,7 +37,8 @@ public class MusicActivity extends BasePlayerActivity {
     private SongData songData;
     private TextView songName;
     private TextView artistName;
-    private LinearLayout songCover;
+    private ImageView songCover;
+    private int position;
 
     public MusicActivity() {
         super(R.layout.activity_music);
@@ -47,9 +54,12 @@ public class MusicActivity extends BasePlayerActivity {
 
         // Get toolbar
         mainBar = (Toolbar) findViewById(R.id.main_bar);
+        setSupportActionBar(mainBar);
 
         // Add back icon
-
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
     }
 
     @Override
@@ -150,7 +160,7 @@ public class MusicActivity extends BasePlayerActivity {
         artistName = (TextView) findViewById(R.id.song_composer);
 
         // Cover
-        songCover = (LinearLayout) findViewById(R.id.song_cover);
+        songCover = (ImageView) findViewById(R.id.song_cover);
     }
 
     @Override
@@ -166,6 +176,14 @@ public class MusicActivity extends BasePlayerActivity {
         String playlistName = getIntent().getStringExtra(MUSIC_NAME);
         SongDBHandler db = new SongDBHandler(this);
         songData = db.getSongData(playlistName);
+        position = songInfoList.indexOf(songData);
+    }
+
+    @Override
+    protected void updateDispData() {
+
+        // Get the new data
+        songData = getSongInfoList().get(position);
     }
 
     @Override
@@ -176,6 +194,40 @@ public class MusicActivity extends BasePlayerActivity {
         artistName.setText(songData.getSongArtist());
 
         // Change the picture
-        songCover.setBackground(songData.getSongCover());
+        songCover.setImageDrawable(songData.getSongCover());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.music_overflow_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: {
+                Intent i = new Intent(this, MainActivity.class);
+                startActivity(i);
+                finish();
+                return true;
+            }
+            case R.id.song_rename_title: {
+                // Create popup for new title
+                DialogFragment changeSongTitleDialog = new ChangeSongTitleDialog();
+                Bundle bundle = new Bundle();
+                bundle.putString(ChangeSongTitleDialog.MUSIC_POS, songData.getSongName());
+                changeSongTitleDialog.setArguments(bundle);
+                changeSongTitleDialog.show(getSupportFragmentManager(), "ChangeTitle");
+            }
+            case R.id.song_change_artist: {
+                // Create popup for new artist
+                DialogFragment dialogFragment = new ChangeSongArtistDialog();
+
+            }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

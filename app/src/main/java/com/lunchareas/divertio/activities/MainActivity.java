@@ -126,6 +126,7 @@ public class MainActivity extends BaseListActivity {
                 Intent i = new Intent(getApplicationContext(), MusicActivity.class);
                 i.putExtra(MusicActivity.MUSIC_NAME, songInfoList.get(position).getSongName());
                 startActivity(i);
+                finish();
             }
         });
 
@@ -146,7 +147,7 @@ public class MainActivity extends BaseListActivity {
                 // Create the menu for the overflow
                 Log.d(TAG, "Creating song action mode.");
                 MenuInflater inflater = mode.getMenuInflater();
-                inflater.inflate(R.menu.song_selection_menu, menu);
+                inflater.inflate(R.menu.main_selection_menu, menu);
                 return true;
             }
 
@@ -242,7 +243,7 @@ public class MainActivity extends BaseListActivity {
                         // Create popup for new title
                         DialogFragment changeSongTitleDialog = new ChangeSongTitleDialog();
                         Bundle bundle = new Bundle();
-                        bundle.putInt(ChangeSongTitleDialog.MUSIC_POS, pos);
+                        bundle.putString(ChangeSongTitleDialog.MUSIC_POS, songInfoList.get(pos).getSongName());
                         changeSongTitleDialog.setArguments(bundle);
                         changeSongTitleDialog.show(getSupportFragmentManager(), "ChangeTitle");
 
@@ -291,7 +292,7 @@ public class MainActivity extends BaseListActivity {
 
         // Create menu and show
         MenuInflater menuInflater = popupMenu.getMenuInflater();
-        menuInflater.inflate(R.menu.song_choice_menu, popupMenu.getMenu());
+        menuInflater.inflate(R.menu.main_choice_menu, popupMenu.getMenu());
         popupMenu.show();
     }
 
@@ -320,7 +321,7 @@ public class MainActivity extends BaseListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.song_overflow_menu, menu);
+        menuInflater.inflate(R.menu.main_overflow_menu, menu);
         return true;
     }
 

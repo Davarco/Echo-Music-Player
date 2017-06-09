@@ -76,7 +76,7 @@ public class AddSongsToPlaylistDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         addSongsToPlaylist();
-                        ((BaseListActivity) getActivity()).setMainView();
+                        ((BaseActivity) getActivity()).setMainView();
                     }
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
