@@ -71,7 +71,7 @@ public class AddToPlaylistDialog extends DialogFragment {
 
         AlertDialog.Builder addSongDialogBuilder = new AlertDialog.Builder(getActivity());
         addSongDialogBuilder
-                .setTitle(R.string.song_to_playlist_title)
+                .setCustomTitle(getActivity().getLayoutInflater().inflate(R.layout.title_add_songs_to_playlist, null))
                 .setMultiChoiceItems(playlistList, null, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {

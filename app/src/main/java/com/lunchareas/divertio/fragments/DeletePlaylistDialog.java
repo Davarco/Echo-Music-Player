@@ -42,7 +42,7 @@ public class DeletePlaylistDialog extends DialogFragment {
         selectedPlaylists = new ArrayList<>();
         AlertDialog.Builder deletePlaylistBuilder = new AlertDialog.Builder(getActivity());
         deletePlaylistBuilder
-                .setTitle(R.string.delete_playlist_title)
+                .setCustomTitle(getActivity().getLayoutInflater().inflate(R.layout.title_delete_playlist, null))
                 .setMultiChoiceItems(playlistList, null, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {

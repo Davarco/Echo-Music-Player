@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.adapters.SongFixedAdapter;
 import com.lunchareas.divertio.fragments.AddSongsToPlaylistDialog;
 import com.lunchareas.divertio.fragments.ChangePlaylistTitleDialog;
+import com.lunchareas.divertio.fragments.DeleteSongsFromPlaylistDialog;
 import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.models.SongData;
@@ -295,6 +297,15 @@ public class PlaylistActivity extends BasePlayerActivity {
                 bundle.putString(AddSongsToPlaylistDialog.MUSIC_POS, playlistData.getPlaylistName());
                 dialogFragment.setArguments(bundle);
                 dialogFragment.show(getSupportFragmentManager(), "AddMusicTitle");
+                return true;
+            }
+            case R.id.playlist_delete_music: {
+                // Create popup to delete music
+                DialogFragment dialogFragment = new DeleteSongsFromPlaylistDialog();
+                Bundle bundle = new Bundle();
+                bundle.putString(AddSongsToPlaylistDialog.MUSIC_POS, playlistData.getPlaylistName());
+                dialogFragment.setArguments(bundle);
+                dialogFragment.show(getSupportFragmentManager(), "DeleteMusicTitle");
                 return true;
             }
             default:

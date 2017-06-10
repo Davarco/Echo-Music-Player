@@ -13,7 +13,6 @@ import android.widget.EditText;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
-import com.lunchareas.divertio.activities.PlaylistMenuActivity;
 import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.utils.PlaylistUtil;
@@ -38,7 +37,7 @@ public class ChangePlaylistTitleDialog extends DialogFragment {
 
         AlertDialog.Builder titleChangeDialogBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        changeTitleView = inflater.inflate(R.layout.change_playlist_title_dialog, null);
+        changeTitleView = inflater.inflate(R.layout.dialog_change_playlist_title, null);
         titleChangeDialogBuilder
                 .setView(changeTitleView)
                 .setPositiveButton(R.string.dialog_change, new DialogInterface.OnClickListener() {

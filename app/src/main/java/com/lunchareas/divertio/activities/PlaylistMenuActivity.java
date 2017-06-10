@@ -125,7 +125,7 @@ public class PlaylistMenuActivity extends BaseListActivity {
                         // Create popup for music to delete
                         DialogFragment removeSongsDialog = new DeleteSongsFromPlaylistDialog();
                         Bundle bundle = new Bundle();
-                        bundle.putInt(DeleteSongsFromPlaylistDialog.MUSIC_POS, pos);
+                        bundle.putString(DeleteSongsFromPlaylistDialog.MUSIC_POS, playlistData.getPlaylistName());
                         removeSongsDialog.setArguments(bundle);
                         removeSongsDialog.show(getSupportFragmentManager(), "RemoveSongsFromPlaylist");
 

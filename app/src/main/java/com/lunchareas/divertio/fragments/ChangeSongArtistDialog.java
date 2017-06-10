@@ -37,7 +37,7 @@ public class ChangeSongArtistDialog extends DialogFragment {
 
         AlertDialog.Builder artistChangeDialogBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        artistChangeView = inflater.inflate(R.layout.change_song_artist_dialog, null);
+        artistChangeView = inflater.inflate(R.layout.dialog_change_song_artist, null);
         artistChangeDialogBuilder
                 .setView(artistChangeView)
                 .setPositiveButton(R.string.dialog_change, new DialogInterface.OnClickListener() {

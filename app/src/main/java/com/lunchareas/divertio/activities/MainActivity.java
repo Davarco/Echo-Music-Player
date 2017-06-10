@@ -108,7 +108,7 @@ public class MainActivity extends BaseListActivity {
         if (songInfoList == null) {
             Log.d(TAG, "No song list found yet.");
         }
-        selectionAdapter = new SongSelectionAdapter(this, R.layout.song_layout, songInfoList);
+        selectionAdapter = new SongSelectionAdapter(this, R.layout.list_item_song, songInfoList);
 
         // Add single click listener
         songView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -520,7 +520,7 @@ public class MainActivity extends BaseListActivity {
     }
 
     private void resetAdapter() {
-        selectionAdapter = new SongSelectionAdapter(this, R.layout.song_layout, songInfoList);
+        selectionAdapter = new SongSelectionAdapter(this, R.layout.list_item_song, songInfoList);
     }
 
     /*

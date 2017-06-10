@@ -1,12 +1,10 @@
 package com.lunchareas.divertio.adapters;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -48,7 +46,7 @@ public class SongFixedAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, final View convertView, ViewGroup parentView) {
-        final RelativeLayout songListLayout = (RelativeLayout) songListInflater.inflate(R.layout.song_fixed_layout, parentView, false);
+        final RelativeLayout songListLayout = (RelativeLayout) songListInflater.inflate(R.layout.list_item_song_fixed, parentView, false);
 
         // Get the parts of a song layout
         //ImageView songItemIcon = (ImageView) songListLayout.findViewById(R.id.song_icon);

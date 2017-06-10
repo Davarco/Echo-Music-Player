@@ -1,7 +1,6 @@
 package com.lunchareas.divertio.adapters;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lunchareas.divertio.R;
-import com.lunchareas.divertio.activities.BaseActivity;
 import com.lunchareas.divertio.activities.BaseListActivity;
 import com.lunchareas.divertio.models.SongData;
 
@@ -50,7 +48,7 @@ public class SongAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, final View convertView, ViewGroup parentView) {
-        final RelativeLayout songListLayout = (RelativeLayout) songListInflater.inflate(R.layout.song_layout, parentView, false);
+        final RelativeLayout songListLayout = (RelativeLayout) songListInflater.inflate(R.layout.list_item_song, parentView, false);
 
         // Get the parts of a song layout
         //ImageView songItemIcon = (ImageView) songListLayout.findViewById(R.id.song_icon);
@@ -63,9 +61,6 @@ public class SongAdapter extends BaseAdapter {
         //songItemIcon.setImageDrawable(songItem.getSongCover());
         songItemName.setText(songItem.getSongName());
         songItemArtist.setText(songItem.getSongArtist());
-
-        // Assertions
-        Log.d(TAG, songItem.toString());
 
         // Set on click listener for overflow
         songOverflowIcon.setOnClickListener(new View.OnClickListener() {

@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.lunchareas.divertio.activities.BaseActivity;
 import com.lunchareas.divertio.activities.BaseListActivity;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.R;
@@ -48,7 +47,7 @@ public class PlaylistAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parentView) {
-        final RelativeLayout playlistLayout = (RelativeLayout) playlistInflater.inflate(R.layout.playlist_layout, parentView, false);
+        final RelativeLayout playlistLayout = (RelativeLayout) playlistInflater.inflate(R.layout.list_item_playlist, parentView, false);
 
         // Get the parts of a playlist layout
         //ImageView playlistItemIcon = (ImageView) playlistLayout.findViewById(R.id.playlist_icon);

@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lunchareas.divertio.R;
-import com.lunchareas.divertio.activities.BaseActivity;
 import com.lunchareas.divertio.activities.BaseListActivity;
 import com.lunchareas.divertio.models.PlaylistData;
 
@@ -44,9 +43,9 @@ public class PlaylistSelectionAdapter extends ArrayAdapter<PlaylistData> {
         boolean selected = selectedPlaylists.contains(position);
         final RelativeLayout playlistLayout;
         if (selected) {
-            playlistLayout = (RelativeLayout) playlistInflater.inflate(R.layout.playlist_selected_layout, parentView, false);
+            playlistLayout = (RelativeLayout) playlistInflater.inflate(R.layout.list_item_playlist_selected, parentView, false);
         } else {
-            playlistLayout = (RelativeLayout) playlistInflater.inflate(R.layout.playlist_layout, parentView, false);
+            playlistLayout = (RelativeLayout) playlistInflater.inflate(R.layout.list_item_playlist, parentView, false);
         }
         final RelativeLayout playlistListLayout = playlistLayout;
         

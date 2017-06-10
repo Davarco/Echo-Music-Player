@@ -1,6 +1,5 @@
 package com.lunchareas.divertio.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
@@ -13,7 +12,6 @@ import android.widget.EditText;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
-import com.lunchareas.divertio.activities.BaseListActivity;
 import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.SongUtil;
@@ -38,7 +36,7 @@ public class ChangeSongTitleDialog extends DialogFragment {
 
         AlertDialog.Builder titleChangeDialogBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        changeTitleView = inflater.inflate(R.layout.change_song_title_dialog, null);
+        changeTitleView = inflater.inflate(R.layout.dialog_change_song_title, null);
         titleChangeDialogBuilder
                 .setView(changeTitleView)
                 .setPositiveButton(R.string.dialog_change, new DialogInterface.OnClickListener() {

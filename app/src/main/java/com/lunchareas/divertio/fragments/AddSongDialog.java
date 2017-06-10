@@ -103,7 +103,7 @@ public class AddSongDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder
-                .setTitle(R.string.add_songs_dialog_title)
+                .setCustomTitle(getActivity().getLayoutInflater().inflate(R.layout.title_add_song, null))
                 .setMultiChoiceItems(songNameArr, null, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {

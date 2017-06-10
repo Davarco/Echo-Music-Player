@@ -55,7 +55,7 @@ public class DownloadSongDialog extends DialogFragment {
 
         AlertDialog.Builder uploadBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        uploadDialogView = inflater.inflate(R.layout.download_song_dialog, null);
+        uploadDialogView = inflater.inflate(R.layout.dialog_download_song, null);
         uploadBuilder
             .setView(uploadDialogView)
             .setPositiveButton(R.string.download_confirm, new DialogInterface.OnClickListener() {

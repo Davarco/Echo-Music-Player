@@ -168,7 +168,7 @@ public abstract class BaseListActivity extends BaseActivity {
         menuDrawer = (DrawerLayout) findViewById(R.id.menu_drawer);
         menuList = (ListView) findViewById(R.id.menu_drawer_list);
         menuItemArr = new String[]{"Library", "Playlists", "Now Playing"};
-        menuList.setAdapter(new ArrayAdapter<>(this, R.layout.menu_drawer_list_item, menuItemArr));
+        menuList.setAdapter(new ArrayAdapter<>(this, R.layout.list_item_menu_drawer, menuItemArr));
         menuDrawer.closeDrawers();
         drawerOpen = false;
 

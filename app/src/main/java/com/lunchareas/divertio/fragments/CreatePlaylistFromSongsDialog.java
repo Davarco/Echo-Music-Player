@@ -13,7 +13,6 @@ import android.widget.EditText;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
-import com.lunchareas.divertio.activities.BaseListActivity;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.PlaylistUtil;
 
@@ -41,7 +40,7 @@ public class CreatePlaylistFromSongsDialog extends DialogFragment {
 
         // Get the view
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        dialogView = inflater.inflate(R.layout.create_playlist_dialog, null);
+        dialogView = inflater.inflate(R.layout.dialog_create_playlist, null);
 
         // Create the util
         playlistUtil = new PlaylistUtil(getActivity());

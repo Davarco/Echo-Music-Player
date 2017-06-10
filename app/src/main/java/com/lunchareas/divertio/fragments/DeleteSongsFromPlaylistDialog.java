@@ -10,8 +10,8 @@ import android.util.Log;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
-import com.lunchareas.divertio.activities.BaseListActivity;
-import com.lunchareas.divertio.activities.PlaylistMenuActivity;
+import com.lunchareas.divertio.models.PlaylistDBHandler;
+import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.PlaylistUtil;
 
@@ -24,7 +24,7 @@ public class DeleteSongsFromPlaylistDialog extends DialogFragment {
 
     public static final String MUSIC_POS = "music_pos";
 
-    private int position;
+    private String name;
     private List<SongData> songInfoList;
     private List<String> songInfoTemp;
     private List<Integer> selectedSongs;
@@ -32,8 +32,12 @@ public class DeleteSongsFromPlaylistDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        // Get the correct name
+        name = (String) getArguments().get(MUSIC_POS);
+        Log.d(TAG, "Position: " + name);
+
         // Get the list of songs to pick from
-        songInfoList = ((BaseActivity) getActivity()).getSongInfoList();
+        songInfoList = new PlaylistDBHandler(getActivity()).getPlaylistData(name).getSongList();
         songInfoTemp = new ArrayList<>();
         for (int i = 0; i < songInfoList.size(); i++) {
             songInfoTemp.add(songInfoList.get(i).getSongName());
@@ -43,22 +47,18 @@ public class DeleteSongsFromPlaylistDialog extends DialogFragment {
         songList = songInfoTemp.toArray(songList);
         selectedSongs = new ArrayList<>();
 
-        // Get the correct position
-        position = (int) getArguments().get(MUSIC_POS);
-        Log.d(TAG, "Position: " + position);
-
         AlertDialog.Builder addSongsDialogBuilder = new AlertDialog.Builder(getActivity());
         addSongsDialogBuilder
-                .setTitle(R.string.playlist_delete_songs_title)
+                .setCustomTitle(getActivity().getLayoutInflater().inflate(R.layout.title_delete_songs_from_playlist, null))
                 .setMultiChoiceItems(songList, null, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (isChecked) {
                             selectedSongs.add(which);
-                            Log.d(TAG, "Adding position " + which);
+                            Log.d(TAG, "Adding name " + which);
                         } else {
                             selectedSongs.remove(Integer.valueOf(which));
-                            Log.d(TAG, "Removing position " + which);
+                            Log.d(TAG, "Removing name " + which);
                         }
                     }
                 })
@@ -81,6 +81,9 @@ public class DeleteSongsFromPlaylistDialog extends DialogFragment {
 
     private void removeSongsFromPlaylist() {
 
+        // Handlers
+        PlaylistDBHandler playlistDb = new PlaylistDBHandler(getActivity());
+
         // Change the integers to songs
         List<SongData> songDataList = new ArrayList<>();
         for (Integer integer: selectedSongs) {
@@ -89,6 +92,6 @@ public class DeleteSongsFromPlaylistDialog extends DialogFragment {
 
         // Add the songs
         PlaylistUtil playlistUtil = new PlaylistUtil(getActivity());
-        playlistUtil.deleteSongsFromPlaylist(songDataList, ((PlaylistMenuActivity) getActivity()).getPlaylistInfoList().get(position));
+        playlistUtil.deleteSongsFromPlaylist(songDataList, playlistDb.getPlaylistData(name));
     }
 }

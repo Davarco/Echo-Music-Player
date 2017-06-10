@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.util.TypedValue;
+import android.widget.TextView;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
@@ -60,7 +62,7 @@ public class AddSongsToPlaylistDialog extends DialogFragment {
 
         AlertDialog.Builder addSongsDialogBuilder = new AlertDialog.Builder(getActivity());
         addSongsDialogBuilder
-                .setTitle(R.string.playlist_add_songs_title)
+                .setCustomTitle(getActivity().getLayoutInflater().inflate(R.layout.title_add_songs_to_playlist, null))
                 .setMultiChoiceItems(songList, null, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {

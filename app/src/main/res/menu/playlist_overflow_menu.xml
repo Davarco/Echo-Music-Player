@@ -10,4 +10,7 @@
     <item
         android:id="@+id/playlist_add_music"
         android:title="@string/playlist_add_songs_title"/>
+    <item
+        android:id="@+id/playlist_delete_music"
+        android:title="@string/playlist_delete_songs_title"/>
 </menu>

@@ -43,7 +43,7 @@ public class DeleteSongDialog extends DialogFragment {
         selectedSongs = new ArrayList<>();
         AlertDialog.Builder deleteBuilder = new AlertDialog.Builder(getActivity());
         deleteBuilder
-            .setTitle(R.string.delete_dialog_title)
+            .setCustomTitle(getActivity().getLayoutInflater().inflate(R.layout.title_delete_song, null))
             .setMultiChoiceItems(songList, null, new DialogInterface.OnMultiChoiceClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {

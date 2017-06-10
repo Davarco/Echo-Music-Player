@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-import com.lunchareas.divertio.activities.BaseListActivity;
 import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.R;
@@ -58,8 +57,8 @@ public class CreatePlaylistDialog extends DialogFragment {
         selectedSongs = new ArrayList<>();
         AlertDialog.Builder createPlaylistBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        createPlaylistView = inflater.inflate(R.layout.create_playlist_dialog, null);
-        createPlaylistTitle = inflater.inflate(R.layout.create_playlist_title, null);
+        createPlaylistView = inflater.inflate(R.layout.dialog_create_playlist, null);
+        createPlaylistTitle = inflater.inflate(R.layout.title_create_playlist, null);
         
         // Parts of the dialog
         createPlaylistBuilder.setCustomTitle(createPlaylistTitle);
