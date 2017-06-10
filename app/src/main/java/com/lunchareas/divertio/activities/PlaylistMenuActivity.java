@@ -91,7 +91,7 @@ public class PlaylistMenuActivity extends BaseListActivity {
                         // Create popup for new playlist title
                         DialogFragment changePlaylistTitleDialog = new ChangePlaylistTitleDialog();
                         Bundle bundle = new Bundle();
-                        bundle.putInt(ChangePlaylistTitleDialog.MUSIC_POS, pos);
+                        bundle.putString(ChangePlaylistTitleDialog.MUSIC_POS, playlistData.getPlaylistName());
                         changePlaylistTitleDialog.setArguments(bundle);
                         changePlaylistTitleDialog.show(getSupportFragmentManager(), "ChangePlaylistTitle");
 
@@ -113,7 +113,7 @@ public class PlaylistMenuActivity extends BaseListActivity {
                         // Create popup for music to add
                         DialogFragment addSongsDialog = new AddSongsToPlaylistDialog();
                         Bundle bundle = new Bundle();
-                        bundle.putInt(AddSongsToPlaylistDialog.MUSIC_POS, pos);
+                        bundle.putString(AddSongsToPlaylistDialog.MUSIC_POS, playlistData.getPlaylistName());
                         addSongsDialog.setArguments(bundle);
                         addSongsDialog.show(getSupportFragmentManager(), "AddSongsToPlaylist:");
 

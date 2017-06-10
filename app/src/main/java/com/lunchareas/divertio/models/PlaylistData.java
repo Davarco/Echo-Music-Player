@@ -4,6 +4,7 @@ package com.lunchareas.divertio.models;
 import android.graphics.drawable.Drawable;
 
 import java.util.List;
+import java.util.Objects;
 
 public class PlaylistData {
 
@@ -55,6 +56,16 @@ public class PlaylistData {
 
     public void setNumSongs(int numSongs) {
         this.numSongs = numSongs;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        PlaylistData otherPlaylist = (PlaylistData) other;
+        if (otherPlaylist.getPlaylistName().equals(this.getPlaylistName())) {
+            return true;
+        }
+
+        return false;
     }
 
     @Override

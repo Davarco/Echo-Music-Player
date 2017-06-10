@@ -61,9 +61,6 @@ public class SongFixedAdapter extends BaseAdapter {
         songItemName.setText(songItem.getSongName());
         songItemArtist.setText(songItem.getSongArtist());
 
-        // Assertions
-        Log.d(TAG, songItem.toString());
-
         // Set position as tag
         songListLayout.setTag(position);
         return songListLayout;

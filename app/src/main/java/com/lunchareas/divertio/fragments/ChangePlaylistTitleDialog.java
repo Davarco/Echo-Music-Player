@@ -13,8 +13,8 @@ import android.widget.EditText;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
-import com.lunchareas.divertio.activities.BaseListActivity;
 import com.lunchareas.divertio.activities.PlaylistMenuActivity;
+import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.utils.PlaylistUtil;
 
@@ -27,14 +27,14 @@ public class ChangePlaylistTitleDialog extends DialogFragment {
     private View changeTitleView;
     private EditText newTitleInput;
     private String inputText;
-    private int position;
+    private String name;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        // Get correct position
-        position = (int) getArguments().get(MUSIC_POS);
-        Log.d(TAG, "Position: " + position);
+        // Get correct name
+        name = (String) getArguments().get(MUSIC_POS);
+        Log.d(TAG, "Position: " + name);
 
         AlertDialog.Builder titleChangeDialogBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -51,7 +51,7 @@ public class ChangePlaylistTitleDialog extends DialogFragment {
                         inputText = newTitleInput.getText().toString();
 
                         // Change the playlist name
-                        PlaylistData playlistData = ((PlaylistMenuActivity) getActivity()).getPlaylistInfoList().get(position);
+                        PlaylistData playlistData = new PlaylistDBHandler(getActivity()).getPlaylistData(name);
                         PlaylistUtil playlistUtil = new PlaylistUtil(getActivity());
                         playlistUtil.changePlaylistName(playlistData, inputText);
 

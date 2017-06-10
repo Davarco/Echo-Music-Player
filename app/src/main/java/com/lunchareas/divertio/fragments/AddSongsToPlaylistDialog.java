@@ -10,8 +10,9 @@ import android.util.Log;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
-import com.lunchareas.divertio.activities.BaseListActivity;
+import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
+import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.PlaylistUtil;
 
@@ -24,7 +25,7 @@ public class AddSongsToPlaylistDialog extends DialogFragment {
 
     public static final String MUSIC_POS = "music_pos";
 
-    private int position;
+    private String name;
     private List<SongData> songInfoList;
     private List<String> songInfoTemp;
     private List<Integer> selectedSongs;
@@ -33,8 +34,12 @@ public class AddSongsToPlaylistDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        // Get the correct name
+        name = (String) getArguments().get(MUSIC_POS);
+        Log.d(TAG, "Position: " + name);
+
         // Get the playlist data
-        playlistData = ((BaseActivity) getActivity()).getPlaylistInfoList().get(position);
+        playlistData = new PlaylistDBHandler(getActivity()).getPlaylistData(name);
 
         // Get the list of songs to pick from
         songInfoList = ((BaseActivity) getActivity()).getSongInfoList();
@@ -53,10 +58,6 @@ public class AddSongsToPlaylistDialog extends DialogFragment {
         songList = songInfoTemp.toArray(songList);
         selectedSongs = new ArrayList<>();
 
-        // Get the correct position
-        position = (int) getArguments().get(MUSIC_POS);
-        Log.d(TAG, "Position: " + position);
-
         AlertDialog.Builder addSongsDialogBuilder = new AlertDialog.Builder(getActivity());
         addSongsDialogBuilder
                 .setTitle(R.string.playlist_add_songs_title)
@@ -65,10 +66,10 @@ public class AddSongsToPlaylistDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (isChecked) {
                             selectedSongs.add(which);
-                            Log.d(TAG, "Adding position " + which);
+                            Log.d(TAG, "Adding name " + which);
                         } else {
                             selectedSongs.remove(Integer.valueOf(which));
-                            Log.d(TAG, "Removing position " + which);
+                            Log.d(TAG, "Removing name " + which);
                         }
                     }
                 })
@@ -91,10 +92,13 @@ public class AddSongsToPlaylistDialog extends DialogFragment {
 
     private void addSongsToPlaylist() {
 
+        // Get handler
+        SongDBHandler db = new SongDBHandler(getActivity());
+
         // Change the integers to songs
         List<SongData> songDataList = new ArrayList<>();
         for (Integer integer: selectedSongs) {
-            songDataList.add(songInfoList.get(integer));
+            songDataList.add(db.getSongData(songInfoTemp.get(integer)));
         }
 
         // Add the songs

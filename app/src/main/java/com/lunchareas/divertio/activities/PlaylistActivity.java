@@ -9,8 +9,11 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,6 +25,8 @@ import android.widget.TextView;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.adapters.SongFixedAdapter;
+import com.lunchareas.divertio.fragments.AddSongsToPlaylistDialog;
+import com.lunchareas.divertio.fragments.ChangePlaylistTitleDialog;
 import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.models.SongData;
@@ -68,8 +73,6 @@ public class PlaylistActivity extends BasePlayerActivity {
         });
 
         // Just for feeling
-        SongFixedAdapter songListAdapter = new SongFixedAdapter(this, songInfoList);
-        playlistView.setAdapter(songListAdapter);
         playlistView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -78,12 +81,6 @@ public class PlaylistActivity extends BasePlayerActivity {
                 return true;
             }
         });
-
-        // Set opaque background
-        playlistBackground.getBackground().setAlpha(150);
-
-        // Add playlist name
-        playlistViewName.setText(playlistData.getPlaylistName());
     }
 
     @Override
@@ -206,9 +203,6 @@ public class PlaylistActivity extends BasePlayerActivity {
     protected void getDispData() {
 
         // Get playlist data
-        if (getIntent() == null) {
-            Log.e(TAG, "Cannot find intent?");
-        }
         if (getIntent().getExtras() == null) {
             Log.e(TAG, "Extras were not passed to playlist manager.");
         }
@@ -224,11 +218,22 @@ public class PlaylistActivity extends BasePlayerActivity {
 
         // Get the new playlist data
         playlistData = getPlaylistInfoList().get(position);
+        songInfoList = playlistData.getSongList();
     }
 
     @Override
     protected void showDispData() {
         Log.d(TAG, "Resetting main view for playlist controller activity.");
+
+        // Set opaque background
+        playlistBackground.getBackground().setAlpha(150);
+
+        // Add playlist name
+        playlistViewName.setText(playlistData.getPlaylistName());
+
+        // Set adapter for list
+        SongFixedAdapter songListAdapter = new SongFixedAdapter(this, songInfoList);
+        playlistView.setAdapter(songListAdapter);
 
         // Set center icon image
         if (playlistBackground != null) {
@@ -259,12 +264,37 @@ public class PlaylistActivity extends BasePlayerActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.playlist_overflow_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home: {
                 Intent i = new Intent(this, PlaylistMenuActivity.class);
                 startActivity(i);
                 finish();
+                return true;
+            }
+            case R.id.playlist_rename: {
+                // Create popup for new title
+                DialogFragment dialogFragment = new ChangePlaylistTitleDialog();
+                Bundle bundle = new Bundle();
+                bundle.putString(ChangePlaylistTitleDialog.MUSIC_POS, playlistData.getPlaylistName());
+                dialogFragment.setArguments(bundle);
+                dialogFragment.show(getSupportFragmentManager(), "ChangePlaylistTitle");
+                return true;
+            }
+            case R.id.playlist_add_music: {
+                // Create popup to add music
+                DialogFragment dialogFragment = new AddSongsToPlaylistDialog();
+                Bundle bundle = new Bundle();
+                bundle.putString(AddSongsToPlaylistDialog.MUSIC_POS, playlistData.getPlaylistName());
+                dialogFragment.setArguments(bundle);
+                dialogFragment.show(getSupportFragmentManager(), "AddMusicTitle");
                 return true;
             }
             default:
