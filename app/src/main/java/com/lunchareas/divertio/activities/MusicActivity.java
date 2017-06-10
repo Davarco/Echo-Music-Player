@@ -4,10 +4,12 @@ package com.lunchareas.divertio.activities;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -120,9 +122,21 @@ public class MusicActivity extends BasePlayerActivity {
         songBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+
+                // Set current song if null, or change if new song pops up
+                if (currSong == null) {
+                    currSong = intent.getStringExtra(PlayMusicService.MUSIC_CURR);
+                    Log.d(TAG, "Set original song to: " + currSong);
+                } else if (!currSong.equals(intent.getStringExtra(PlayMusicService.MUSIC_CURR))) {
+                    currSong = intent.getStringExtra(PlayMusicService.MUSIC_CURR);
+                    songData = new SongDBHandler(getApplicationContext()).getSongData(currSong);
+                    position = songInfoList.indexOf(songData);
+                    setMainView();
+                }
+
+                // Get position/duration
                 int songPosition = intent.getIntExtra(PlayMusicService.MUSIC_POSITION, 0);
                 int songDuration = intent.getIntExtra(PlayMusicService.MUSIC_DURATION, 0);
-                currSong = intent.getStringExtra(PlayMusicService.MUSIC_CURR);
 
                 // Set location based on position/duration
                 songProgressManager.setMax(songDuration);
@@ -178,6 +192,9 @@ public class MusicActivity extends BasePlayerActivity {
             position = songInfoList.indexOf(songData);
         } else {
             Log.d(TAG, "Extras were not passed to now playing manager.");
+            while (currSong == null) {
+                //System.out.println(currSong);
+            }
             songData = new SongDBHandler(this).getSongData(currSong);
             position = songInfoList.indexOf(songData);
         }
@@ -224,6 +241,7 @@ public class MusicActivity extends BasePlayerActivity {
                 bundle.putString(ChangeSongTitleDialog.MUSIC_POS, songData.getSongName());
                 changeSongTitleDialog.setArguments(bundle);
                 changeSongTitleDialog.show(getSupportFragmentManager(), "ChangeTitle");
+                return true;
             }
             case R.id.song_change_artist: {
                 // Create popup for new artist
@@ -232,6 +250,7 @@ public class MusicActivity extends BasePlayerActivity {
                 bundle.putString(ChangeSongArtistDialog.MUSIC_POS, songData.getSongName());
                 dialogFragment.setArguments(bundle);
                 dialogFragment.show(getSupportFragmentManager(), "ChangeArtist");
+                return true;
             }
             case R.id.song_to_playlist: {
                 // Create popup to add to playlist
@@ -240,6 +259,7 @@ public class MusicActivity extends BasePlayerActivity {
                 bundle.putString(AddToPlaylistDialog.MUSIC_POS, songData.getSongName());
                 addToPlaylistDialog.setArguments(bundle);
                 addToPlaylistDialog.show(getSupportFragmentManager(), "AddSongToPlaylist");
+                return true;
             }
             default:
                 return super.onOptionsItemSelected(item);

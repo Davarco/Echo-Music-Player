@@ -197,6 +197,12 @@ public class PlaylistMenuActivity extends BaseListActivity {
                 Log.d(TAG, "No effect, on that activity.");
                 break;
             }
+            case 2: {
+                Log.d(TAG, "Starting new activity - now playing manager.");
+                Intent i = new Intent(this, MusicActivity.class);
+                i.putExtra(MusicActivity.MUSIC_NAME, currSong);
+                startActivity(i);
+            }
             /*
             case 2: {
                 Log.d(TAG, "Starting new activity - bluetooth.");

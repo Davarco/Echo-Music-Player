@@ -372,6 +372,7 @@ public class MainActivity extends BaseListActivity {
                 Log.d(TAG, "Starting new activity - now playing.");
                 Intent i = new Intent(this, MusicActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                i.putExtra(MusicActivity.MUSIC_NAME, currSong);
                 startActivity(i);
                 break;
             }
@@ -623,7 +624,6 @@ public class MainActivity extends BaseListActivity {
             MediaMetadataRetriever retriever = new MediaMetadataRetriever();
             retriever.setDataSource(Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName);
             String artist = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-            System.out.println(artist);
             String path = Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName;
             Drawable cover = Drawable.createFromStream(new ByteArrayInputStream(retriever.getEmbeddedPicture()), null);
 

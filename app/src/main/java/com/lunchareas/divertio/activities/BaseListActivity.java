@@ -39,6 +39,7 @@ public abstract class BaseListActivity extends BaseActivity {
     protected RelativeLayout menuDrawerLayout;
     protected DrawerLayout menuDrawer;
     protected ListView menuList;
+    protected String currSong;
 
     protected BroadcastReceiver songBroadcastReceiver;
     protected SeekBar songProgressManager;
@@ -134,6 +135,7 @@ public abstract class BaseListActivity extends BaseActivity {
             public void onReceive(Context context, Intent intent) {
                 int songPosition = intent.getIntExtra(PlayMusicService.MUSIC_POSITION, 0);
                 int songDuration = intent.getIntExtra(PlayMusicService.MUSIC_DURATION, 0);
+                currSong = intent.getStringExtra(PlayMusicService.MUSIC_CURR);
 
                 // Set location based on position/duration
                 songProgressManager.setMax(songDuration);

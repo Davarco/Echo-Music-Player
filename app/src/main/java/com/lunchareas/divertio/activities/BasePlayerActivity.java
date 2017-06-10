@@ -48,14 +48,14 @@ public abstract class BasePlayerActivity extends BaseActivity {
         // Init views
         initViews();
 
+        // Init song bar
+        initSongbar();
+
         // Get data
         getDispData();
 
         // Show disp data
         showDispData();
-
-        // Init song bar
-        initSongbar();
     }
 
     protected abstract void initToolbar();
