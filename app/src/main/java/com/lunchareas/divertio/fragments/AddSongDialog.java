@@ -5,8 +5,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
@@ -18,11 +22,14 @@ import android.util.Log;
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseActivity;
 import com.lunchareas.divertio.activities.BaseListActivity;
+import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.SongUtil;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,16 +67,27 @@ public class AddSongDialog extends DialogFragment {
             int titleCol = musicCursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
             int artistCol = musicCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
             int pathCol = musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA);
+            int albumCol = musicCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID);
 
             do {
                 // Get data
                 String title = musicCursor.getString(titleCol);
                 String artist = musicCursor.getString(artistCol);
                 String path = musicCursor.getString(pathCol);
+                long album = musicCursor.getLong(albumCol);
+
+                // Get path for cover art
+                String coverPath = getCoverArtPath(album, getContext());
+                Drawable cover = Drawable.createFromPath(coverPath);
 
                 // Get cover from path
+                /*
                 MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-                retriever.setDataSource(path);
+                Bitmap bitmap = BitmapFactory.decodeFile(path);
+                Drawable cover = new BitmapDrawable(getContext().getResources(), bitmap);
+                */
+                /*
+                retriever.setDataSource(getContext(), uri);
                 byte[] bytes = retriever.getEmbeddedPicture();
                 Drawable cover;
                 if (bytes == null) {
@@ -77,14 +95,17 @@ public class AddSongDialog extends DialogFragment {
                 } else {
                     cover = Drawable.createFromStream(new ByteArrayInputStream(bytes), null);
                 }
+                */
 
                 // Create the song data
-                SongData songData = new SongData(title, path, artist, cover);
-                Log.d(TAG, songData.toString());
+                if (cover != null) {
+                    SongData songData = new SongData(title, path, artist, cover);
+                    Log.d(TAG, songData.toString());
 
-                // Ensure it doesn't already exist
-                if (!existingSongList.contains(songData)) {
-                    songList.add(songData);
+                    // Ensure it doesn't already exist
+                    if (!existingSongList.contains(songData)) {
+                        songList.add(songData);
+                    }
                 }
 
             } while (musicCursor.moveToNext());
@@ -144,5 +165,22 @@ public class AddSongDialog extends DialogFragment {
         // Add from util
         SongUtil songUtil = new SongUtil(activity);
         songUtil.addSongList(songListTemp);
+    }
+
+    private static String getCoverArtPath(long albumId, Context context) {
+        Cursor albumCursor = context.getContentResolver().query(
+                MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
+                new String[]{MediaStore.Audio.Albums.ALBUM_ART},
+                MediaStore.Audio.Albums._ID + " = ?",
+                new String[]{Long.toString(albumId)},
+                null
+        );
+        boolean queryResult = albumCursor.moveToFirst();
+        String result = null;
+        if (queryResult) {
+            result = albumCursor.getString(0);
+        }
+        albumCursor.close();
+        return result;
     }
 }

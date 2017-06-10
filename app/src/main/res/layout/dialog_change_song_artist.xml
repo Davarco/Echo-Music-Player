@@ -15,7 +15,8 @@
         android:textSize="16sp"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:text="@string/song_change_artist_title"/>
+        android:text="@string/song_change_artist_title"
+        fontPath="fonts/Lato-Bold.ttf"/>
     <EditText
         android:id="@+id/change_song_artist_hint"
         android:inputType="text"

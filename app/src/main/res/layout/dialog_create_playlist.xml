@@ -15,7 +15,8 @@
         android:textSize="16sp"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:text="@string/create_playlist_title"/>
+        android:text="@string/create_playlist_title"
+        fontPath="fonts/Lato-Bold.ttf"/>
     <EditText
         android:id="@+id/dialog_create_playlist_name"
         android:inputType="text"

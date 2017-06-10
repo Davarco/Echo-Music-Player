@@ -15,7 +15,8 @@
         android:textSize="16sp"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:text="@string/playlist_change_title"/>
+        android:text="@string/playlist_change_title"
+        fontPath="fonts/Lato-Bold.ttf"/>
     <EditText
         android:id="@+id/change_playlist_title_hint"
         android:inputType="text"
