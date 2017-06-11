@@ -26,9 +26,9 @@
     <string name="song_delete_title">Delete Song</string>
     <string name="song_change_artist">Change Artist</string>
     <string name="song_to_playlist">Add to Playlist</string>
-    <string name="song_change_title">New Title:</string>
+    <string name="song_change_title">New Title</string>
     <string name="song_change_title_hint">Title</string>
-    <string name="song_change_artist_title">New Artist:</string>
+    <string name="song_change_artist_title">New Artist</string>
     <string name="song_change_artist_hint">Name</string>
     <string name="song_to_playlist_title">Playlists</string>
     <string name="song_to_playlist_confirm">Add</string>
@@ -45,7 +45,7 @@
     <string name="playlist_add_songs_title">Add Music</string>
     <string name="playlist_delete_songs_title">Delete Music</string>
     <string name="playlist_play_next_title">Play Next</string>
-    <string name="playlist_change_title">New Title:</string>
+    <string name="playlist_change_title">New Title</string>
     <string name="playlist_change_title_hint">Title</string>
 
     <!-- Universal dialog strings -->
@@ -55,31 +55,31 @@
 
     <!-- Download song dialog strings -->
     <string name="download_confirm">Download</string>
-    <string name="download_name_title">File Name:</string>
+    <string name="download_name_title">File Name</string>
     <string name="download_name_hint">(Optional)</string>
-    <string name="download_link_title">Via Youtube:</string>
+    <string name="download_link_title">Via Youtube</string>
     <string name="download_link_hint">Youtube Link</string>
-    <string name="download_composer_title">Composer:</string>
+    <string name="download_composer_title">Composer</string>
     <string name="download_composer_hint">(Optional)</string>
     <string name="download_failure_message">Failed to download.\nCheck internet status and link?</string>
     <string name="download_name_failure_msg">The song name is either empty or already in use.</string>
 
     <!-- Delete song dialog strings -->
-    <string name="delete_dialog_title">Songs to Delete:</string>
+    <string name="delete_dialog_title">Songs to Delete</string>
     <string name="delete_confirm">Delete</string>
 
     <!-- Create playlist dialog strings -->
-    <string name="create_playlist_title">Playlist Name:</string>
-    <string name="create_playlist_songlist_title">Song List:</string>
+    <string name="create_playlist_title">Playlist Name</string>
+    <string name="create_playlist_songlist_title">Song List</string>
     <string name="create_playlist_hint">Name</string>
     <string name="create_playlist_confirm">Next</string>
     <string name="create_playlist_finish">Finish</string>
     <string name="create_playlist_name_failure_msg">The playlist name has already been used, please pick another.</string>
 
     <!-- Delete playlist dialog strings -->
-    <string name="delete_playlist_title">Playlists to Delete:</string>
+    <string name="delete_playlist_title">Playlists to Delete</string>
 
     <!-- Add songs dialog strings -->
-    <string name="add_songs_dialog_title">Songs Found:</string>
+    <string name="add_songs_dialog_title">Songs Found</string>
 
 </resources>

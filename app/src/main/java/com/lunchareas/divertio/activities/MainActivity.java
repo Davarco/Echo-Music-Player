@@ -25,7 +25,7 @@ import android.widget.*;
 import android.content.*;
 
 import com.lunchareas.divertio.adapters.SongSelectionAdapter;
-import com.lunchareas.divertio.fragments.AddSongDialog;
+import com.lunchareas.divertio.fragments.ImportSongDialog;
 import com.lunchareas.divertio.fragments.AddToPlaylistDialog;
 import com.lunchareas.divertio.fragments.ChangeSongArtistDialog;
 import com.lunchareas.divertio.fragments.ChangeSongTitleDialog;
@@ -331,7 +331,7 @@ public class MainActivity extends BaseListActivity {
         switch (item.getItemId()) {
             case R.id.song_menu_add: {
                 Log.d(TAG, "Starting new dialog - add.");
-                DialogFragment addSongDialog = new AddSongDialog();
+                DialogFragment addSongDialog = new ImportSongDialog();
                 addSongDialog.show(getSupportFragmentManager(), "Add");
                 return true;
             }
