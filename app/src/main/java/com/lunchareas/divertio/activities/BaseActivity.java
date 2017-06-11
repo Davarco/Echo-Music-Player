@@ -8,7 +8,6 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
-import android.telecom.Call;
 import android.util.Log;
 
 import com.lunchareas.divertio.fragments.CreatePlaylistNameFailureDialog;
@@ -96,7 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void sendMusicStartIntent() {
         musicStartIntent = new Intent(this, PlayMusicService.class);
-        musicStartIntent.putExtra(PlayMusicService.MUSIC_START, 0);
+        musicStartIntent.putExtra(PlayMusicService.MUSIC_PLAY, 0);
         this.startService(musicStartIntent);
     }
 

@@ -49,6 +49,8 @@
             android:name="com.lunchareas.divertio.activities.MusicActivity"
             android:configChanges="keyboardHidden|screenSize">
         </activity>
+
     </application>
+
 
 </manifest>

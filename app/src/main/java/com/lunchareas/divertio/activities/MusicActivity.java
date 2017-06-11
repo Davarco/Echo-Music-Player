@@ -126,7 +126,6 @@ public class MusicActivity extends BasePlayerActivity {
                 // Set current song if null, or change if new song pops up
                 if (currSong == null) {
                     currSong = intent.getStringExtra(PlayMusicService.MUSIC_CURR);
-                    Log.d(TAG, "Set original song to: " + currSong);
                 } else if (!currSong.equals(intent.getStringExtra(PlayMusicService.MUSIC_CURR))) {
                     currSong = intent.getStringExtra(PlayMusicService.MUSIC_CURR);
                     songData = new SongDBHandler(getApplicationContext()).getSongData(currSong);
@@ -185,13 +184,11 @@ public class MusicActivity extends BasePlayerActivity {
 
         // Get song name
         if (getIntent().getExtras() != null) {
-            Log.d(TAG, "Extras were passed to now playing manager.");
             String songName = getIntent().getStringExtra(MUSIC_NAME);
             SongDBHandler db = new SongDBHandler(this);
             songData = db.getSongData(songName);
             position = songInfoList.indexOf(songData);
         } else {
-            Log.d(TAG, "Extras were not passed to now playing manager.");
             while (currSong == null) {
                 //System.out.println(currSong);
             }

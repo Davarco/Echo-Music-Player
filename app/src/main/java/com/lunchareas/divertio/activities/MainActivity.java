@@ -127,7 +127,6 @@ public class MainActivity extends BaseListActivity {
                 // Pause and change icon
                 songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
                 String name = songInfoList.get(position).getSongName();
-                sendMusicPauseIntent();
                 sendMusicCreateIntent(name);
                 musicBound = true;
 
@@ -240,7 +239,6 @@ public class MainActivity extends BaseListActivity {
                         // Pause and change icon
                         songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
                         String name = songInfoList.get(pos).getSongName();
-                        sendMusicPauseIntent();
                         sendMusicCreateIntent(name);
                         musicBound = true;
 

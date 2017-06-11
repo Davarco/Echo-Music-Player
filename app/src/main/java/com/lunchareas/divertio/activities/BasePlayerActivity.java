@@ -80,7 +80,7 @@ public abstract class BasePlayerActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         LocalBroadcastManager.getInstance(this).registerReceiver((songBroadcastReceiver), new IntentFilter(PlayMusicService.MUSIC_RESULT));
-        Log.d(TAG, "Running start!");
+        //Log.d(TAG, "Running start!");
     }
 
     @Override

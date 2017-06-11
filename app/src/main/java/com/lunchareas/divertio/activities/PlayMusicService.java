@@ -1,10 +1,12 @@
 package com.lunchareas.divertio.activities;
 
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.session.MediaSession;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -26,7 +28,7 @@ public class PlayMusicService extends Service {
 
     public static final String MUSIC_CREATE = "CREATE";
     public static final String MUSIC_CHANGE = "CHANGE";
-    public static final String MUSIC_START = "START";
+    public static final String MUSIC_PLAY = "START";
     public static final String MUSIC_PAUSE = "PAUSE";
     public static final String MUSIC_FINISH = "FINISH";
     public static final String PLAYLIST_CREATE = "PLAYLIST_CREATE";
@@ -42,17 +44,26 @@ public class PlayMusicService extends Service {
     private String currSong;
     private SongData songData;
 
+    // Media session stuff
+    private MediaSession mediaSession;
+
     @Override
     public int onStartCommand(Intent workIntent, int flags, int startId) {
+
+        // Get cmd
         if (workIntent != null) {
             intentCmd = workIntent.getExtras();
         }
 
-        // Start music broadcaster
-        initBroadcaster();
+        // Start media session if needed
+        if (intentCmd.containsKey(MUSIC_CREATE)) {
+            Log.d(TAG, "Creating new song.");
+            initBroadcaster();
+            initMedia();
+        }
 
         // Start handler
-        initHandler();
+        handleIntent();
 
         return START_STICKY;
     }
@@ -101,55 +112,82 @@ public class PlayMusicService extends Service {
         });
     }
 
-    private void initHandler() {
+    @SuppressLint("NewApi")
+    private void handleIntent() {
 
         // Handle different events
         if (intentCmd != null) {
-            if (intentCmd.containsKey(PlayMusicService.MUSIC_CREATE)) {
-
-                // Create single song
-                Log.d(TAG, "Create Key: " + intentCmd.getString(PlayMusicService.MUSIC_CREATE));
-                currSong = intentCmd.getString(PlayMusicService.MUSIC_CREATE);
-                songData = new SongDBHandler(this).getSongData(currSong);
-                initMusicPlayer();
-                mp.start();
-                musicUpdaterThread.start();
-
-            } else if (intentCmd.containsKey(PlayMusicService.MUSIC_START) && mp != null) {
-
-                // Start song
-                Log.d(TAG, "Starting music!");
-                mp.start();
-                musicUpdaterThread.start();
-
+            if (intentCmd.containsKey(PlayMusicService.MUSIC_PLAY) && mp != null) {
+                mediaSession.getController().getTransportControls().play();
             } else if (intentCmd.containsKey(PlayMusicService.MUSIC_PAUSE) && mp != null) {
-
-                // Pause song
-                Log.d(TAG, "Pausing music!");
-                mp.pause();
-
+                mediaSession.getController().getTransportControls().pause();
             } else if (intentCmd.containsKey(PlayMusicService.MUSIC_CHANGE) && mp != null) {
-
-                // Change song location
-                int newPosition = intentCmd.getInt(PlayMusicService.MUSIC_CHANGE);
-                mp.seekTo(newPosition);
-                Log.d(TAG, "Changing to new position!");
-
+                mediaSession.getController().getTransportControls().seekTo(intentCmd.getInt(PlayMusicService.MUSIC_CHANGE));
             } else if (intentCmd.containsKey(PlayMusicService.PLAYLIST_CREATE)) {
-
-                // Create playlist queue
                 Log.d(TAG, "Beginning playlist queue!");
                 String[] songPathList = intentCmd.getStringArray(PlayMusicService.PLAYLIST_CREATE);
                 beginPlaylistQueue(songPathList);
-
             } else {
-                Log.e(TAG, "Command sent to PlayMusicService not found.");
+                //Log.e(TAG, "Command sent to PlayMusicService not found.");
+                //System.out.println(intentCmd);
                 if (intentCmd.isEmpty()) {
                     Log.e(TAG, "No command sent, bundle empty.");
                 }
             }
         }
+    }
 
+    @SuppressLint("NewApi")
+    private void initMedia() {
+
+        // Get song data
+        currSong = intentCmd.getString(PlayMusicService.MUSIC_CREATE);
+        songData = new SongDBHandler(this).getSongData(currSong);
+
+        // Pause song if playing
+        if (mp != null && mp.isPlaying()) {
+            mp.pause();
+        }
+        initMusicPlayer();
+
+        // Media session init
+        mediaSession = new MediaSession(this, "MusicService");
+        mediaSession.setCallback(new MediaSession.Callback() {
+            @Override
+            public void onPlay() {
+                mp.start();
+                musicUpdaterThread.start();
+                Log.d(TAG, "Play!");
+            }
+
+            @Override
+            public void onPause() {
+                if (mp.isPlaying()) {
+                    mp.pause();
+                }
+                Log.d(TAG, "Pause!");
+            }
+
+            @Override
+            public void onSkipToNext() {
+                super.onSkipToNext();
+            }
+
+            @Override
+            public void onSkipToPrevious() {
+                super.onSkipToPrevious();
+            }
+
+            @Override
+            public void onSeekTo(long pos) {
+                super.onSeekTo(pos);
+                mp.seekTo((int)pos);
+                Log.d(TAG, "Seek!");
+            }
+        });
+
+        // Start song
+        mediaSession.getController().getTransportControls().play();
     }
 
     private void beginPlaylistQueue(final String[] songNameList) {
@@ -218,16 +256,4 @@ public class PlayMusicService extends Service {
             mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
         }
     }
-
-    /*
-    @Override
-    protected void onHandleIntent(Intent workIntent) {
-        String dataString = workIntent.getDataString();
-        Integer songId = new Integer(dataString);
-
-        songPlayer = MediaPlayer.create(this, songId);
-        songPlayer.setLooping(true);
-        songPlayer.start();
-    }
-    */
 }
