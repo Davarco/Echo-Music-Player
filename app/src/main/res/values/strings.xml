@@ -52,6 +52,8 @@
     <string name="dialog_confirm">OK</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_change">Change</string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
 
     <!-- Download song dialog strings -->
     <string name="download_confirm">Download</string>
@@ -70,7 +72,7 @@
 
     <!-- Create playlist dialog strings -->
     <string name="create_playlist_title">Playlist Name</string>
-    <string name="create_playlist_songlist_title">Song List</string>
+    <string name="create_playlist_song_list_title">Song List</string>
     <string name="create_playlist_hint">Name</string>
     <string name="create_playlist_confirm">Next</string>
     <string name="create_playlist_finish">Finish</string>
@@ -81,5 +83,8 @@
 
     <!-- Add songs dialog strings -->
     <string name="add_songs_dialog_title">Songs Found</string>
+
+    <!-- Import prompt dialog strings -->
+    <string name="import_prompt_dialog_msg">Import MP3 files on device?</string>
 
 </resources>

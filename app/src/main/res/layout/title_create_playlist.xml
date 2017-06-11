@@ -14,6 +14,6 @@
         android:textSize="18sp"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:text="@string/create_playlist_songlist_title"
+        android:text="@string/create_playlist_song_list_title"
         fontPath="fonts/Lato-Bold.ttf"/>
 </LinearLayout>

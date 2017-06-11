@@ -25,6 +25,7 @@ import android.widget.*;
 import android.content.*;
 
 import com.lunchareas.divertio.adapters.SongSelectionAdapter;
+import com.lunchareas.divertio.fragments.ImportPromptDialog;
 import com.lunchareas.divertio.fragments.ImportSongDialog;
 import com.lunchareas.divertio.fragments.AddToPlaylistDialog;
 import com.lunchareas.divertio.fragments.ChangeSongArtistDialog;
@@ -69,6 +70,11 @@ public class MainActivity extends BaseListActivity {
     private Thread downloadThread;
     private String downloadMusicLink;
 
+    /*
+    Shared preferences for first run only.
+     */
+    private SharedPreferences sharedPreferences;
+
     public MainActivity() {
         super(R.layout.activity_main);
     }
@@ -95,6 +101,9 @@ public class MainActivity extends BaseListActivity {
         if (!musicFolder.exists()) {
             musicFolder.mkdir();
         }
+
+        // Get shared prefs
+        sharedPreferences = getSharedPreferences("com.lunchareas.divertio", MODE_PRIVATE);
     }
 
     @Override
@@ -316,6 +325,11 @@ public class MainActivity extends BaseListActivity {
     public void createNameFailureDialog() {
         DialogFragment nameFailureDialog = new DownloadNameFailureDialog();
         nameFailureDialog.show(getSupportFragmentManager(), "NameFailure");
+    }
+
+    public void createImportDialog() {
+        DialogFragment dialogFragment = new ImportSongDialog();
+        dialogFragment.show(getSupportFragmentManager(), "Import");
     }
 
     @Override
@@ -639,6 +653,22 @@ public class MainActivity extends BaseListActivity {
 
             // Reset the song list view
             setMainView();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Run first run if necessary
+        if (sharedPreferences.getBoolean("firstrun", true)) {
+
+            // Import initial
+            DialogFragment dialogFragment = new ImportPromptDialog();
+            dialogFragment.show(getSupportFragmentManager(), "ImportInitial");
+
+            // Change shared prefs
+            sharedPreferences.edit().putBoolean("firstrun", false).apply();
         }
     }
 }

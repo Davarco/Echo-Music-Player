@@ -88,15 +88,21 @@ public class ImportSongDialog extends DialogFragment {
                 }
                 */
 
+                // Set default icon if needed
+                if (cover == null) {
+                    cover = getResources().getDrawable(R.drawable.ic_default_song);
+                }
+
                 // Create the song data
                 if (cover != null) {
                     SongData songData = new SongData(title, path, artist, cover);
-                    Log.d(TAG, songData.toString());
 
                     // Ensure it doesn't already exist
                     if (!existingSongList.contains(songData)) {
                         songList.add(songData);
                     }
+                } else {
+                    Log.d(TAG, "Empty song cover, not being considered.");
                 }
 
             } while (musicCursor.moveToNext());
