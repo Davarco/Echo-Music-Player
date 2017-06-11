@@ -95,6 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void sendMusicStartIntent() {
         musicStartIntent = new Intent(this, PlayMediaService.class);
         musicStartIntent.putExtra(PlayMediaService.MUSIC_PLAY, 0);
+        musicStartIntent.setAction()
         this.startService(musicStartIntent);
     }
 

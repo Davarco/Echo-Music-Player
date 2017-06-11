@@ -33,7 +33,7 @@ public class PlayMediaService extends Service {
 
     public static final String MUSIC_CREATE = "CREATE";
     public static final String MUSIC_CHANGE = "CHANGE";
-    public static final String MUSIC_PLAY = "START";
+    public static final String MUSIC_PLAY = "PLAY";
     public static final String MUSIC_PAUSE = "PAUSE";
     public static final String MUSIC_STOP = "STOP";
     public static final String MUSIC_PREV = "PREV";
@@ -141,7 +141,7 @@ public class PlayMediaService extends Service {
             public void onPlay() {
                 mp.start();
                 musicUpdaterThread.start();
-                buildNotification(createAction(R.drawable.ic_pause_noti, "Pause", MUSIC_PAUSE));
+                buildNotification();
                 Log.e(TAG, "Play!");
             }
 
@@ -149,9 +149,12 @@ public class PlayMediaService extends Service {
             public void onPause() {
                 if (mp.isPlaying()) {
                     mp.pause();
-                    buildNotification(createAction(R.drawable.ic_play_noti, "Play", MUSIC_PLAY));
+                    buildNotification();
+                    Log.e(TAG, "Pause!");
+                } else {
+                    Log.e(TAG, "Tried to pause, MP is not playing!");
+                    // onPlay();
                 }
-                Log.e(TAG, "Pause!");
             }
 
             @Override
@@ -166,14 +169,14 @@ public class PlayMediaService extends Service {
             @Override
             public void onSkipToNext() {
                 super.onSkipToNext();
-                buildNotification(createAction(R.drawable.ic_pause_noti, "Pause", MUSIC_PAUSE));
+                buildNotification();
                 Log.e(TAG, "Next!");
             }
 
             @Override
             public void onSkipToPrevious() {
                 super.onSkipToPrevious();
-                buildNotification(createAction(R.drawable.ic_pause_noti, "Pause", MUSIC_PAUSE));
+                buildNotification();
                 Log.d(TAG, "Prev!");
             }
 
@@ -214,9 +217,14 @@ public class PlayMediaService extends Service {
 
         // Handle different events
         if (intentCmd != null) {
+            for (String s: intentCmd.keySet()) {
+                Log.e(TAG, "LIST:" + s);
+            }
             if (intentCmd.containsKey(PlayMediaService.MUSIC_PLAY) && mp != null) {
+                //Log.e(TAG, "Trying to play!");
                 mediaSession.getController().getTransportControls().play();
             } else if (intentCmd.containsKey(PlayMediaService.MUSIC_PAUSE) && mp != null) {
+                //Log.e(TAG, "Trying to pause!");
                 mediaSession.getController().getTransportControls().pause();
             } else if (intentCmd.containsKey(PlayMediaService.MUSIC_CHANGE) && mp != null) {
                 mediaSession.getController().getTransportControls().seekTo(intentCmd.getInt(PlayMediaService.MUSIC_CHANGE));
@@ -239,7 +247,7 @@ public class PlayMediaService extends Service {
     }
 
     @SuppressLint("NewApi")
-    private void buildNotification(Notification.Action action) {
+    private void buildNotification() {
 
         // Set style
         Notification.MediaStyle style = new Notification.MediaStyle();
@@ -247,7 +255,7 @@ public class PlayMediaService extends Service {
 
         // Setup intent and notification
         Intent intent = new Intent(getApplicationContext(), PlayMediaService.class);
-        intent.setAction(MUSIC_STOP);
+        intent.putExtra(MUSIC_STOP, 0);
         PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(), 1, intent, 0);
         Notification.Builder builder = new Notification.Builder(this)
                 .setSmallIcon(R.drawable.ic_headphone)
@@ -258,7 +266,7 @@ public class PlayMediaService extends Service {
 
         // Add actions
         builder.addAction(createAction(R.drawable.ic_prev_noti, "Previous", MUSIC_PREV));
-        builder.addAction(action);
+        builder.addAction(createAction(R.drawable.ic_play_noti, "Play", MUSIC_PLAY));
         builder.addAction(createAction(R.drawable.ic_next_noti, "Next", MUSIC_NEXT));
 
         // Notify
@@ -323,7 +331,8 @@ public class PlayMediaService extends Service {
     @SuppressLint("NewApi")
     private Notification.Action createAction(int icon, String title, String intentAction) {
         Intent intent = new Intent(getApplicationContext(), PlayMediaService.class);
-        intent.setAction(intentAction);
+        Log.e(TAG, "Build: " + intentAction);
+        intent.putExtra(MUSIC_PLAY, 0);
         PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(), 1, intent, 0);
         return new Notification.Action.Builder(icon, title, pendingIntent).build();
     }
