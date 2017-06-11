@@ -4,20 +4,16 @@ package com.lunchareas.divertio.activities;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -82,7 +78,7 @@ public class MusicActivity extends BasePlayerActivity {
         songCtrlButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Detected click on play button.");
+                // Log.d(TAG, "Detected click on play button.");
                 if (musicBound) {
                     sendMusicPauseIntent();
                     songCtrlButton.setImageResource(R.drawable.ic_play);
@@ -125,17 +121,17 @@ public class MusicActivity extends BasePlayerActivity {
 
                 // Set current song if null, or change if new song pops up
                 if (currSong == null) {
-                    currSong = intent.getStringExtra(PlayMusicService.MUSIC_CURR);
-                } else if (!currSong.equals(intent.getStringExtra(PlayMusicService.MUSIC_CURR))) {
-                    currSong = intent.getStringExtra(PlayMusicService.MUSIC_CURR);
+                    currSong = intent.getStringExtra(PlayMediaService.MUSIC_CURR);
+                } else if (!currSong.equals(intent.getStringExtra(PlayMediaService.MUSIC_CURR))) {
+                    currSong = intent.getStringExtra(PlayMediaService.MUSIC_CURR);
                     songData = new SongDBHandler(getApplicationContext()).getSongData(currSong);
                     position = songInfoList.indexOf(songData);
                     setMainView();
                 }
 
                 // Get position/duration
-                int songPosition = intent.getIntExtra(PlayMusicService.MUSIC_POSITION, 0);
-                int songDuration = intent.getIntExtra(PlayMusicService.MUSIC_DURATION, 0);
+                int songPosition = intent.getIntExtra(PlayMediaService.MUSIC_POSITION, 0);
+                int songDuration = intent.getIntExtra(PlayMediaService.MUSIC_DURATION, 0);
 
                 // Set location based on position/duration
                 songProgressManager.setMax(songDuration);

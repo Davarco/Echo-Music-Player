@@ -39,7 +39,7 @@ public class SongUtil {
         // Create new song data with title
         String prevName = songData.getSongName();
         songData.setSongName(newTitle);
-        Log.d(TAG, "Changing title from " + prevName + " to " + newTitle);
+        // Log.d(TAG, "Changing title from " + prevName + " to " + newTitle);
 
         // Update the song data
         SongDBHandler db = new SongDBHandler(context);
@@ -55,7 +55,7 @@ public class SongUtil {
         // Create new song data with artist
         String prevArtist = songData.getSongArtist();
         songData.setSongArtist(newArtist);
-        Log.d(TAG, "Changing title from " + prevArtist + " to " + newArtist);
+        // Log.d(TAG, "Changing title from " + prevArtist + " to " + newArtist);
 
         // Update the song data
         SongDBHandler db = new SongDBHandler(context);
@@ -92,12 +92,12 @@ public class SongUtil {
             List<SongData> songList = playlistDataList.get(i).getSongList();
             for (int j = 0; j < songList.size(); j++) {
                 if (songList.get(j).equals(songData)) {
-                    Log.d(TAG," Removing song no " + Integer.toString(j+1));
+                    // Log.d(TAG," Removing song no " + Integer.toString(j+1));
                     songList.remove(j);
                 }
             }
             PlaylistData newPlaylist = new PlaylistData(playlistDataList.get(i).getPlaylistName(), songList);
-            Log.d(TAG, newPlaylist.toString());
+            // Log.d(TAG, newPlaylist.toString());
             db.updatePlaylistData(newPlaylist);
         }
     }

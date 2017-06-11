@@ -43,9 +43,9 @@ public class AddToPlaylistDialog extends DialogFragment {
         for (int i = 0; i < playlistInfoList.size(); i++) {
             if (!playlistInfoList.get(i).getSongList().contains(songData)) {
                 playlistInfoTemp.add(playlistInfoList.get(i).getPlaylistName());
-                Log.d(TAG, "Adding playlist to pick from because it does not already contain the song.");
+                // Log.d(TAG, "Adding playlist to pick from because it does not already contain the song.");
             } else {
-                Log.d(TAG, "Song already is in the playlist.");
+                // Log.d(TAG, "Song already is in the playlist.");
             }
         }
 
@@ -56,7 +56,7 @@ public class AddToPlaylistDialog extends DialogFragment {
         // Get correct name
         if (getArguments().containsKey(MUSIC_POS)) {
             name = (String) getArguments().get(MUSIC_POS);
-            Log.d(TAG, "Position: " + name);
+            // Log.d(TAG, "Position: " + name);
         } else {
             name = NOT_FOUND;
         }
@@ -66,7 +66,7 @@ public class AddToPlaylistDialog extends DialogFragment {
             songPosList = (List<Integer>) getArguments().get(MUSIC_LIST);
         } else {
             songPosList = null;
-            Log.d(TAG, "Song list passed was null.");
+            // Log.d(TAG, "Song list passed was null.");
         }
 
         AlertDialog.Builder addSongDialogBuilder = new AlertDialog.Builder(getActivity());
@@ -77,10 +77,10 @@ public class AddToPlaylistDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (isChecked) {
                             selectedPlaylists.add(which);
-                            Log.d(TAG, "Adding name " + which);
+                            // Log.d(TAG, "Adding name " + which);
                         } else {
                             selectedPlaylists.remove(Integer.valueOf(which));
-                            Log.d(TAG, "Removing name " + which);
+                            // Log.d(TAG, "Removing name " + which);
                         }
                     }
                 })
@@ -93,7 +93,7 @@ public class AddToPlaylistDialog extends DialogFragment {
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.d(TAG, "Canceled adding to playlist...");
+                        // Log.d(TAG, "Canceled adding to playlist...");
                     }
                 });
 
@@ -127,7 +127,7 @@ public class AddToPlaylistDialog extends DialogFragment {
             // Add list of songs
             PlaylistUtil playlistUtil = new PlaylistUtil(getActivity());
             for (Integer idx : selectedPlaylists) {
-                Log.d(TAG, "Adding songs to playlist " + playlistInfoList.get(idx).getPlaylistName());
+                // Log.d(TAG, "Adding songs to playlist " + playlistInfoList.get(idx).getPlaylistName());
                 PlaylistData playlistData = playlistInfoList.get(idx);
                 playlistUtil.addSongsToPlaylist(songList, playlistData);
                 playlistUtil.removeDuplicateSongs(playlistData);

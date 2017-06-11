@@ -56,13 +56,13 @@ public class CreatePlaylistFromSongsDialog extends DialogFragment {
                         playlistNameInput = (EditText) dialogView.findViewById(R.id.dialog_create_playlist_name);
                         playlistName = playlistNameInput.getText().toString().trim();
                         if (!playlistUtil.nameAlreadyExists(playlistName)) {
-                            Log.d(TAG, "Playlist name: " + playlistName);
+                            // Log.d(TAG, "Playlist name: " + playlistName);
                             playlistUtil.createPlaylist(playlistName, songList);
                             ((BaseActivity) getActivity()).setMainView();
                         } else {
 
                             // Create dialog because name is invalid
-                            Log.d(TAG, "Playlist name already exists.");
+                            // Log.d(TAG, "Playlist name already exists.");
                             ((BaseActivity) getActivity()).createPlaylistNameFailureDialog();
                         }
                     }
@@ -70,7 +70,7 @@ public class CreatePlaylistFromSongsDialog extends DialogFragment {
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.d(TAG, "Canceled creation...");
+                        // Log.d(TAG, "Canceled creation...");
                     }
                 });
         return createPlaylistBuilder.create();

@@ -21,9 +21,7 @@ public class DownloadNameFailureDialog extends DialogFragment {
                 .setMessage(R.string.download_name_failure_msg)
                 .setPositiveButton(R.string.dialog_confirm, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.d(TAG, "Detected ok click on name failure.");
-                    }
+                    public void onClick(DialogInterface dialog, int which) {}
                 });
         return createNameFailureBuilder.create();
     }

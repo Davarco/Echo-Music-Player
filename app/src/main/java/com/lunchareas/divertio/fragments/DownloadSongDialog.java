@@ -82,9 +82,7 @@ public class DownloadSongDialog extends DialogFragment {
             })
             .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Log.d(TAG, "Canceled MP3 upload.");
-                }
+                public void onClick(DialogInterface dialogInterface, int i) {}
             });
 
         return uploadBuilder.create();
@@ -97,7 +95,6 @@ public class DownloadSongDialog extends DialogFragment {
     }
 
     public boolean hasActiveInternetConnection() {
-        Log.d(TAG, "Reached internet connection checker...");
         if (isNetworkAvailable(getActivity())) {
             try {
                 HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.something.com").openConnection());
@@ -105,7 +102,6 @@ public class DownloadSongDialog extends DialogFragment {
                 urlc.setRequestProperty("Connection", "close");
                 urlc.setConnectTimeout(3000);
                 urlc.connect();
-                Log.d(TAG, "Network is available, checking for response code...");
                 return (urlc.getResponseCode() == 200);
             } catch (IOException e) {
                 Log.e(TAG, "No connection...");
@@ -113,7 +109,6 @@ public class DownloadSongDialog extends DialogFragment {
         } else {
             Log.e(TAG, "No network available...");
         }
-        Log.d(TAG, "Apparently a network is available...");
         return false;
     }
 
@@ -139,7 +134,7 @@ public class DownloadSongDialog extends DialogFragment {
 
             // Get download link and file name
             songFileName = songName + ".mp3";
-            Log.d(TAG, "Inserted link is " + userLink + ".");
+            // Log.d(TAG, "Inserted link is " + userLink + ".");
 
             // Replace occurrences of /
             songFileName = songFileName.replace('/', '|');
@@ -157,7 +152,7 @@ public class DownloadSongDialog extends DialogFragment {
             }
 
         } else {
-            Log.d(TAG, "Could not connect to website?");
+            Log.e(TAG, "Could not connect to website?");
             replaceDialogWithFailure();
         }
     }
@@ -171,7 +166,7 @@ public class DownloadSongDialog extends DialogFragment {
             return matcher.group();
         }
 
-        Log.d(TAG, "Failed to get ID.");
+        Log.e(TAG, "Failed to get ID.");
         return null;
     }
 

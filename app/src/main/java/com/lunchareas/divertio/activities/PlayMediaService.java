@@ -2,7 +2,11 @@ package com.lunchareas.divertio.activities;
 
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -14,12 +18,13 @@ import android.os.PowerManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 
-public class PlayMusicService extends Service {
+public class PlayMediaService extends Service {
 
-    private static final String TAG = PlayMusicService.class.getName();
+    private static final String TAG = PlayMediaService.class.getName();
 
     public static final String MUSIC_RESULT = "REQUEST_PROCESSED";
     public static final String MUSIC_POSITION = "POSITION";
@@ -30,7 +35,9 @@ public class PlayMusicService extends Service {
     public static final String MUSIC_CHANGE = "CHANGE";
     public static final String MUSIC_PLAY = "START";
     public static final String MUSIC_PAUSE = "PAUSE";
-    public static final String MUSIC_FINISH = "FINISH";
+    public static final String MUSIC_STOP = "STOP";
+    public static final String MUSIC_PREV = "PREV";
+    public static final String MUSIC_NEXT = "NEXT";
     public static final String PLAYLIST_CREATE = "PLAYLIST_CREATE";
 
     private Bundle intentCmd;
@@ -56,14 +63,16 @@ public class PlayMusicService extends Service {
         }
 
         // Start media session if needed
-        if (intentCmd.containsKey(MUSIC_CREATE)) {
-            Log.d(TAG, "Creating new song.");
-            initBroadcaster();
-            initMedia();
-        }
+        if (intentCmd != null) {
+            if (intentCmd.containsKey(MUSIC_CREATE)) {
+                Log.d(TAG, "Creating new song.");
+                initBroadcaster();
+                initMedia();
+            }
 
-        // Start handler
-        handleIntent();
+            // Start handler
+            handleIntent();
+        }
 
         return START_STICKY;
     }
@@ -113,35 +122,10 @@ public class PlayMusicService extends Service {
     }
 
     @SuppressLint("NewApi")
-    private void handleIntent() {
-
-        // Handle different events
-        if (intentCmd != null) {
-            if (intentCmd.containsKey(PlayMusicService.MUSIC_PLAY) && mp != null) {
-                mediaSession.getController().getTransportControls().play();
-            } else if (intentCmd.containsKey(PlayMusicService.MUSIC_PAUSE) && mp != null) {
-                mediaSession.getController().getTransportControls().pause();
-            } else if (intentCmd.containsKey(PlayMusicService.MUSIC_CHANGE) && mp != null) {
-                mediaSession.getController().getTransportControls().seekTo(intentCmd.getInt(PlayMusicService.MUSIC_CHANGE));
-            } else if (intentCmd.containsKey(PlayMusicService.PLAYLIST_CREATE)) {
-                Log.d(TAG, "Beginning playlist queue!");
-                String[] songPathList = intentCmd.getStringArray(PlayMusicService.PLAYLIST_CREATE);
-                beginPlaylistQueue(songPathList);
-            } else {
-                //Log.e(TAG, "Command sent to PlayMusicService not found.");
-                //System.out.println(intentCmd);
-                if (intentCmd.isEmpty()) {
-                    Log.e(TAG, "No command sent, bundle empty.");
-                }
-            }
-        }
-    }
-
-    @SuppressLint("NewApi")
     private void initMedia() {
 
         // Get song data
-        currSong = intentCmd.getString(PlayMusicService.MUSIC_CREATE);
+        currSong = intentCmd.getString(PlayMediaService.MUSIC_CREATE);
         songData = new SongDBHandler(this).getSongData(currSong);
 
         // Pause song if playing
@@ -157,25 +141,40 @@ public class PlayMusicService extends Service {
             public void onPlay() {
                 mp.start();
                 musicUpdaterThread.start();
-                Log.d(TAG, "Play!");
+                buildNotification(createAction(R.drawable.ic_pause_noti, "Pause", MUSIC_PAUSE));
+                Log.e(TAG, "Play!");
             }
 
             @Override
             public void onPause() {
                 if (mp.isPlaying()) {
                     mp.pause();
+                    buildNotification(createAction(R.drawable.ic_play_noti, "Play", MUSIC_PLAY));
                 }
-                Log.d(TAG, "Pause!");
+                Log.e(TAG, "Pause!");
+            }
+
+            @Override
+            public void onStop() {
+                NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.cancel(1);
+                Intent intent = new Intent(getApplicationContext(), PlayMediaService.class);
+                stopService(intent);
+                Log.e(TAG, "Stop!");
             }
 
             @Override
             public void onSkipToNext() {
                 super.onSkipToNext();
+                buildNotification(createAction(R.drawable.ic_pause_noti, "Pause", MUSIC_PAUSE));
+                Log.e(TAG, "Next!");
             }
 
             @Override
             public void onSkipToPrevious() {
                 super.onSkipToPrevious();
+                buildNotification(createAction(R.drawable.ic_pause_noti, "Pause", MUSIC_PAUSE));
+                Log.d(TAG, "Prev!");
             }
 
             @Override
@@ -185,9 +184,86 @@ public class PlayMusicService extends Service {
                 Log.d(TAG, "Seek!");
             }
         });
+        mediaSession.setFlags(MediaSession.FLAG_HANDLES_MEDIA_BUTTONS | MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS);
+
+        // Set intent
+        /*
+        Intent intent = new Intent(getApplicationContext(), MusicActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 99, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mediaSession.setSessionActivity(pendingIntent);
+        Bundle bundle = new Bundle();
+        mediaSession.setExtras(bundle);
+        */
+
+        // Set metadata
+        /*
+        MediaMetadata metadata = new MediaMetadata.Builder()
+                .putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, ((BitmapDrawable) songData.getSongCover()).getBitmap())
+                .putString(MediaMetadata.METADATA_KEY_DISPLAY_TITLE, songData.getSongName())
+                .putString(MediaMetadata.METADATA_KEY_ARTIST, songData.getSongArtist())
+                .build();
+        mediaSession.setMetadata(metadata);
+        */
 
         // Start song
         mediaSession.getController().getTransportControls().play();
+    }
+
+    @SuppressLint("NewApi")
+    private void handleIntent() {
+
+        // Handle different events
+        if (intentCmd != null) {
+            if (intentCmd.containsKey(PlayMediaService.MUSIC_PLAY) && mp != null) {
+                mediaSession.getController().getTransportControls().play();
+            } else if (intentCmd.containsKey(PlayMediaService.MUSIC_PAUSE) && mp != null) {
+                mediaSession.getController().getTransportControls().pause();
+            } else if (intentCmd.containsKey(PlayMediaService.MUSIC_CHANGE) && mp != null) {
+                mediaSession.getController().getTransportControls().seekTo(intentCmd.getInt(PlayMediaService.MUSIC_CHANGE));
+            } else if (intentCmd.containsKey(PlayMediaService.MUSIC_PREV)) {
+                mediaSession.getController().getTransportControls().skipToPrevious();
+            } else if (intentCmd.containsKey(PlayMediaService.MUSIC_NEXT)) {
+                mediaSession.getController().getTransportControls().skipToNext();
+            } else if (intentCmd.containsKey(PlayMediaService.PLAYLIST_CREATE)) {
+                Log.d(TAG, "Beginning playlist queue!");
+                String[] songPathList = intentCmd.getStringArray(PlayMediaService.PLAYLIST_CREATE);
+                beginPlaylistQueue(songPathList);
+            } else {
+                //Log.e(TAG, "Command sent to PlayMediaService not found.");
+                //System.out.println(intentCmd);
+                if (intentCmd.isEmpty()) {
+                    Log.e(TAG, "No command sent, bundle empty.");
+                }
+            }
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private void buildNotification(Notification.Action action) {
+
+        // Set style
+        Notification.MediaStyle style = new Notification.MediaStyle();
+        style.setMediaSession(mediaSession.getSessionToken());
+
+        // Setup intent and notification
+        Intent intent = new Intent(getApplicationContext(), PlayMediaService.class);
+        intent.setAction(MUSIC_STOP);
+        PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(), 1, intent, 0);
+        Notification.Builder builder = new Notification.Builder(this)
+                .setSmallIcon(R.drawable.ic_headphone)
+                .setContentTitle(songData.getSongName())
+                .setContentText(songData.getSongArtist())
+                .setDeleteIntent(pendingIntent)
+                .setStyle(style);
+
+        // Add actions
+        builder.addAction(createAction(R.drawable.ic_prev_noti, "Previous", MUSIC_PREV));
+        builder.addAction(action);
+        builder.addAction(createAction(R.drawable.ic_next_noti, "Next", MUSIC_NEXT));
+
+        // Notify
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(1, builder.build());
     }
 
     private void beginPlaylistQueue(final String[] songNameList) {
@@ -236,6 +312,22 @@ public class PlayMusicService extends Service {
         });
     }
 
+    private void initMusicPlayer() {
+        mp = MediaPlayer.create(this, Uri.parse(songData.getSongPath()));
+        if (mp != null) {
+            mp.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
+            mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private Notification.Action createAction(int icon, String title, String intentAction) {
+        Intent intent = new Intent(getApplicationContext(), PlayMediaService.class);
+        intent.setAction(intentAction);
+        PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(), 1, intent, 0);
+        return new Notification.Action.Builder(icon, title, pendingIntent).build();
+    }
+
     @Override
     public IBinder onBind(Intent i) {
         return null;
@@ -243,17 +335,9 @@ public class PlayMusicService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "PlayMusicService destroyed...");
+        Log.d(TAG, "PlayMediaService destroyed...");
         mp.release();
         mp = null;
         musicUpdaterThread.interrupt();
-    }
-
-    public void initMusicPlayer() {
-        mp = MediaPlayer.create(this, Uri.parse(songData.getSongPath()));
-        if (mp != null) {
-            mp.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
-            mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        }
     }
 }

@@ -27,7 +27,7 @@
         </activity>
 
         <service
-            android:name="com.lunchareas.divertio.activities.PlayMusicService"
+            android:name="com.lunchareas.divertio.activities.PlayMediaService"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false" />
 

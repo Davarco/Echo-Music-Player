@@ -102,7 +102,7 @@ public class ImportSongDialog extends DialogFragment {
                         songList.add(songData);
                     }
                 } else {
-                    Log.d(TAG, "Empty song cover, not being considered.");
+                    // Log.d(TAG, "Empty song cover, not being considered.");
                 }
 
             } while (musicCursor.moveToNext());
@@ -127,10 +127,10 @@ public class ImportSongDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (isChecked) {
                             selectedSongs.add(which);
-                            Log.d(TAG, "Adding position " + which);
+                            // Log.d(TAG, "Adding position " + which);
                         } else {
                             selectedSongs.remove(Integer.valueOf(which));
-                            Log.d(TAG, "Removing position " + which);
+                            // Log.d(TAG, "Removing position " + which);
                         }
                     }
                 })
@@ -144,7 +144,7 @@ public class ImportSongDialog extends DialogFragment {
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.d(TAG, "Canceled adding...");
+                        // Log.d(TAG, "Canceled adding...");
                     }
                 });
 

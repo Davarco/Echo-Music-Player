@@ -8,7 +8,6 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.lunchareas.divertio.fragments.CreatePlaylistNameFailureDialog;
 import com.lunchareas.divertio.R;
@@ -87,27 +86,27 @@ public abstract class BaseActivity extends AppCompatActivity {
     public abstract void setMainView();
 
     public void sendMusicCreateIntent(String name) {
-        musicCreateIntent = new Intent(this, PlayMusicService.class);
-        Log.d(TAG, "Passing string to create intent: " + name);
-        musicCreateIntent.putExtra(PlayMusicService.MUSIC_CREATE, name);
+        musicCreateIntent = new Intent(this, PlayMediaService.class);
+        // Log.d(TAG, "Passing string to create intent: " + name);
+        musicCreateIntent.putExtra(PlayMediaService.MUSIC_CREATE, name);
         this.startService(musicCreateIntent);
     }
 
     public void sendMusicStartIntent() {
-        musicStartIntent = new Intent(this, PlayMusicService.class);
-        musicStartIntent.putExtra(PlayMusicService.MUSIC_PLAY, 0);
+        musicStartIntent = new Intent(this, PlayMediaService.class);
+        musicStartIntent.putExtra(PlayMediaService.MUSIC_PLAY, 0);
         this.startService(musicStartIntent);
     }
 
     public void sendMusicPauseIntent() {
-        musicPauseIntent = new Intent(this, PlayMusicService.class);
-        musicPauseIntent.putExtra(PlayMusicService.MUSIC_PAUSE, 0);
+        musicPauseIntent = new Intent(this, PlayMediaService.class);
+        musicPauseIntent.putExtra(PlayMediaService.MUSIC_PAUSE, 0);
         this.startService(musicPauseIntent);
     }
 
     public void sendMusicChangeIntent(int position) {
-        musicChangeIntent = new Intent(this, PlayMusicService.class);
-        musicChangeIntent.putExtra(PlayMusicService.MUSIC_CHANGE, position);
+        musicChangeIntent = new Intent(this, PlayMediaService.class);
+        musicChangeIntent.putExtra(PlayMediaService.MUSIC_CHANGE, position);
         this.startService(musicChangeIntent);
     }
 

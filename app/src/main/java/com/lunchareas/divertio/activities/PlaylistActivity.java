@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -65,7 +64,7 @@ public class PlaylistActivity extends BasePlayerActivity {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG,"Playing playlist.");
+                // Log.d(TAG,"Playing playlist.");
                 songCtrlButton.setImageResource(R.drawable.ic_pause);
                 sendMusicPauseIntent();
                 PlaylistQueueUtil queueUtil = new PlaylistQueueUtil(playlistData, PlaylistActivity.this);
@@ -78,7 +77,7 @@ public class PlaylistActivity extends BasePlayerActivity {
         playlistView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "Detected LONG click on playlist song.");
+                // Log.d(TAG, "Detected LONG click on playlist song.");
                 //showChoiceMenu(view, position);
                 return true;
             }
@@ -119,7 +118,7 @@ public class PlaylistActivity extends BasePlayerActivity {
         songCtrlButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Detected click on play button.");
+                // Log.d(TAG, "Detected click on play button.");
                 if (musicBound) {
                     sendMusicPauseIntent();
                     songCtrlButton.setImageResource(R.drawable.ic_play);
@@ -159,8 +158,8 @@ public class PlaylistActivity extends BasePlayerActivity {
         songBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                int songPosition = intent.getIntExtra(PlayMusicService.MUSIC_POSITION, 0);
-                int songDuration = intent.getIntExtra(PlayMusicService.MUSIC_DURATION, 0);
+                int songPosition = intent.getIntExtra(PlayMediaService.MUSIC_POSITION, 0);
+                int songDuration = intent.getIntExtra(PlayMediaService.MUSIC_DURATION, 0);
 
                 // Set location based on position/duration
                 songProgressManager.setMax(songDuration);
@@ -225,7 +224,7 @@ public class PlaylistActivity extends BasePlayerActivity {
 
     @Override
     protected void showDispData() {
-        Log.d(TAG, "Resetting main view for playlist controller activity.");
+        // Log.d(TAG, "Resetting main view for playlist controller activity.");
 
         // Set opaque background
         playlistBackground.getBackground().setAlpha(150);
@@ -240,7 +239,7 @@ public class PlaylistActivity extends BasePlayerActivity {
         // Set center icon image
         if (playlistBackground != null) {
             if (playlistData.getPlaylistIcon() == null) {
-                Log.d(TAG, "No default playlist icon found.");
+                // Log.d(TAG, "No default playlist icon found.");
 
                 // Try with song icon
                 List<SongData> songList = playlistData.getSongList();

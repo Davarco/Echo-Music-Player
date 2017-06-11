@@ -13,7 +13,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -93,7 +92,7 @@ public abstract class BaseListActivity extends BaseActivity {
         songCtrlButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Detected click on play button.");
+                // Log.d(TAG, "Detected click on play button.");
                 if (musicBound) {
                     sendMusicPauseIntent();
                     songCtrlButton.setBackgroundResource(R.drawable.ic_play);
@@ -133,9 +132,9 @@ public abstract class BaseListActivity extends BaseActivity {
         songBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                int songPosition = intent.getIntExtra(PlayMusicService.MUSIC_POSITION, 0);
-                int songDuration = intent.getIntExtra(PlayMusicService.MUSIC_DURATION, 0);
-                currSong = intent.getStringExtra(PlayMusicService.MUSIC_CURR);
+                int songPosition = intent.getIntExtra(PlayMediaService.MUSIC_POSITION, 0);
+                int songDuration = intent.getIntExtra(PlayMediaService.MUSIC_DURATION, 0);
+                currSong = intent.getStringExtra(PlayMediaService.MUSIC_CURR);
 
                 // Set location based on position/duration
                 songProgressManager.setMax(songDuration);
@@ -200,9 +199,8 @@ public abstract class BaseListActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        LocalBroadcastManager.getInstance(this).registerReceiver((songBroadcastReceiver), new IntentFilter(PlayMusicService.MUSIC_RESULT));
+        LocalBroadcastManager.getInstance(this).registerReceiver((songBroadcastReceiver), new IntentFilter(PlayMediaService.MUSIC_RESULT));
         menuDrawer.closeDrawers();
-        Log.d(TAG, "Running start!");
     }
 
     @Override

@@ -67,10 +67,10 @@ public class CreatePlaylistDialog extends DialogFragment {
                 public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
                     if (isChecked) {
                         selectedSongs.add(position);
-                        Log.d(TAG, "Adding position " + position);
+                        // Log.d(TAG, "Adding position " + position);
                     } else if (selectedSongs.contains(position)) {
                         selectedSongs.remove(Integer.valueOf(position));
-                        Log.d(TAG, "Removing position " + position);
+                        // Log.d(TAG, "Removing position " + position);
                     }
                 }
             });
@@ -83,7 +83,7 @@ public class CreatePlaylistDialog extends DialogFragment {
         createPlaylistBuilder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int which) {
-                    Log.d(TAG, "Canceled creation...");
+                    // Log.d(TAG, "Canceled creation...");
                 }
             });
 

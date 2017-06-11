@@ -2,9 +2,8 @@ package com.lunchareas.divertio.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
-import com.lunchareas.divertio.activities.PlayMusicService;
+import com.lunchareas.divertio.activities.PlayMediaService;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.models.SongData;
 
@@ -28,14 +27,14 @@ public class PlaylistQueueUtil {
     }
 
     public void startQueue() {
-        Log.d(TAG, "Starting queue!");
+        // Log.d(TAG, "Starting queue!");
         sendMusicPauseIntent();
         sendPlaylistCreateIntent(songList);
     }
 
     public void sendPlaylistCreateIntent(List<SongData> songList) {
-        Log.d(TAG, "Trying to send playlist create intent.");
-        Intent playlistCreateIntent = new Intent(context, PlayMusicService.class);
+        // Log.d(TAG, "Trying to send playlist create intent.");
+        Intent playlistCreateIntent = new Intent(context, PlayMediaService.class);
 
         // Shuffle list, get first song
         //SongData firstSong = songList.get(firstPos);
@@ -58,23 +57,23 @@ public class PlaylistQueueUtil {
         String[] songNameList = new String[songList.size()];
         for (int i = 0; i < songList.size(); i++) {
             songNameList[i] = songList.get(i).getSongName();
-            Log.d(TAG, "Song " + Integer.toString(i+1) + ": " + songNameList[i]);
+            // Log.d(TAG, "Song " + Integer.toString(i+1) + ": " + songNameList[i]);
         }
 
         // Send the intent
-        playlistCreateIntent.putExtra(PlayMusicService.PLAYLIST_CREATE, songNameList);
+        playlistCreateIntent.putExtra(PlayMediaService.PLAYLIST_CREATE, songNameList);
         context.startService(playlistCreateIntent);
     }
 
     public void sendMusicPauseIntent() {
-        Intent musicPauseIntent = new Intent(context, PlayMusicService.class);
-        musicPauseIntent.putExtra(PlayMusicService.MUSIC_PAUSE, 0);
+        Intent musicPauseIntent = new Intent(context, PlayMediaService.class);
+        musicPauseIntent.putExtra(PlayMediaService.MUSIC_PAUSE, 0);
         context.startService(musicPauseIntent);
     }
 
     public void sendMusicChangeIntent(int position) {
-        Intent musicChangeIntent = new Intent(context, PlayMusicService.class);
-        musicChangeIntent.putExtra(PlayMusicService.MUSIC_CHANGE, position);
+        Intent musicChangeIntent = new Intent(context, PlayMediaService.class);
+        musicChangeIntent.putExtra(PlayMediaService.MUSIC_CHANGE, position);
         context.startService(musicChangeIntent);
     }
 }
