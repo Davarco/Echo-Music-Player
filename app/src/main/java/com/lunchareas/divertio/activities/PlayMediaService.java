@@ -64,7 +64,7 @@ public class PlayMediaService extends Service {
             Log.e(TAG, action);
             if (action.equals(MUSIC_CREATE)) {
                 initBroadcaster();
-                initMedia(workIntent);
+                initMedia(workIntent.getExtras().getString(PlayMediaService.MUSIC_CREATE));
             }
 
             // Start handler
@@ -119,10 +119,10 @@ public class PlayMediaService extends Service {
     }
 
     @SuppressLint("NewApi")
-    private void initMedia(Intent intent) {
+    private void initMedia(String songName) {
 
         // Get song data
-        currSong = intent.getExtras().getString(PlayMediaService.MUSIC_CREATE);
+        currSong = songName;
         songData = new SongDBHandler(this).getSongData(currSong);
 
         // Pause song if playing
@@ -207,7 +207,6 @@ public class PlayMediaService extends Service {
     private void handleIntent(Intent intent, String action) {
 
         // Handle different events
-        Log.e(TAG, action);
         if (action.equals(PlayMediaService.MUSIC_PLAY) && mp != null) {
             //Log.e(TAG, "Trying to play!");
             mediaSession.getController().getTransportControls().play();
@@ -224,6 +223,8 @@ public class PlayMediaService extends Service {
         } else if (action.equals(PlayMediaService.PLAYLIST_CREATE)) {
             String[] songPathList = intent.getExtras().getStringArray(PlayMediaService.PLAYLIST_CREATE);
             beginPlaylistQueue(songPathList);
+        } else if (action.equals(PlayMediaService.MUSIC_CREATE)) {
+
         } else {
             //Log.e(TAG, "Command sent to PlayMediaService not found.");
             //System.out.println(intentCmd);
@@ -266,14 +267,9 @@ public class PlayMediaService extends Service {
 
     private void beginPlaylistQueue(final String[] songNameList) {
 
-        // Get original song
-        currSong = songNameList[0];
-        songData = new SongDBHandler(this).getSongData(currSong);
-
         // Play the first song
-        initMusicPlayer();
-        mp.start();
-        musicUpdaterThread.start();
+        initMedia(songNameList[0]);
+        initBroadcaster();
 
         // Setup for completion
         idx = 1;
@@ -284,17 +280,9 @@ public class PlayMediaService extends Service {
                     try {
 
                         // Set new song
-                        currSong = songNameList[idx];
-                        songData = new SongDBHandler(getApplicationContext()).getSongData(currSong);
-
-                        // Make sure the updater thread waits
                         musicReset = true;
-                        mp.reset();
-                        mp.setDataSource(songData.getSongPath());
-                        mp.prepare();
-                        mp.start();
+                        initMedia(songNameList[idx]);
                         musicReset = false;
-                        musicUpdaterThread.start();
 
                         //musicUpdaterThread.start();
                         idx += 1;

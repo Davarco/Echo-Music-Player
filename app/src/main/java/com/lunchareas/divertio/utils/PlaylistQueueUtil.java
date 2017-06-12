@@ -28,7 +28,7 @@ public class PlaylistQueueUtil {
 
     public void startQueue() {
         // Log.d(TAG, "Starting queue!");
-        sendMusicPauseIntent();
+        // sendMusicPauseIntent();
         sendPlaylistCreateIntent(songList);
     }
 
@@ -70,11 +70,5 @@ public class PlaylistQueueUtil {
         Intent musicPauseIntent = new Intent(context, PlayMediaService.class);
         musicPauseIntent.setAction(PlayMediaService.MUSIC_PAUSE);
         context.startService(musicPauseIntent);
-    }
-
-    public void sendMusicChangeIntent(int position) {
-        Intent musicChangeIntent = new Intent(context, PlayMediaService.class);
-        musicChangeIntent.putExtra(PlayMediaService.MUSIC_CHANGE, position);
-        context.startService(musicChangeIntent);
     }
 }
