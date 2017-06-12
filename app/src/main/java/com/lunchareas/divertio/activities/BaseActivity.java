@@ -88,25 +88,26 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void sendMusicCreateIntent(String name) {
         musicCreateIntent = new Intent(this, PlayMediaService.class);
         // Log.d(TAG, "Passing string to create intent: " + name);
+        musicCreateIntent.setAction(PlayMediaService.MUSIC_CREATE);
         musicCreateIntent.putExtra(PlayMediaService.MUSIC_CREATE, name);
         this.startService(musicCreateIntent);
     }
 
     public void sendMusicStartIntent() {
         musicStartIntent = new Intent(this, PlayMediaService.class);
-        musicStartIntent.putExtra(PlayMediaService.MUSIC_PLAY, 0);
-        musicStartIntent.setAction()
+        musicStartIntent.setAction(PlayMediaService.MUSIC_PLAY);
         this.startService(musicStartIntent);
     }
 
     public void sendMusicPauseIntent() {
         musicPauseIntent = new Intent(this, PlayMediaService.class);
-        musicPauseIntent.putExtra(PlayMediaService.MUSIC_PAUSE, 0);
+        musicPauseIntent.setAction(PlayMediaService.MUSIC_PAUSE);
         this.startService(musicPauseIntent);
     }
 
     public void sendMusicChangeIntent(int position) {
         musicChangeIntent = new Intent(this, PlayMediaService.class);
+        musicChangeIntent.setAction(PlayMediaService.MUSIC_CHANGE);
         musicChangeIntent.putExtra(PlayMediaService.MUSIC_CHANGE, position);
         this.startService(musicChangeIntent);
     }

@@ -61,13 +61,14 @@ public class PlaylistQueueUtil {
         }
 
         // Send the intent
+        playlistCreateIntent.setAction(PlayMediaService.PLAYLIST_CREATE);
         playlistCreateIntent.putExtra(PlayMediaService.PLAYLIST_CREATE, songNameList);
         context.startService(playlistCreateIntent);
     }
 
     public void sendMusicPauseIntent() {
         Intent musicPauseIntent = new Intent(context, PlayMediaService.class);
-        musicPauseIntent.putExtra(PlayMediaService.MUSIC_PAUSE, 0);
+        musicPauseIntent.setAction(PlayMediaService.MUSIC_PAUSE);
         context.startService(musicPauseIntent);
     }
 

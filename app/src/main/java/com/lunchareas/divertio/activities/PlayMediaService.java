@@ -40,7 +40,6 @@ public class PlayMediaService extends Service {
     public static final String MUSIC_NEXT = "NEXT";
     public static final String PLAYLIST_CREATE = "PLAYLIST_CREATE";
 
-    private Bundle intentCmd;
     private MediaPlayer mp = null;
     private int idx;
 
@@ -58,20 +57,18 @@ public class PlayMediaService extends Service {
     public int onStartCommand(Intent workIntent, int flags, int startId) {
 
         // Get cmd
-        if (workIntent != null) {
-            intentCmd = workIntent.getExtras();
-        }
+        String action = workIntent.getAction();
 
         // Start media session if needed
-        if (intentCmd != null) {
-            if (intentCmd.containsKey(MUSIC_CREATE)) {
-                Log.d(TAG, "Creating new song.");
+        if (action != null) {
+            Log.e(TAG, action);
+            if (action.equals(MUSIC_CREATE)) {
                 initBroadcaster();
-                initMedia();
+                initMedia(workIntent);
             }
 
             // Start handler
-            handleIntent();
+            handleIntent(workIntent, action);
         }
 
         return START_STICKY;
@@ -122,10 +119,10 @@ public class PlayMediaService extends Service {
     }
 
     @SuppressLint("NewApi")
-    private void initMedia() {
+    private void initMedia(Intent intent) {
 
         // Get song data
-        currSong = intentCmd.getString(PlayMediaService.MUSIC_CREATE);
+        currSong = intent.getExtras().getString(PlayMediaService.MUSIC_CREATE);
         songData = new SongDBHandler(this).getSongData(currSong);
 
         // Pause song if playing
@@ -141,16 +138,14 @@ public class PlayMediaService extends Service {
             public void onPlay() {
                 mp.start();
                 musicUpdaterThread.start();
-                buildNotification();
-                Log.e(TAG, "Play!");
+                buildNotification(MUSIC_PAUSE);
             }
 
             @Override
             public void onPause() {
                 if (mp.isPlaying()) {
                     mp.pause();
-                    buildNotification();
-                    Log.e(TAG, "Pause!");
+                    buildNotification(MUSIC_PLAY);
                 } else {
                     Log.e(TAG, "Tried to pause, MP is not playing!");
                     // onPlay();
@@ -163,28 +158,24 @@ public class PlayMediaService extends Service {
                 notificationManager.cancel(1);
                 Intent intent = new Intent(getApplicationContext(), PlayMediaService.class);
                 stopService(intent);
-                Log.e(TAG, "Stop!");
             }
 
             @Override
             public void onSkipToNext() {
                 super.onSkipToNext();
-                buildNotification();
-                Log.e(TAG, "Next!");
+                buildNotification(MUSIC_PAUSE);
             }
 
             @Override
             public void onSkipToPrevious() {
                 super.onSkipToPrevious();
-                buildNotification();
-                Log.d(TAG, "Prev!");
+                buildNotification(MUSIC_PAUSE);
             }
 
             @Override
             public void onSeekTo(long pos) {
                 super.onSeekTo(pos);
                 mp.seekTo((int)pos);
-                Log.d(TAG, "Seek!");
             }
         });
         mediaSession.setFlags(MediaSession.FLAG_HANDLES_MEDIA_BUTTONS | MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS);
@@ -213,41 +204,35 @@ public class PlayMediaService extends Service {
     }
 
     @SuppressLint("NewApi")
-    private void handleIntent() {
+    private void handleIntent(Intent intent, String action) {
 
         // Handle different events
-        if (intentCmd != null) {
-            for (String s: intentCmd.keySet()) {
-                Log.e(TAG, "LIST:" + s);
-            }
-            if (intentCmd.containsKey(PlayMediaService.MUSIC_PLAY) && mp != null) {
-                //Log.e(TAG, "Trying to play!");
-                mediaSession.getController().getTransportControls().play();
-            } else if (intentCmd.containsKey(PlayMediaService.MUSIC_PAUSE) && mp != null) {
-                //Log.e(TAG, "Trying to pause!");
-                mediaSession.getController().getTransportControls().pause();
-            } else if (intentCmd.containsKey(PlayMediaService.MUSIC_CHANGE) && mp != null) {
-                mediaSession.getController().getTransportControls().seekTo(intentCmd.getInt(PlayMediaService.MUSIC_CHANGE));
-            } else if (intentCmd.containsKey(PlayMediaService.MUSIC_PREV)) {
-                mediaSession.getController().getTransportControls().skipToPrevious();
-            } else if (intentCmd.containsKey(PlayMediaService.MUSIC_NEXT)) {
-                mediaSession.getController().getTransportControls().skipToNext();
-            } else if (intentCmd.containsKey(PlayMediaService.PLAYLIST_CREATE)) {
-                Log.d(TAG, "Beginning playlist queue!");
-                String[] songPathList = intentCmd.getStringArray(PlayMediaService.PLAYLIST_CREATE);
-                beginPlaylistQueue(songPathList);
-            } else {
-                //Log.e(TAG, "Command sent to PlayMediaService not found.");
-                //System.out.println(intentCmd);
-                if (intentCmd.isEmpty()) {
-                    Log.e(TAG, "No command sent, bundle empty.");
-                }
-            }
+        Log.e(TAG, action);
+        if (action.equals(PlayMediaService.MUSIC_PLAY) && mp != null) {
+            //Log.e(TAG, "Trying to play!");
+            mediaSession.getController().getTransportControls().play();
+        } else if (action.equals(PlayMediaService.MUSIC_PAUSE) && mp != null) {
+            //Log.e(TAG, "Trying to pause!");
+            mediaSession.getController().getTransportControls().pause();
+        } else if (action.equals(PlayMediaService.MUSIC_CHANGE) && mp != null) {
+            int position = intent.getExtras().getInt(MUSIC_CHANGE);
+            mediaSession.getController().getTransportControls().seekTo(position);
+        } else if (action.equals(PlayMediaService.MUSIC_PREV)) {
+            mediaSession.getController().getTransportControls().skipToPrevious();
+        } else if (action.equals(PlayMediaService.MUSIC_NEXT)) {
+            mediaSession.getController().getTransportControls().skipToNext();
+        } else if (action.equals(PlayMediaService.PLAYLIST_CREATE)) {
+            String[] songPathList = intent.getExtras().getStringArray(PlayMediaService.PLAYLIST_CREATE);
+            beginPlaylistQueue(songPathList);
+        } else {
+            //Log.e(TAG, "Command sent to PlayMediaService not found.");
+            //System.out.println(intentCmd);
+            Log.e(TAG, "No command sent, bundle empty.");
         }
     }
 
     @SuppressLint("NewApi")
-    private void buildNotification() {
+    private void buildNotification(String cmd) {
 
         // Set style
         Notification.MediaStyle style = new Notification.MediaStyle();
@@ -266,7 +251,12 @@ public class PlayMediaService extends Service {
 
         // Add actions
         builder.addAction(createAction(R.drawable.ic_prev_noti, "Previous", MUSIC_PREV));
-        builder.addAction(createAction(R.drawable.ic_play_noti, "Play", MUSIC_PLAY));
+        if (cmd.equals(MUSIC_PLAY)) {
+            builder.addAction(createAction(R.drawable.ic_play_noti, "Play", MUSIC_PLAY));
+        }
+        if (cmd.equals(MUSIC_PAUSE)) {
+            builder.addAction(createAction(R.drawable.ic_pause_noti, "Pause", MUSIC_PAUSE));
+        }
         builder.addAction(createAction(R.drawable.ic_next_noti, "Next", MUSIC_NEXT));
 
         // Notify
@@ -331,8 +321,7 @@ public class PlayMediaService extends Service {
     @SuppressLint("NewApi")
     private Notification.Action createAction(int icon, String title, String intentAction) {
         Intent intent = new Intent(getApplicationContext(), PlayMediaService.class);
-        Log.e(TAG, "Build: " + intentAction);
-        intent.putExtra(MUSIC_PLAY, 0);
+        intent.setAction(intentAction);
         PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(), 1, intent, 0);
         return new Notification.Action.Builder(icon, title, pendingIntent).build();
     }
