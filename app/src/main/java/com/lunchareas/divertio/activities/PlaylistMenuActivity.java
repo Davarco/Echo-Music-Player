@@ -22,7 +22,6 @@ import com.lunchareas.divertio.adapters.PlaylistAdapter;
 import com.lunchareas.divertio.fragments.DeleteSongsFromPlaylistDialog;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.R;
-import com.lunchareas.divertio.utils.PlaylistQueueUtil;
 import com.lunchareas.divertio.utils.PlaylistUtil;
 
 import java.util.List;
@@ -135,8 +134,7 @@ public class PlaylistMenuActivity extends BaseListActivity {
                         Log.d(TAG, "Playing this playlist.");
 
                         // Create queue controller to run
-                        PlaylistQueueUtil queueManager = new PlaylistQueueUtil(playlistData, context);
-                        queueManager.startQueue();
+                        sendPlaylistCreateIntent(playlistData.getSongList());
                         songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
                     }
                     default: {

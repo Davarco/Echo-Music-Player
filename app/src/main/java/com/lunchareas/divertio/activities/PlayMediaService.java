@@ -12,7 +12,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.session.MediaSession;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.v4.content.LocalBroadcastManager;
@@ -21,6 +20,8 @@ import android.util.Log;
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
+
+import java.util.List;
 
 public class PlayMediaService extends Service {
 
@@ -38,6 +39,7 @@ public class PlayMediaService extends Service {
     public static final String MUSIC_STOP = "STOP";
     public static final String MUSIC_PREV = "PREV";
     public static final String MUSIC_NEXT = "NEXT";
+    public static final String MUSIC_STATUS = "STATUS";
     public static final String PLAYLIST_CREATE = "PLAYLIST_CREATE";
 
     private MediaPlayer mp = null;
@@ -47,8 +49,10 @@ public class PlayMediaService extends Service {
     private LocalBroadcastManager musicUpdater;
     private Thread musicUpdaterThread;
     private boolean musicReset;
+    private boolean inPlaylistMode;
     private String currSong;
     private SongData songData;
+    private String[] songNameList;
 
     // Media session stuff
     private MediaSession mediaSession;
@@ -105,6 +109,7 @@ public class PlayMediaService extends Service {
                     songIntent.putExtra(MUSIC_POSITION, songPosition);
                     songIntent.putExtra(MUSIC_DURATION, songDuration);
                     songIntent.putExtra(MUSIC_CURR, currSong);
+                    songIntent.putExtra(MUSIC_STATUS, mp.isPlaying());
                     musicUpdater.sendBroadcast(songIntent);
 
                     try {
@@ -163,13 +168,51 @@ public class PlayMediaService extends Service {
             @Override
             public void onSkipToNext() {
                 super.onSkipToNext();
-                buildNotification(MUSIC_PAUSE);
+                if (!inPlaylistMode) {
+                    List<SongData> songList = new SongDBHandler(getApplicationContext()).getSongDataList();
+                    int pos = songList.indexOf(songData);
+                    pos += 1;
+                    if (pos >= songList.size()) {
+                        pos = 0;
+                    }
+                    initMedia(songList.get(pos).getSongName());
+                    buildNotification(MUSIC_PAUSE);
+                } else {
+                    musicReset = true;
+                    idx += 1;
+                    if (idx < songNameList.length) {
+                        initMedia(songNameList[idx]);
+                    } else {
+                        idx -= 1;
+                    }
+                    musicReset = false;
+                    buildNotification(MUSIC_PAUSE);
+                }
             }
 
             @Override
             public void onSkipToPrevious() {
                 super.onSkipToPrevious();
-                buildNotification(MUSIC_PAUSE);
+                if (!inPlaylistMode) {
+                    List<SongData> songList = new SongDBHandler(getApplicationContext()).getSongDataList();
+                    int pos = songList.indexOf(songData);
+                    pos -= 1;
+                    if (pos < 0) {
+                        pos = songList.size() - 1;
+                    }
+                    initMedia(songList.get(pos).getSongName());
+                    buildNotification(MUSIC_PAUSE);
+                } else {
+                    musicReset = true;
+                    idx -= 1;
+                    if (idx >= 0) {
+                        initMedia(songNameList[idx]);
+                    } else {
+                        idx += 1;
+                    }
+                    musicReset = false;
+                    buildNotification(MUSIC_PAUSE);
+                }
             }
 
             @Override
@@ -179,25 +222,6 @@ public class PlayMediaService extends Service {
             }
         });
         mediaSession.setFlags(MediaSession.FLAG_HANDLES_MEDIA_BUTTONS | MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS);
-
-        // Set intent
-        /*
-        Intent intent = new Intent(getApplicationContext(), MusicActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 99, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        mediaSession.setSessionActivity(pendingIntent);
-        Bundle bundle = new Bundle();
-        mediaSession.setExtras(bundle);
-        */
-
-        // Set metadata
-        /*
-        MediaMetadata metadata = new MediaMetadata.Builder()
-                .putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, ((BitmapDrawable) songData.getSongCover()).getBitmap())
-                .putString(MediaMetadata.METADATA_KEY_DISPLAY_TITLE, songData.getSongName())
-                .putString(MediaMetadata.METADATA_KEY_ARTIST, songData.getSongArtist())
-                .build();
-        mediaSession.setMetadata(metadata);
-        */
 
         // Start song
         mediaSession.getController().getTransportControls().play();
@@ -265,17 +289,22 @@ public class PlayMediaService extends Service {
         manager.notify(1, builder.build());
     }
 
-    private void beginPlaylistQueue(final String[] songNameList) {
+    private void beginPlaylistQueue(String[] songList) {
+
+        // Set to playlist mode
+        this.songNameList = songList;
+        inPlaylistMode = true;
 
         // Play the first song
         initMedia(songNameList[0]);
         initBroadcaster();
 
         // Setup for completion
-        idx = 1;
+        idx = 0;
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
+                idx += 1;
                 if (idx < songNameList.length) {
                     try {
 
@@ -285,7 +314,6 @@ public class PlayMediaService extends Service {
                         musicReset = false;
 
                         //musicUpdaterThread.start();
-                        idx += 1;
                         Log.d(TAG, "Playing next song, number " + Integer.toString(idx));
 
                     } catch (Exception e) {
@@ -293,6 +321,7 @@ public class PlayMediaService extends Service {
                     }
                 } else {
                     Log.d(TAG, "Finished playlist.");
+                    inPlaylistMode = false;
                 }
             }
         });

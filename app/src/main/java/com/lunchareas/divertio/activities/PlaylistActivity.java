@@ -31,7 +31,6 @@ import com.lunchareas.divertio.fragments.DeleteSongsFromPlaylistDialog;
 import com.lunchareas.divertio.models.PlaylistDBHandler;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.models.SongData;
-import com.lunchareas.divertio.utils.PlaylistQueueUtil;
 //https://www.youtube.com/watch?v=1UlRIbpYTwk
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,8 +66,7 @@ public class PlaylistActivity extends BasePlayerActivity {
                 // Log.d(TAG,"Playing playlist.");
                 songCtrlButton.setImageResource(R.drawable.ic_pause);
                 sendMusicPauseIntent();
-                PlaylistQueueUtil queueUtil = new PlaylistQueueUtil(playlistData, PlaylistActivity.this);
-                queueUtil.startQueue();
+                sendPlaylistCreateIntent(playlistData.getSongList());
                 musicBound = true;
             }
         });

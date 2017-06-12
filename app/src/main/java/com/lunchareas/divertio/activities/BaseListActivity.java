@@ -39,6 +39,7 @@ public abstract class BaseListActivity extends BaseActivity {
     protected DrawerLayout menuDrawer;
     protected ListView menuList;
     protected String currSong;
+    protected boolean isChanging;
 
     protected BroadcastReceiver songBroadcastReceiver;
     protected SeekBar songProgressManager;
@@ -80,13 +81,8 @@ public abstract class BaseListActivity extends BaseActivity {
         songProgressManager.getProgressDrawable().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
         songProgressManager.getThumb().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
         songCtrlButton = (ImageButton) findViewById(R.id.play_button);
-        if (am.isMusicActive()) {
-            musicBound = true;
-            songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
-        } else {
-            musicBound = false;
-            songCtrlButton.setBackgroundResource(R.drawable.ic_play);
-        }
+        songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
+        musicBound = true;
 
         // Setup play button
         songCtrlButton.setOnClickListener(new View.OnClickListener() {
@@ -96,11 +92,9 @@ public abstract class BaseListActivity extends BaseActivity {
                 if (musicBound) {
                     sendMusicPauseIntent();
                     songCtrlButton.setBackgroundResource(R.drawable.ic_play);
-                    musicBound = false;
                 } else {
                     sendMusicStartIntent();
                     songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
-                    musicBound = true;
                 }
             }
         });
@@ -118,6 +112,7 @@ public abstract class BaseListActivity extends BaseActivity {
             public void onStartTrackingTouch(SeekBar seekBar) {
                 // Prevents broken music during time change
                 sendMusicPauseIntent();
+                isChanging = true;
             }
 
             @Override
@@ -125,6 +120,7 @@ public abstract class BaseListActivity extends BaseActivity {
                 // Resumes regular music from pause
                 sendMusicStartIntent();
                 songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
+                isChanging = false;
             }
         });
 
@@ -132,11 +128,24 @@ public abstract class BaseListActivity extends BaseActivity {
         songBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                int songPosition = intent.getIntExtra(PlayMediaService.MUSIC_POSITION, 0);
-                int songDuration = intent.getIntExtra(PlayMediaService.MUSIC_DURATION, 0);
+
+                // Get if music is playing
+                boolean status = intent.getBooleanExtra(PlayMediaService.MUSIC_STATUS, false);
+                if (musicBound != status && !isChanging) {
+                    if (status) {
+                        songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
+                    } else {
+                        songCtrlButton.setBackgroundResource(R.drawable.ic_play);
+                    }
+                }
+                musicBound = status;
+
+                // Get current song
                 currSong = intent.getStringExtra(PlayMediaService.MUSIC_CURR);
 
                 // Set location based on position/duration
+                int songPosition = intent.getIntExtra(PlayMediaService.MUSIC_POSITION, 0);
+                int songDuration = intent.getIntExtra(PlayMediaService.MUSIC_DURATION, 0);
                 songProgressManager.setMax(songDuration);
                 songProgressManager.setProgress(songPosition);
 

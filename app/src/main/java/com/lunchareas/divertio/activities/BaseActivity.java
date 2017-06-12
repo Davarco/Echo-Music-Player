@@ -19,6 +19,7 @@ import com.lunchareas.divertio.utils.PlaylistUtil;
 import com.lunchareas.divertio.utils.SongUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -110,6 +111,26 @@ public abstract class BaseActivity extends AppCompatActivity {
         musicChangeIntent.setAction(PlayMediaService.MUSIC_CHANGE);
         musicChangeIntent.putExtra(PlayMediaService.MUSIC_CHANGE, position);
         this.startService(musicChangeIntent);
+    }
+    public void sendPlaylistCreateIntent(List<SongData> songList) {
+        // Log.d(TAG, "Trying to send playlist create intent.");
+        Intent playlistCreateIntent = new Intent(context, PlayMediaService.class);
+
+        // Shuffle list, get first song
+        //SongData firstSong = songList.get(firstPos);
+        Collections.shuffle(songList);
+
+        // Create the string array
+        String[] songNameList = new String[songList.size()];
+        for (int i = 0; i < songList.size(); i++) {
+            songNameList[i] = songList.get(i).getSongName();
+            // Log.d(TAG, "Song " + Integer.toString(i+1) + ": " + songNameList[i]);
+        }
+
+        // Send the intent
+        playlistCreateIntent.setAction(PlayMediaService.PLAYLIST_CREATE);
+        playlistCreateIntent.putExtra(PlayMediaService.PLAYLIST_CREATE, songNameList);
+        context.startService(playlistCreateIntent);
     }
 
     @Override
