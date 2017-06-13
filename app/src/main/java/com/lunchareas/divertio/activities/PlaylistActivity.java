@@ -51,7 +51,7 @@ public class PlaylistActivity extends BasePlayerActivity {
     private int position;
 
     public PlaylistActivity() {
-        super(R.layout.activity_playlist_manager);
+        super(R.layout.activity_playlist);
     }
 
     @Override

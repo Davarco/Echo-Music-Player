@@ -179,11 +179,16 @@ public class MusicActivity extends BasePlayerActivity {
     protected void getDispData() {
 
         // Get song name
-        if (getIntent().getExtras() != null) {
+        if (getIntent().getExtras().containsKey(MUSIC_NAME)) {
             String songName = getIntent().getStringExtra(MUSIC_NAME);
-            SongDBHandler db = new SongDBHandler(this);
-            songData = db.getSongData(songName);
-            position = songInfoList.indexOf(songData);
+            if (songName != null) {
+                SongDBHandler db = new SongDBHandler(this);
+                songData = db.getSongData(songName);
+                position = songInfoList.indexOf(songData);
+            } else {
+                songData = new SongData("Unknown", "Unknown", "Unknown");
+                position = 0;
+            }
         } else {
             while (currSong == null) {
                 //System.out.println(currSong);

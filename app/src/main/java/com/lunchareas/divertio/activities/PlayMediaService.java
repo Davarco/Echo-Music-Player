@@ -85,8 +85,8 @@ public class PlayMediaService extends Service {
         musicUpdaterThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                int songPosition;
-                int songDuration;
+                int songPosition = 0;
+                int songDuration = 0;
                 do {
 
                     // Wait for reset to finish if necessary
@@ -118,7 +118,7 @@ public class PlayMediaService extends Service {
                         e.printStackTrace();
                     }
 
-                } while (mp != null && mp.getCurrentPosition() <= songDuration);
+                } while (mp != null);
             }
         });
     }

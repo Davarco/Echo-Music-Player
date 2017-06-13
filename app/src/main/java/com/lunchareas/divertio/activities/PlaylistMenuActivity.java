@@ -35,7 +35,7 @@ public class PlaylistMenuActivity extends BaseListActivity {
     private ListView playlistView;
 
     public PlaylistMenuActivity() {
-        super(R.layout.activity_playlist);
+        super(R.layout.activity_playlist_menu);
     }
 
     @Override

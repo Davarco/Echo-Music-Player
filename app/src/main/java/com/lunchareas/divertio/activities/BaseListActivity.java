@@ -16,7 +16,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -24,6 +23,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.lunchareas.divertio.R;
+import com.lunchareas.divertio.adapters.MenuDrawerAdapter;
 
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -34,7 +34,8 @@ public abstract class BaseListActivity extends BaseActivity {
 
     protected Toolbar mainBar;
     protected boolean drawerOpen;
-    protected String[] menuItemArr;
+    protected String[] menuTitleArr;
+    protected int[] menuIconArr;
     protected RelativeLayout menuDrawerLayout;
     protected DrawerLayout menuDrawer;
     protected ListView menuList;
@@ -175,8 +176,9 @@ public abstract class BaseListActivity extends BaseActivity {
         menuDrawerLayout = (RelativeLayout) findViewById(R.id.menu_drawer_layout);
         menuDrawer = (DrawerLayout) findViewById(R.id.menu_drawer);
         menuList = (ListView) findViewById(R.id.menu_drawer_list);
-        menuItemArr = new String[]{"Library", "Playlists", "Now Playing"};
-        menuList.setAdapter(new ArrayAdapter<>(this, R.layout.list_item_menu_drawer, menuItemArr));
+        menuTitleArr = new String[]{"Library", "Playlists", "Now Playing"};
+        menuIconArr = new int[]{R.drawable.ic_library, R.drawable.ic_menu_playlist, R.drawable.ic_menu_play};
+        menuList.setAdapter(new MenuDrawerAdapter(this, menuTitleArr, menuIconArr));
         menuDrawer.closeDrawers();
         drawerOpen = false;
 

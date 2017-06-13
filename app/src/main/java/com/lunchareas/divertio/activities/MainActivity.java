@@ -636,6 +636,8 @@ public class MainActivity extends BaseListActivity {
             MediaMetadataRetriever retriever = new MediaMetadataRetriever();
             retriever.setDataSource(Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName);
             String artist = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+            String album = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
+            String genre = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE);
             String path = Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName;
             Drawable cover = Drawable.createFromStream(new ByteArrayInputStream(retriever.getEmbeddedPicture()), null);
 
@@ -645,7 +647,7 @@ public class MainActivity extends BaseListActivity {
             }
 
             // Add to database
-            SongData songData = new SongData(songName, path, artist, cover);
+            SongData songData = new SongData(songName, path, artist, album, genre, cover);
             SongDBHandler db = new SongDBHandler(getApplicationContext());
             db.addSongData(songData);
 
