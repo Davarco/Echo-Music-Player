@@ -51,10 +51,9 @@ public class MenuDrawerAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parentView) {
-        menuItemLayout = (RelativeLayout) layoutInflater.inflate(R.layout.list_item_menu_drawer, parentView, false);
-        System.out.println(position);
 
         // Get the parts
+        menuItemLayout = (RelativeLayout) layoutInflater.inflate(R.layout.list_item_menu_drawer, parentView, false);
         ImageView imageView = (ImageView) menuItemLayout.findViewById(R.id.menu_icon);
         TextView textView = (TextView) menuItemLayout.findViewById(R.id.menu_title);
 

@@ -21,6 +21,7 @@ import com.lunchareas.divertio.models.SongDBHandler;
 import com.lunchareas.divertio.models.SongData;
 import com.lunchareas.divertio.utils.SongUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,17 +59,17 @@ public class ImportSongDialog extends DialogFragment {
             int titleCol = musicCursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
             int artistCol = musicCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
             int pathCol = musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA);
-            int albumCol = musicCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID);
+            int albumIdCol = musicCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID);
 
             do {
                 // Get data
                 String title = musicCursor.getString(titleCol);
                 String artist = musicCursor.getString(artistCol);
                 String path = musicCursor.getString(pathCol);
-                long album = musicCursor.getLong(albumCol);
+                long albumId = musicCursor.getLong(albumIdCol);
 
                 // Get path for cover art
-                String coverPath = getCoverArtPath(album, getContext());
+                String coverPath = getCoverArtPath(albumId, getContext());
                 Drawable cover = Drawable.createFromPath(coverPath);
 
                 // Get cover from path
@@ -90,7 +91,7 @@ public class ImportSongDialog extends DialogFragment {
 
                 // Set default icon if needed
                 if (cover == null) {
-                    cover = getResources().getDrawable(R.drawable.ic_default_song);
+                    cover = getResources().getDrawable(R.drawable.default_cover);
                 }
 
                 // Create the song data
@@ -102,7 +103,7 @@ public class ImportSongDialog extends DialogFragment {
                         songList.add(songData);
                     }
                 } else {
-                    // Log.d(TAG, "Empty song cover, not being considered.");
+                    Log.d(TAG, "Empty, not being considered. " + title + " " + path);
                 }
 
             } while (musicCursor.moveToNext());

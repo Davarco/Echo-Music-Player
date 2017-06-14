@@ -61,7 +61,10 @@ public class PlayMediaService extends Service {
     public int onStartCommand(Intent workIntent, int flags, int startId) {
 
         // Get cmd
-        String action = workIntent.getAction();
+        String action = null;
+        if (workIntent != null) {
+            action = workIntent.getAction();
+        }
 
         // Start media session if needed
         if (action != null) {
@@ -329,6 +332,7 @@ public class PlayMediaService extends Service {
 
     private void initMusicPlayer() {
         mp = MediaPlayer.create(this, Uri.parse(songData.getSongPath()));
+        System.out.println(songData.getSongPath());
         if (mp != null) {
             mp.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
             mp.setAudioStreamType(AudioManager.STREAM_MUSIC);

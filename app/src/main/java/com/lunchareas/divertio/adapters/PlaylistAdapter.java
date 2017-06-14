@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lunchareas.divertio.activities.BaseListActivity;
+import com.lunchareas.divertio.activities.PlaylistMenuActivity;
 import com.lunchareas.divertio.models.PlaylistData;
 import com.lunchareas.divertio.R;
 
@@ -48,6 +49,11 @@ public class PlaylistAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parentView) {
         final RelativeLayout playlistLayout = (RelativeLayout) playlistInflater.inflate(R.layout.list_item_playlist, parentView, false);
+        if (position % 2 - 1 == 0) {
+            playlistLayout.setBackgroundResource(R.color.gray_2);
+        } else {
+            playlistLayout.setBackgroundResource(R.color.gray_3);
+        }
 
         // Get the parts of a playlist layout
         //ImageView playlistItemIcon = (ImageView) playlistLayout.findViewById(R.id.playlist_icon);
@@ -69,7 +75,7 @@ public class PlaylistAdapter extends BaseAdapter {
         playlistOverflowIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((BaseListActivity) activity).showChoiceMenu(playlistLayout, position);
+                ((PlaylistMenuActivity) activity).showChoiceMenu(playlistLayout, position);
             }
         });
 

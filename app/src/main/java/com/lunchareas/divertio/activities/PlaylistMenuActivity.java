@@ -178,52 +178,19 @@ public class PlaylistMenuActivity extends BaseListActivity {
         }
     }
 
-
-    // Options for drawer menu
-    @Override
-    protected void selectMenuItem(int position) {
-        Log.d(TAG, "Detected click on position " + position + ".");
-        switch (position) {
-            case 0: {
-                Log.d(TAG, "Starting new activity - main.");
-                Intent i = new Intent(this, MainActivity.class);
-                startActivity(i);
-                finish();
-                break;
-            }
-            case 1: {
-                Log.d(TAG, "No effect, on that activity.");
-                break;
-            }
-            case 2: {
-                Log.d(TAG, "Starting new activity - now playing manager.");
-                Intent i = new Intent(this, MusicActivity.class);
-                i.putExtra(MusicActivity.MUSIC_NAME, currSong);
-                startActivity(i);
-            }
-            /*
-            case 2: {
-                Log.d(TAG, "Starting new activity - bluetooth.");
-                Intent i = new Intent(this, BluetoothActivity.class);
-                startActivity(i);
-                break;
-            }
-            case 3: {
-                Log.d(TAG, "Starting new activity - settings.");
-                Intent i = new Intent(this, SettingsActivity.class);
-                startActivity(i);
-                break;
-            }
-            */
-        }
-    }
-
     @Override
     public void setMainView() {
         Log.d(TAG, "Setting main view.");
         updatePlaylistInfoList();
         PlaylistAdapter playlistAdapter = new PlaylistAdapter(this, playlistInfoList);
         playlistView.setAdapter(playlistAdapter);
+
+        // Set correct background color
+        if (playlistInfoList.size() % 2 - 1 == 0) {
+            findViewById(R.id.activity).setBackgroundResource(R.color.gray_2);
+        } else {
+            findViewById(R.id.activity).setBackgroundResource(R.color.gray_3);
+        }
     }
 
     public List<PlaylistData> getPlaylistInfoList() {

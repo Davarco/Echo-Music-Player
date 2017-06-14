@@ -42,7 +42,7 @@ public class PlaylistActivity extends BasePlayerActivity {
 
     private static final String TAG = PlaylistActivity.class.getName();
 
-    private List<SongData> songInfoList;
+    private List<SongData> playlistSongList;
     private ListView playlistView;
     private ImageView playButton;
     private RelativeLayout playlistBackground;
@@ -187,7 +187,7 @@ public class PlaylistActivity extends BasePlayerActivity {
     protected void initViews() {
 
         // Init views
-        songInfoList = new ArrayList<>();
+        playlistSongList = new ArrayList<>();
         playlistView = (ListView) findViewById(R.id.song_list);
         playlistBackground = (RelativeLayout) findViewById(R.id.playlist_background);
 
@@ -208,7 +208,7 @@ public class PlaylistActivity extends BasePlayerActivity {
         String playlistName = getIntent().getStringExtra(PlaylistMenuActivity.PLAYLIST_NAME);
         PlaylistDBHandler db = new PlaylistDBHandler(this);
         playlistData = db.getPlaylistData(playlistName);
-        songInfoList = playlistData.getSongList();
+        playlistSongList = playlistData.getSongList();
         position = playlistInfoList.indexOf(playlistData);
     }
 
@@ -217,7 +217,7 @@ public class PlaylistActivity extends BasePlayerActivity {
 
         // Get the new playlist data
         playlistData = getPlaylistInfoList().get(position);
-        songInfoList = playlistData.getSongList();
+        playlistSongList = playlistData.getSongList();
     }
 
     @Override
@@ -231,8 +231,15 @@ public class PlaylistActivity extends BasePlayerActivity {
         playlistViewName.setText(playlistData.getPlaylistName());
 
         // Set adapter for list
-        SongFixedAdapter songListAdapter = new SongFixedAdapter(this, songInfoList);
+        SongFixedAdapter songListAdapter = new SongFixedAdapter(this, playlistSongList);
         playlistView.setAdapter(songListAdapter);
+
+        // Set correct background color
+        if (playlistSongList.size() % 2 - 1 == 0) {
+            findViewById(R.id.activity).setBackgroundResource(R.color.gray_2);
+        } else {
+            findViewById(R.id.activity).setBackgroundResource(R.color.gray_3);
+        }
 
         // Set center icon image
         if (playlistBackground != null) {

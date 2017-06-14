@@ -47,6 +47,11 @@ public class SongFixedAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, final View convertView, ViewGroup parentView) {
         final RelativeLayout songListLayout = (RelativeLayout) songListInflater.inflate(R.layout.list_item_song_fixed, parentView, false);
+        if (position % 2 - 1 == 0) {
+            songListLayout.setBackgroundResource(R.color.gray_2);
+        } else {
+            songListLayout.setBackgroundResource(R.color.gray_3);
+        }
 
         // Get the parts of a song layout
         //ImageView songItemIcon = (ImageView) songListLayout.findViewById(R.id.song_icon);

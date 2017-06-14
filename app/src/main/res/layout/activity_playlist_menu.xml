@@ -2,10 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_main"
+    android:id="@+id/activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/wallpaper"
     tools:context="com.lunchareas.divertio.activities.MainActivity">
 
     <!-- Widget Toolbar -->
@@ -43,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:divider="#000000"
-                android:dividerHeight="2dp">
+                android:dividerHeight="0dp">
             </ListView>
 
             <!-- Drawer list styling -->

@@ -10,6 +10,8 @@
     <color name="black">#212121</color>
     <color name="white">#E8EAF6</color>
     <color name="gray">#424242</color>
+    <color name="gray_2">#424242</color>
+    <color name="gray_3">#363636</color>
 
     <!-- generic colors -->
     <color name="blue">#3949AB</color>

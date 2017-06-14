@@ -3,10 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+    android:id="@+id/activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/wallpaper"
     tools:context="com.lunchareas.divertio.activities.PlaylistActivity">
 
     <!-- Menu drawer (toggle) -->
@@ -62,7 +61,7 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:divider="#000000"
-                        android:dividerHeight="2dp"/>
+                        android:dividerHeight="0dp"/>
 
                 </LinearLayout>
 

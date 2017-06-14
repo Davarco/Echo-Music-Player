@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseListActivity;
+import com.lunchareas.divertio.activities.PlaylistMenuActivity;
 import com.lunchareas.divertio.models.PlaylistData;
 
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class PlaylistSelectionAdapter extends ArrayAdapter<PlaylistData> {
             playlistOverflowIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((BaseListActivity) activity).showChoiceMenu(playlistLayout, position);
+                    ((PlaylistMenuActivity) activity).showChoiceMenu(playlistLayout, position);
                 }
             });
         }

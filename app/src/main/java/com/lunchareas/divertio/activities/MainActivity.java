@@ -364,47 +364,6 @@ public class MainActivity extends BaseListActivity {
         }
     }
 
-    // Options for drawer menu
-    @Override
-    protected void selectMenuItem(int position) {
-        Log.d(TAG, "Detected click on position " + position + ".");
-        switch (position) {
-            case 0: {
-                Log.d(TAG, "No effect, on that activity!");
-                break;
-            }
-            case 1: {
-                Log.d(TAG, "Starting new activity - playlist.");
-                Intent i = new Intent(this, PlaylistMenuActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(i);
-                break;
-            }
-            case 2: {
-                Log.d(TAG, "Starting new activity - now playing.");
-                Intent i = new Intent(this, MusicActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                i.putExtra(MusicActivity.MUSIC_NAME, currSong);
-                startActivity(i);
-                break;
-            }
-            /*
-            case 2: {
-                Log.d(TAG, "Starting new activity - bluetooth.");
-                Intent i = new Intent(this, BluetoothActivity.class);
-                startActivity(i);
-                break;
-            }
-            case 3: {
-                Log.d(TAG, "Starting new activity - settings.");
-                Intent i = new Intent(this, SettingsActivity.class);
-                startActivity(i);
-                break;
-            }
-            */
-        }
-    }
-
     @Override
     public void setMainView() {
         final Activity activity = this;
@@ -415,6 +374,13 @@ public class MainActivity extends BaseListActivity {
                 updateSongInfoList();
                 SongAdapter songListAdapter = new SongAdapter(activity, songInfoList);
                 songView.setAdapter(songListAdapter);
+
+                // Set correct background color
+                if (songInfoList.size() % 2 - 1 == 0) {
+                    findViewById(R.id.activity).setBackgroundResource(R.color.gray_2);
+                } else {
+                    findViewById(R.id.activity).setBackgroundResource(R.color.gray_3);
+                }
             }
         });
     }
@@ -635,10 +601,10 @@ public class MainActivity extends BaseListActivity {
             // Get metadata
             MediaMetadataRetriever retriever = new MediaMetadataRetriever();
             retriever.setDataSource(Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName);
+            String path = Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName;
             String artist = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
             String album = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
             String genre = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE);
-            String path = Environment.getExternalStorageDirectory().getPath() + "/Divertio/" + songFileName;
             Drawable cover = Drawable.createFromStream(new ByteArrayInputStream(retriever.getEmbeddedPicture()), null);
 
             // Change artist if empty

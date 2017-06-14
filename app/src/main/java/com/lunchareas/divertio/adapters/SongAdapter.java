@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.lunchareas.divertio.R;
 import com.lunchareas.divertio.activities.BaseListActivity;
+import com.lunchareas.divertio.activities.MainActivity;
 import com.lunchareas.divertio.models.SongData;
 
 import java.util.List;
@@ -49,6 +50,11 @@ public class SongAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, final View convertView, ViewGroup parentView) {
         final RelativeLayout songListLayout = (RelativeLayout) songListInflater.inflate(R.layout.list_item_song, parentView, false);
+        if (position % 2 - 1 == 0) {
+            songListLayout.setBackgroundResource(R.color.gray_2);
+        } else {
+            songListLayout.setBackgroundResource(R.color.gray_3);
+        }
 
         // Get the parts of a song layout
         //ImageView songItemIcon = (ImageView) songListLayout.findViewById(R.id.song_icon);
@@ -66,7 +72,7 @@ public class SongAdapter extends BaseAdapter {
         songOverflowIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((BaseListActivity) activity).showChoiceMenu(songListLayout, position);
+                ((MainActivity) activity).showChoiceMenu(songListLayout, position);
             }
         });
 

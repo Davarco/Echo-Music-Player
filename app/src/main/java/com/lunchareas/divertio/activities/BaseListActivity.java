@@ -13,6 +13,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -176,8 +177,8 @@ public abstract class BaseListActivity extends BaseActivity {
         menuDrawerLayout = (RelativeLayout) findViewById(R.id.menu_drawer_layout);
         menuDrawer = (DrawerLayout) findViewById(R.id.menu_drawer);
         menuList = (ListView) findViewById(R.id.menu_drawer_list);
-        menuTitleArr = new String[]{"Library", "Playlists", "Now Playing"};
-        menuIconArr = new int[]{R.drawable.ic_library, R.drawable.ic_menu_playlist, R.drawable.ic_menu_play};
+        menuTitleArr = new String[]{"Library", "Playlists", "Albums", "Artists", "Genres", "Now Playing"};
+        menuIconArr = new int[]{R.drawable.ic_library, R.drawable.ic_menu_playlist, R.drawable.ic_album, R.drawable.ic_artist, R.drawable.ic_genre, R.drawable.ic_menu_play};
         menuList.setAdapter(new MenuDrawerAdapter(this, menuTitleArr, menuIconArr));
         menuDrawer.closeDrawers();
         drawerOpen = false;
@@ -199,13 +200,63 @@ public abstract class BaseListActivity extends BaseActivity {
         });
     }
 
+    protected void selectMenuItem(int position) {
+        Log.d(TAG, "Detected click on position " + position + ".");
+        switch (position) {
+            case 0: {
+                Intent i = new Intent(this, MainActivity.class);
+                startActivity(i);
+                finish();
+                break;
+            }
+            case 1: {
+                Intent i = new Intent(this, PlaylistMenuActivity.class);
+                startActivity(i);
+                finish();
+                break;
+            }
+            case 2: {
+                Intent i = new Intent(this, AlbumMenuActivity.class);
+                startActivity(i);
+                finish();
+                break;
+            }
+            case 3: {
+                Intent i = new Intent(this, ArtistMenuActivity.class);
+                startActivity(i);
+                finish();
+                break;
+            }
+            case 4: {
+                Intent i = new Intent(this, GenreMenuActivity.class);
+                startActivity(i);
+                finish();
+                break;
+            }
+            case 5: {
+                Intent i = new Intent(this, MusicActivity.class);
+                i.putExtra(MusicActivity.MUSIC_NAME, currSong);
+                startActivity(i);
+                break;
+            }
+            /*
+            case 2: {
+                Log.d(TAG, "Starting new activity - bluetooth.");
+                Intent i = new Intent(this, BluetoothActivity.class);
+                startActivity(i);
+                break;
+            }
+            case 3: {
+                Log.d(TAG, "Starting new activity - settings.");
+                Intent i = new Intent(this, SettingsActivity.class);
+                startActivity(i);
+                break;
+            }
+            */
+        }
+    }
+
     protected abstract void initList();
-
-    public abstract boolean onCreateOptionsMenu(Menu menu);
-
-    protected abstract void selectMenuItem(int position);
-
-    public abstract void showChoiceMenu(View view, final int pos);
 
     @Override
     protected void onStart() {

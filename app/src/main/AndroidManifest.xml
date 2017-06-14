@@ -41,6 +41,21 @@
         </activity>
 
         <activity
+            android:name="com.lunchareas.divertio.activities.AlbumMenuActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+        </activity>
+
+        <activity
+            android:name="com.lunchareas.divertio.activities.ArtistMenuActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+        </activity>
+
+        <activity
+            android:name="com.lunchareas.divertio.activities.GenreMenuActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+        </activity>
+
+        <activity
             android:name="com.lunchareas.divertio.activities.PlaylistActivity"
             android:configChanges="keyboardHidden|screenSize">
         </activity>
