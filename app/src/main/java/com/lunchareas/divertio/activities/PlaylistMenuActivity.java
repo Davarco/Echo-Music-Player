@@ -48,6 +48,7 @@ public class PlaylistMenuActivity extends BaseListActivity {
     protected void initList() {
 
         // Create playlist
+        PlaylistMenuActivity.this.setTitle("Playlists");
         playlistView = (ListView) findViewById(R.id.playlist_list);
         setMainView();
 

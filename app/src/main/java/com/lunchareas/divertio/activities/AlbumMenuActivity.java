@@ -29,6 +29,7 @@ public class AlbumMenuActivity extends BaseListActivity {
     protected void initList() {
 
         // Get list view
+        AlbumMenuActivity.this.setTitle("Albums");
         listView = (ListView) findViewById(R.id.album_list);
         setMainView();
     }

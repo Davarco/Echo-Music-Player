@@ -28,6 +28,7 @@ public class GenreMenuActivity extends BaseListActivity {
     protected void initList() {
 
         // Get list view
+        GenreMenuActivity.this.setTitle("Genres");
         listView = (ListView) findViewById(R.id.genre_list);
         setMainView();
     }

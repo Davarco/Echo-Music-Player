@@ -28,6 +28,7 @@ public class ArtistMenuActivity extends BaseListActivity {
     protected void initList() {
 
         // Get list view
+        ArtistMenuActivity.this.setTitle("Artists");
         listView = (ListView) findViewById(R.id.artist_list);
         setMainView();
     }
