@@ -2,7 +2,11 @@ package com.lunchareas.divertio.adapters;
 
 
 import android.app.Activity;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +31,13 @@ public class AlbumAdapter extends BaseAdapter {
     private List<String> keyList;
     private LayoutInflater layoutInflater;
     private RelativeLayout relativeLayout;
+    private Activity activity;
 
     public AlbumAdapter(Activity activity, HashMap<String, List<SongData>> songList, List<String> keys) {
         this.songAlbumList = songList;
         this.keyList = keys;
         this.layoutInflater = LayoutInflater.from(activity);
+        this.activity = activity;
     }
 
     @Override
@@ -68,10 +74,12 @@ public class AlbumAdapter extends BaseAdapter {
         // Get values
         String name = keyList.get(position);
         Drawable cover = songAlbumList.get(name).get(0).getSongCover();
+        RoundedBitmapDrawable drawable = RoundedBitmapDrawableFactory.create(activity.getResources(), ((BitmapDrawable) cover).getBitmap());
+        drawable.setCornerRadius(50.0f);
         int size = songAlbumList.get(name).size();
 
         // Set values
-        albumCover.setImageDrawable(cover);
+        albumCover.setImageDrawable(drawable);
         albumName.setText(name);
         if (size == 1) {
             albumSize.setText("1 song");

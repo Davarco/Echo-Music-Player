@@ -19,9 +19,6 @@ public abstract class BasePlayerActivity extends BaseActivity {
     protected SeekBar songProgressManager;
     protected ImageView songCtrlButton;
     protected Toolbar mainBar;
-    protected ListView menuList;
-    protected String[] menuItemArr;
-    protected DrawerLayout menuDrawer;
 
     public BasePlayerActivity(int id) {
         super(id);
