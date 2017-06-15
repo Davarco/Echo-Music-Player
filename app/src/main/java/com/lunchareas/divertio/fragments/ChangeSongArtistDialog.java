@@ -33,7 +33,6 @@ public class ChangeSongArtistDialog extends DialogFragment {
 
         // Get correct name
         name = (String) getArguments().get(MUSIC_POS);
-        // Log.d(TAG, "Position: " + name);
 
         AlertDialog.Builder artistChangeDialogBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -43,7 +42,6 @@ public class ChangeSongArtistDialog extends DialogFragment {
                 .setPositiveButton(R.string.dialog_change, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Log.d(TAG, "Got click on positive change artist button.");
 
                         // Get user input
                         newArtistInput = (EditText) artistChangeView.findViewById(R.id.change_song_artist_hint);
@@ -60,9 +58,7 @@ public class ChangeSongArtistDialog extends DialogFragment {
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Log.d(TAG, "Canceled artist change.");
-                    }
+                    public void onClick(DialogInterface dialog, int which) {}
                 });
 
         return artistChangeDialogBuilder.create();

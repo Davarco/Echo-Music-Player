@@ -38,7 +38,6 @@ public class AddSongsToPlaylistDialog extends DialogFragment {
 
         // Get the correct name
         name = (String) getArguments().get(MUSIC_POS);
-        // Log.d(TAG, "Position: " + name);
 
         // Get the playlist data
         playlistData = new PlaylistDBHandler(getActivity()).getPlaylistData(name);
@@ -50,9 +49,6 @@ public class AddSongsToPlaylistDialog extends DialogFragment {
             // Avoid duplicates
             if (!playlistData.getSongList().contains(songInfoList.get(i))) {
                 songInfoTemp.add(songInfoList.get(i).getSongName());
-                // Log.d(TAG, "Adding song to list.");
-            } else {
-                // Log.d(TAG, "Song already exists.");
             }
         }
 
@@ -68,10 +64,8 @@ public class AddSongsToPlaylistDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (isChecked) {
                             selectedSongs.add(which);
-                            // Log.d(TAG, "Adding name " + which);
                         } else {
                             selectedSongs.remove(Integer.valueOf(which));
-                            // Log.d(TAG, "Removing name " + which);
                         }
                     }
                 })
@@ -84,9 +78,7 @@ public class AddSongsToPlaylistDialog extends DialogFragment {
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Log.d(TAG, "Canceled adding...");
-                    }
+                    public void onClick(DialogInterface dialog, int which) {}
                 });
 
         return addSongsDialogBuilder.create();

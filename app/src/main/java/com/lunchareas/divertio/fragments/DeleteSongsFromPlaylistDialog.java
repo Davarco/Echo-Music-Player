@@ -34,7 +34,6 @@ public class DeleteSongsFromPlaylistDialog extends DialogFragment {
 
         // Get the correct name
         name = (String) getArguments().get(MUSIC_POS);
-        Log.d(TAG, "Position: " + name);
 
         // Get the list of songs to pick from
         songInfoList = new PlaylistDBHandler(getActivity()).getPlaylistData(name).getSongList();
@@ -55,10 +54,8 @@ public class DeleteSongsFromPlaylistDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (isChecked) {
                             selectedSongs.add(which);
-                            Log.d(TAG, "Adding name " + which);
                         } else {
                             selectedSongs.remove(Integer.valueOf(which));
-                            Log.d(TAG, "Removing name " + which);
                         }
                     }
                 })
@@ -71,9 +68,7 @@ public class DeleteSongsFromPlaylistDialog extends DialogFragment {
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.d(TAG, "Canceled adding...");
-                    }
+                    public void onClick(DialogInterface dialog, int which) {}
                 });
 
         return addSongsDialogBuilder.create();

@@ -90,7 +90,6 @@ public abstract class BaseListActivity extends BaseActivity {
         songCtrlButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Log.d(TAG, "Detected click on play button.");
                 if (musicBound) {
                     sendMusicPauseIntent();
                     songCtrlButton.setBackgroundResource(R.drawable.ic_play);
@@ -201,7 +200,6 @@ public abstract class BaseListActivity extends BaseActivity {
     }
 
     protected void selectMenuItem(int position) {
-        Log.d(TAG, "Detected click on position " + position + ".");
         switch (position) {
             case 0: {
                 Intent i = new Intent(this, MainActivity.class);
@@ -241,13 +239,11 @@ public abstract class BaseListActivity extends BaseActivity {
             }
             /*
             case 2: {
-                Log.d(TAG, "Starting new activity - bluetooth.");
                 Intent i = new Intent(this, BluetoothActivity.class);
                 startActivity(i);
                 break;
             }
             case 3: {
-                Log.d(TAG, "Starting new activity - settings.");
                 Intent i = new Intent(this, SettingsActivity.class);
                 startActivity(i);
                 break;

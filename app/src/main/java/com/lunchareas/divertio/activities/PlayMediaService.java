@@ -96,7 +96,6 @@ public class PlayMediaService extends Service {
                     while (musicReset) {
                         try {
                             Thread.sleep(200);
-                            Log.d(TAG, "Pausing music updater!");
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -105,7 +104,6 @@ public class PlayMediaService extends Service {
                     // Change duration if track changes
                     songPosition = mp.getCurrentPosition();
                     songDuration = mp.getDuration();
-                    //Log.d(TAG, "Song service position: " + songPosition + "\nSong service duration: " + songDuration);
 
                     // Create and send intent with position and duration
                     Intent songIntent = new Intent(MUSIC_RESULT);
@@ -156,7 +154,6 @@ public class PlayMediaService extends Service {
                     buildNotification(MUSIC_PLAY);
                 } else {
                     Log.e(TAG, "Tried to pause, MP is not playing!");
-                    // onPlay();
                 }
             }
 
@@ -235,10 +232,8 @@ public class PlayMediaService extends Service {
 
         // Handle different events
         if (action.equals(PlayMediaService.MUSIC_PLAY) && mp != null) {
-            //Log.e(TAG, "Trying to play!");
             mediaSession.getController().getTransportControls().play();
         } else if (action.equals(PlayMediaService.MUSIC_PAUSE) && mp != null) {
-            //Log.e(TAG, "Trying to pause!");
             mediaSession.getController().getTransportControls().pause();
         } else if (action.equals(PlayMediaService.MUSIC_CHANGE) && mp != null) {
             int position = intent.getExtras().getInt(MUSIC_CHANGE);
@@ -253,8 +248,6 @@ public class PlayMediaService extends Service {
         } else if (action.equals(PlayMediaService.MUSIC_CREATE)) {
 
         } else {
-            //Log.e(TAG, "Command sent to PlayMediaService not found.");
-            //System.out.println(intentCmd);
             Log.e(TAG, "No command sent, bundle empty.");
         }
     }
@@ -292,6 +285,7 @@ public class PlayMediaService extends Service {
         manager.notify(1, builder.build());
     }
 
+    @SuppressLint("NewApi")
     private void beginPlaylistQueue(String[] songList) {
 
         // Set to playlist mode
@@ -308,22 +302,22 @@ public class PlayMediaService extends Service {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
                 idx += 1;
+                Log.e(TAG, "Reached completion.");
                 if (idx < songNameList.length) {
                     try {
 
                         // Set new song
                         musicReset = true;
+                        mp.pause();
+                        mp.reset();
                         initMedia(songNameList[idx]);
+                        mediaSession.getController().getTransportControls().play();
                         musicReset = false;
-
-                        //musicUpdaterThread.start();
-                        Log.d(TAG, "Playing next song, number " + Integer.toString(idx));
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
-                    Log.d(TAG, "Finished playlist.");
                     inPlaylistMode = false;
                 }
             }
@@ -332,7 +326,6 @@ public class PlayMediaService extends Service {
 
     private void initMusicPlayer() {
         mp = MediaPlayer.create(this, Uri.parse(songData.getSongPath()));
-        System.out.println(songData.getSongPath());
         if (mp != null) {
             mp.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
             mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -354,7 +347,6 @@ public class PlayMediaService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "PlayMediaService destroyed...");
         mp.release();
         mp = null;
         musicUpdaterThread.interrupt();

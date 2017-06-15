@@ -115,7 +115,7 @@ public class MainActivity extends BaseListActivity {
 
         // Create the selection adapter
         if (songInfoList == null) {
-            Log.d(TAG, "No song list found yet.");
+            Log.e(TAG, "No song list found yet.");
         }
         selectionAdapter = new SongSelectionAdapter(this, R.layout.list_item_song, songInfoList);
 
@@ -144,7 +144,6 @@ public class MainActivity extends BaseListActivity {
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
                 // Change the title to num of clicked items
-                Log.d(TAG, "Song item checked state changed.");
                 int numChecked = songView.getCheckedItemCount();
                 mode.setTitle(numChecked + " Selected");
                 selectionAdapter.toggleSelection(position);
@@ -153,7 +152,6 @@ public class MainActivity extends BaseListActivity {
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
                 // Create the menu for the overflow
-                Log.d(TAG, "Creating song action mode.");
                 MenuInflater inflater = mode.getMenuInflater();
                 inflater.inflate(R.menu.main_selection_menu, menu);
                 return true;
@@ -162,7 +160,6 @@ public class MainActivity extends BaseListActivity {
             @Override
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
                 // Set colored and hide bar
-                Log.d(TAG, "Preparing song action mode.");
                 resetAdapter();
                 songView.setAdapter(selectionAdapter);
                 //getSupportActionBar().hide();
@@ -171,11 +168,9 @@ public class MainActivity extends BaseListActivity {
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                Log.d(TAG, "Song action item clicked.");
                 switch (item.getItemId()) {
                     case R.id.song_selection_delete: {
                         // Delete the selected songs
-                        Log.d(TAG, "Deleting these songs!");
                         songUtil = new SongUtil(context);
                         songUtil.deleteSongList(getSongsFromIndexes(selectionAdapter.getSelectedSongs()));
                         setMainView();
@@ -184,7 +179,6 @@ public class MainActivity extends BaseListActivity {
                     }
                     case R.id.song_selection_create_playlist: {
                         // Create a playlist with the songs
-                        Log.d(TAG, "Creating a playlist.");
                         DialogFragment createPlaylistDialog = new CreatePlaylistFromSongsDialog();
                         Bundle bundle = new Bundle();
                         bundle.putIntegerArrayList(CreatePlaylistFromSongsDialog.MUSIC_LIST, (ArrayList<Integer>) selectionAdapter.getSelectedSongs());
@@ -195,7 +189,6 @@ public class MainActivity extends BaseListActivity {
                     }
                     case R.id.song_selection_add_to: {
                         // Add songs to playlists
-                        Log.d(TAG, "Adding these songs to a playlist!");
                         DialogFragment addToPlaylistDialog = new AddToPlaylistDialog();
                         Bundle bundle = new Bundle();
                         bundle.putIntegerArrayList(AddToPlaylistDialog.MUSIC_LIST, (ArrayList<Integer>) selectionAdapter.getSelectedSongs());
@@ -206,7 +199,6 @@ public class MainActivity extends BaseListActivity {
                     }
                     case R.id.song_selection_reset: {
                         // Reset song selections
-                        Log.d(TAG, "Resetting selections!");
                         selectionAdapter.resetSelection();
                         mode.setTitle("0 Selected");
                         return true;
@@ -217,7 +209,6 @@ public class MainActivity extends BaseListActivity {
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
-                Log.d(TAG, "Song action mode destroyed.");
                 selectionAdapter.resetSelection();
                 getSupportActionBar().show();
             }
@@ -245,7 +236,6 @@ public class MainActivity extends BaseListActivity {
                         return true;
                     }
                     case R.id.song_rename_title: {
-                        Log.d(TAG, "Renaming song title!");
 
                         // Create popup for new title
                         DialogFragment changeSongTitleDialog = new ChangeSongTitleDialog();
@@ -257,7 +247,6 @@ public class MainActivity extends BaseListActivity {
                         return true;
                     }
                     case R.id.song_delete_title: {
-                        Log.d(TAG, "Deleting song!");
 
                         // Remove song from list and re-update view
                         SongUtil songController = new SongUtil(context);
@@ -267,7 +256,6 @@ public class MainActivity extends BaseListActivity {
                         return true;
                     }
                     case R.id.song_change_artist: {
-                        Log.d(TAG, "Changing song artist!");
 
                         // Create popup for new artist
                         DialogFragment changeSongArtistDialog = new ChangeSongArtistDialog();
@@ -279,7 +267,6 @@ public class MainActivity extends BaseListActivity {
                         return true;
                     }
                     case R.id.song_to_playlist: {
-                        Log.d(TAG, "Adding song to playlist!");
 
                         // Create popup to add to playlist
                         DialogFragment addToPlaylistDialog = new AddToPlaylistDialog();
@@ -339,22 +326,18 @@ public class MainActivity extends BaseListActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "Detected that position " + item.getItemId() + " was selected.");
         switch (item.getItemId()) {
             case R.id.song_menu_add: {
-                Log.d(TAG, "Starting new dialog - add.");
                 DialogFragment addSongDialog = new ImportSongDialog();
                 addSongDialog.show(getSupportFragmentManager(), "Add");
                 return true;
             }
             case R.id.song_menu_upload: {
-                Log.d(TAG, "Starting new dialog - download.");
                 DialogFragment uploadDialog = new DownloadSongDialog();
                 uploadDialog.show(getSupportFragmentManager(), "Upload");
                 return true;
             }
             case R.id.song_menu_delete: {
-                Log.d(TAG, "Starting new dialog - delete.");
                 DialogFragment deleteDialog = new DeleteSongDialog();
                 deleteDialog.show(getSupportFragmentManager(), "Delete");
                 return true;
@@ -370,7 +353,6 @@ public class MainActivity extends BaseListActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "Setting main view.");
                 updateSongInfoList();
                 SongAdapter songListAdapter = new SongAdapter(activity, songInfoList);
                 songView.setAdapter(songListAdapter);
@@ -390,7 +372,6 @@ public class MainActivity extends BaseListActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "Adding progress circle.");
                 progressDialog = new ProgressDialog(MainActivity.this);
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.setMessage("Trying to get song...");
@@ -405,7 +386,6 @@ public class MainActivity extends BaseListActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "Closing progress circle.");
                 progressDialog.dismiss();
             }
         });
@@ -445,7 +425,6 @@ public class MainActivity extends BaseListActivity {
 
                 try {
                     String downloadInfoLink = "https://www.youtubeinmp3.com/download/?video=" + userLink;
-                    Log.d(TAG, "The link is: " + downloadInfoLink);
 
                     // Use jsoup to find the download link
                     Document doc = Jsoup.connect(downloadInfoLink)
@@ -454,14 +433,8 @@ public class MainActivity extends BaseListActivity {
                             .maxBodySize(0)
                             .timeout(6000)
                             .get();
-                    if (doc == null) {
-                        Log.d(TAG, "The doc is empty.");
-                    } else {
-                        Log.d(TAG, "The doc is not empty.");
-                    }
                     Element musicLinkElement = doc.getElementById("download");
                     downloadMusicLink = "https://youtubeinmp3.com" + musicLinkElement.attr("href");
-                    Log.d(TAG, "Final Download Link: " + downloadMusicLink);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -489,11 +462,9 @@ public class MainActivity extends BaseListActivity {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
-                Log.d(TAG, "Service is running.");
                 return true;
             }
         }
-        Log.d(TAG, "Service is not running.");
         return false;
     }
 
@@ -605,7 +576,12 @@ public class MainActivity extends BaseListActivity {
             String artist = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
             String album = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
             String genre = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE);
-            Drawable cover = Drawable.createFromStream(new ByteArrayInputStream(retriever.getEmbeddedPicture()), null);
+            Drawable cover;
+            try {
+                cover = Drawable.createFromStream(new ByteArrayInputStream(retriever.getEmbeddedPicture()), null);
+            } catch (Exception e) {
+                cover = getResources().getDrawable(R.drawable.default_cover);
+            }
 
             // Change artist if empty
             if (artist == null || artist.equals("")) {

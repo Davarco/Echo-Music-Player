@@ -56,7 +56,6 @@ public class PlaylistMenuActivity extends BaseListActivity {
         playlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Log.d(TAG, "Detected click in playlist item in list view, starting modifier.");
                 Intent i = new Intent(view.getContext(), PlaylistActivity.class);
                 i.putExtra(PLAYLIST_NAME, playlistInfoList.get(position).getPlaylistName());
                 startActivity(i);
@@ -68,7 +67,6 @@ public class PlaylistMenuActivity extends BaseListActivity {
         playlistView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(TAG, "Detected LONG click on playlist.");
                 showChoiceMenu(view, position);
                 return true;
             }
@@ -86,7 +84,6 @@ public class PlaylistMenuActivity extends BaseListActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.playlist_rename_title: {
-                        Log.d(TAG, "Renaming playlist.");
 
                         // Create popup for new playlist title
                         DialogFragment changePlaylistTitleDialog = new ChangePlaylistTitleDialog();
@@ -98,7 +95,6 @@ public class PlaylistMenuActivity extends BaseListActivity {
                         return true;
                     }
                     case R.id.playlist_remove_title: {
-                        Log.d(TAG, "Deleting playlist.");
 
                         // Create popup for remove playlist title
                         playlistUtil = new PlaylistUtil(context);
@@ -108,7 +104,6 @@ public class PlaylistMenuActivity extends BaseListActivity {
                         return true;
                     }
                     case R.id.playlist_add_music_title: {
-                        Log.d(TAG, "Adding music to playlist.");
 
                         // Create popup for music to add
                         DialogFragment addSongsDialog = new AddSongsToPlaylistDialog();
@@ -120,7 +115,6 @@ public class PlaylistMenuActivity extends BaseListActivity {
                         return true;
                     }
                     case R.id.playlist_delete_music_title: {
-                        Log.d(TAG, "Deleting music from playlist.");
 
                         // Create popup for music to delete
                         DialogFragment removeSongsDialog = new DeleteSongsFromPlaylistDialog();
@@ -132,10 +126,9 @@ public class PlaylistMenuActivity extends BaseListActivity {
                         return true;
                     }
                     case R.id.playlist_play_next: {
-                        Log.d(TAG, "Playing this playlist.");
 
                         // Create queue controller to run
-                        sendPlaylistCreateIntent(playlistData.getSongList());
+                        sendListCreateIntent(playlistData.getSongList());
                         songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
                     }
                     default: {
@@ -160,16 +153,13 @@ public class PlaylistMenuActivity extends BaseListActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "Detected that position " + item.getItemId() + " was selected.");
         switch (item.getItemId()) {
             case R.id.playlist_menu_create: {
-                Log.d(TAG, "Starting new dialog - upload.");
                 DialogFragment createPlaylistDialog = new CreatePlaylistDialog();
                 createPlaylistDialog.show(getSupportFragmentManager(), "Upload");
                 return true;
             }
             case R.id.playlist_menu_delete: {
-                Log.d(TAG, "Starting new dialog - delete.");
                 DialogFragment deletePlaylistDialog = new DeletePlaylistDialog();
                 deletePlaylistDialog.show(getSupportFragmentManager(), "Delete");
                 return true;
@@ -181,7 +171,6 @@ public class PlaylistMenuActivity extends BaseListActivity {
 
     @Override
     public void setMainView() {
-        Log.d(TAG, "Setting main view.");
         updatePlaylistInfoList();
         PlaylistAdapter playlistAdapter = new PlaylistAdapter(this, playlistInfoList);
         playlistView.setAdapter(playlistAdapter);

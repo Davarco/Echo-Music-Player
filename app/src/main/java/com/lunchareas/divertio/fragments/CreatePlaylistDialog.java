@@ -67,10 +67,8 @@ public class CreatePlaylistDialog extends DialogFragment {
                 public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
                     if (isChecked) {
                         selectedSongs.add(position);
-                        // Log.d(TAG, "Adding position " + position);
                     } else if (selectedSongs.contains(position)) {
                         selectedSongs.remove(Integer.valueOf(position));
-                        // Log.d(TAG, "Removing position " + position);
                     }
                 }
             });
@@ -82,9 +80,7 @@ public class CreatePlaylistDialog extends DialogFragment {
             });
         createPlaylistBuilder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialogInterface, int which) {
-                    // Log.d(TAG, "Canceled creation...");
-                }
+                public void onClick(DialogInterface dialogInterface, int which) {}
             });
 
         return createPlaylistBuilder.create();
@@ -103,21 +99,17 @@ public class CreatePlaylistDialog extends DialogFragment {
                 playlistNameInput = (EditText) createPlaylistView.findViewById(R.id.dialog_create_playlist_name);
                 playlistName = playlistNameInput.getText().toString().trim();
                 if (!playlistUtil.nameAlreadyExists(playlistName)) {
-                    Log.d(TAG, "Playlist name: " + playlistName);
                     executePlaylistCreate();
                 } else {
 
                     // Create dialog because name is invalid
-                    Log.d(TAG, "Playlist name already exists.");
                     ((PlaylistMenuActivity) activity).createPlaylistNameFailureDialog();
                 }
             }
         });
         nameDialogBuilder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Log.d(TAG, "Canceled creation...");
-            }
+            public void onClick(DialogInterface dialogInterface, int i) {}
         });
         AlertDialog nameDialog = nameDialogBuilder.create();
         nameDialog.show();
@@ -130,7 +122,6 @@ public class CreatePlaylistDialog extends DialogFragment {
         for (int i = 0; i < selectedSongs.size(); i++) {
             SongData songData = songInfoList.get(selectedSongs.get(i));
             songDataList.add(songData);
-            Log.i(TAG, "song name: " + songDataList.get(i).getSongName() + ", song artist: " + songDataList.get(i).getSongArtist());
         }
 
         // Update database with new playlist
@@ -138,7 +129,6 @@ public class CreatePlaylistDialog extends DialogFragment {
         try {
             PlaylistData playlistData = new PlaylistData(playlistName, songDataList);
             db.addPlaylistData(playlistData);
-            Log.d(TAG, "Successfully updated playlist database.");
         } catch (Exception e) {
             Log.e(TAG, "Playlist database update failure.", e);
         }

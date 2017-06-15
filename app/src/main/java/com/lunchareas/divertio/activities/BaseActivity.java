@@ -88,7 +88,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void sendMusicCreateIntent(String name) {
         musicCreateIntent = new Intent(this, PlayMediaService.class);
-        // Log.d(TAG, "Passing string to create intent: " + name);
         musicCreateIntent.setAction(PlayMediaService.MUSIC_CREATE);
         musicCreateIntent.putExtra(PlayMediaService.MUSIC_CREATE, name);
         this.startService(musicCreateIntent);
@@ -112,8 +111,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         musicChangeIntent.putExtra(PlayMediaService.MUSIC_CHANGE, position);
         this.startService(musicChangeIntent);
     }
-    public void sendPlaylistCreateIntent(List<SongData> songList) {
-        // Log.d(TAG, "Trying to send playlist create intent.");
+    public void sendListCreateIntent(List<SongData> songList) {
         Intent playlistCreateIntent = new Intent(context, PlayMediaService.class);
 
         // Shuffle list, get first song
@@ -124,7 +122,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         String[] songNameList = new String[songList.size()];
         for (int i = 0; i < songList.size(); i++) {
             songNameList[i] = songList.get(i).getSongName();
-            // Log.d(TAG, "Song " + Integer.toString(i+1) + ": " + songNameList[i]);
         }
 
         // Send the intent

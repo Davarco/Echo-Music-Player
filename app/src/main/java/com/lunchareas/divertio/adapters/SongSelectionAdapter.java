@@ -56,19 +56,14 @@ public class SongSelectionAdapter extends ArrayAdapter<SongData> {
         final RelativeLayout songListLayout = songLayout;
 
         // Get the parts of a song layout
-        //ImageView songItemIcon = (ImageView) songListLayout.findViewById(R.id.song_icon);
         ImageView songOverflowIcon = (ImageView) songListLayout.findViewById(R.id.song_overflow);
         TextView songItemName = (TextView) songListLayout.findViewById(R.id.song_name);
         TextView songItemArtist = (TextView) songListLayout.findViewById(R.id.song_composer);
 
         // Set the parts equal to the corresponding song
         SongData songItem = songDataList.get(position);
-        //songItemIcon.setImageDrawable(songItem.getSongCover());
         songItemName.setText(songItem.getSongName());
         songItemArtist.setText(songItem.getSongArtist());
-
-        // Assertions
-        // Log.d(TAG, songItem.toString());
 
         // Set listener if not selected
         if (!selected) {
@@ -113,7 +108,6 @@ public class SongSelectionAdapter extends ArrayAdapter<SongData> {
     }
 
     public int getSongCount() {
-        // Log.d(TAG, Integer.toString(selectedSongs.size()));
         return selectedSongs.size();
     }
 

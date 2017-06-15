@@ -2,6 +2,8 @@ package com.lunchareas.divertio.activities;
 
 
 import android.app.Activity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.lunchareas.divertio.R;
@@ -11,7 +13,6 @@ import com.lunchareas.divertio.models.SongData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.TreeMap;
 
 public class AlbumMenuActivity extends BaseListActivity {
 
@@ -30,8 +31,24 @@ public class AlbumMenuActivity extends BaseListActivity {
 
         // Get list view
         AlbumMenuActivity.this.setTitle("Albums");
-        listView = (ListView) findViewById(R.id.album_list);
+        listView = (ListView) findViewById(R.id.album_song_list);
         setMainView();
+
+        // Detect clicks
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+
+        // For feeling
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                return false;
+            }
+        });
     }
 
     @Override

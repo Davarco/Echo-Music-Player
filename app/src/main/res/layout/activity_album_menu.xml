@@ -39,7 +39,7 @@
 
             <!-- List of user songs -->
             <ListView
-                android:id="@+id/album_list"
+                android:id="@+id/album_song_list"
                 android:background="@android:color/transparent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

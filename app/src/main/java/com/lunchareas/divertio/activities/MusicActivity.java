@@ -45,11 +45,6 @@ public class MusicActivity extends BasePlayerActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     protected void initToolbar() {
 
         // Get toolbar
@@ -78,18 +73,19 @@ public class MusicActivity extends BasePlayerActivity {
         songCtrlButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Log.d(TAG, "Detected click on play button.");
                 if (musicBound) {
                     sendMusicPauseIntent();
                     songCtrlButton.setImageResource(R.drawable.ic_play);
-                    musicBound = false;
                 } else {
                     sendMusicStartIntent();
                     songCtrlButton.setImageResource(R.drawable.ic_pause);
-                    musicBound = true;
                 }
             }
         });
+    }
+
+    @Override
+    protected void initListener() {
 
         // Setup progress manager
         songProgressManager.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -104,6 +100,7 @@ public class MusicActivity extends BasePlayerActivity {
             public void onStartTrackingTouch(SeekBar seekBar) {
                 // Prevents broken music during time change
                 sendMusicPauseIntent();
+                isChanging = true;
             }
 
             @Override
@@ -111,6 +108,7 @@ public class MusicActivity extends BasePlayerActivity {
                 // Resumes regular music from pause
                 sendMusicStartIntent();
                 songCtrlButton.setImageResource(R.drawable.ic_pause);
+                isChanging = false;
             }
         });
 
@@ -118,6 +116,17 @@ public class MusicActivity extends BasePlayerActivity {
         songBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+
+                // Get status
+                boolean status = intent.getBooleanExtra(PlayMediaService.MUSIC_STATUS, false);
+                if (musicBound != status && !isChanging) {
+                    if (status) {
+                        songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
+                    } else {
+                        songCtrlButton.setBackgroundResource(R.drawable.ic_play);
+                    }
+                }
+                musicBound = status;
 
                 // Set current song if null, or change if new song pops up
                 if (currSong == null) {
@@ -190,9 +199,6 @@ public class MusicActivity extends BasePlayerActivity {
                 position = 0;
             }
         } else {
-            while (currSong == null) {
-                //System.out.println(currSong);
-            }
             songData = new SongDBHandler(this).getSongData(currSong);
             position = songInfoList.indexOf(songData);
         }

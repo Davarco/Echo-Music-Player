@@ -103,7 +103,6 @@ public class PlaylistSelectionAdapter extends ArrayAdapter<PlaylistData> {
     }
 
     public int getSongCount() {
-        // Log.d(TAG, Integer.toString(selectedPlaylists.size()));
         return selectedPlaylists.size();
     }
 

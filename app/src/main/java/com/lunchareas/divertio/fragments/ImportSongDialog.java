@@ -102,15 +102,10 @@ public class ImportSongDialog extends DialogFragment {
                     if (!existingSongList.contains(songData)) {
                         songList.add(songData);
                     }
-                } else {
-                    Log.d(TAG, "Empty, not being considered. " + title + " " + path);
                 }
 
             } while (musicCursor.moveToNext());
         }
-
-        // List the songs
-        //Log.d(TAG, "Possible songs to add: " + songList.toString());
 
         // Get the names of the songs
         List<String> songNameList = new ArrayList<>();
@@ -128,10 +123,8 @@ public class ImportSongDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (isChecked) {
                             selectedSongs.add(which);
-                            // Log.d(TAG, "Adding position " + which);
                         } else {
                             selectedSongs.remove(Integer.valueOf(which));
-                            // Log.d(TAG, "Removing position " + which);
                         }
                     }
                 })
@@ -144,9 +137,7 @@ public class ImportSongDialog extends DialogFragment {
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Log.d(TAG, "Canceled adding...");
-                    }
+                    public void onClick(DialogInterface dialog, int which) {}
                 });
 
         return builder.create();

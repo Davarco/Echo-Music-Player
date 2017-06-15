@@ -48,10 +48,8 @@ public class DeletePlaylistDialog extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
                         if (isChecked) {
                             selectedPlaylists.add(position);
-                            // Log.d(TAG, "Adding position " + position);
                         } else {
                             selectedPlaylists.remove(Integer.valueOf(position));
-                            // Log.d(TAG, "Removing position " + position);
                         }
                     }
                 })
@@ -70,9 +68,7 @@ public class DeletePlaylistDialog extends DialogFragment {
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // Log.d(TAG, "Canceled deletion...");
-                    }
+                    public void onClick(DialogInterface dialogInterface, int i) {}
                 });
 
         return deletePlaylistBuilder.create();

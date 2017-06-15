@@ -63,7 +63,6 @@ public class PlaylistDBHandler extends SQLiteOpenHelper {
 
         Gson gson = new Gson();
         String songListString = gson.toJson(songNameList);
-        // Log.d(TAG, "String: " + songListString);
 
         return songListString;
     }
@@ -79,7 +78,6 @@ public class PlaylistDBHandler extends SQLiteOpenHelper {
         SongDBHandler db = new SongDBHandler(dbContext);
         List<SongData> songDataList = new ArrayList<>();
         for (String songName: finalOutputString) {
-            //Log.d(TAG, "Adding song: " + songName);
             songDataList.add(db.getSongData(songName));
         }
 

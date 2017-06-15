@@ -33,7 +33,6 @@ public class ChangePlaylistTitleDialog extends DialogFragment {
 
         // Get correct name
         name = (String) getArguments().get(MUSIC_POS);
-        // Log.d(TAG, "Position: " + name);
 
         AlertDialog.Builder titleChangeDialogBuilder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -43,7 +42,6 @@ public class ChangePlaylistTitleDialog extends DialogFragment {
                 .setPositiveButton(R.string.dialog_change, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Log.d(TAG, "Got click on positive title change button.");
 
                         // Get user input
                         newTitleInput = (EditText) changeTitleView.findViewById(R.id.change_playlist_title_hint);
@@ -60,9 +58,7 @@ public class ChangePlaylistTitleDialog extends DialogFragment {
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Log.d(TAG, "Canceled title change.");
-                    }
+                    public void onClick(DialogInterface dialog, int which) {}
                 });
 
         return titleChangeDialogBuilder.create();

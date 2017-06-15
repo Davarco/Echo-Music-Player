@@ -71,7 +71,6 @@ public class PlaylistUtil {
         // Create new playlist data
         String prevTitle = playlistData.getPlaylistName();
         playlistData.setPlaylistName(newTitle);
-        // Log.d(TAG, "Changing title from " + prevTitle + " to " + newTitle);
 
         // Update the playlist data
         PlaylistDBHandler db = new PlaylistDBHandler(context);
@@ -98,9 +97,6 @@ public class PlaylistUtil {
                 songList.add(songData);
             }
         }
-
-        // Debug number of duplicates
-        // Log.d(TAG, "There were " + Integer.toString(prevList.size()-songList.size()) + " duplicates in the playlist.");
 
         // Update database
         playlistData.setSongList(songList);

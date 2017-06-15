@@ -134,7 +134,6 @@ public class DownloadSongDialog extends DialogFragment {
 
             // Get download link and file name
             songFileName = songName + ".mp3";
-            // Log.d(TAG, "Inserted link is " + userLink + ".");
 
             // Replace occurrences of /
             songFileName = songFileName.replace('/', '|');

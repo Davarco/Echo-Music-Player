@@ -1,7 +1,6 @@
 package com.lunchareas.divertio.activities;
 
 
-import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -55,34 +54,6 @@ public class PlaylistActivity extends BasePlayerActivity {
     }
 
     @Override
-    @SuppressLint("NewApi")
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // Get play button
-        playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Log.d(TAG,"Playing playlist.");
-                songCtrlButton.setImageResource(R.drawable.ic_pause);
-                sendMusicPauseIntent();
-                sendPlaylistCreateIntent(playlistData.getSongList());
-                musicBound = true;
-            }
-        });
-
-        // Just for feeling
-        playlistView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                // Log.d(TAG, "Detected LONG click on playlist song.");
-                //showChoiceMenu(view, position);
-                return true;
-            }
-        });
-    }
-
-    @Override
     protected void initToolbar() {
 
         // Get toolbar
@@ -93,94 +64,6 @@ public class PlaylistActivity extends BasePlayerActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
-    }
-
-    @Override
-    protected void initSongbar() {
-
-        // Setup song bar
-        am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        songProgressManager = (SeekBar) findViewById(R.id.progress_bar);
-        songProgressManager.getProgressDrawable().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
-        songProgressManager.getThumb().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
-        songCtrlButton = (ImageView) findViewById(R.id.play_button);
-        if (am.isMusicActive()) {
-            musicBound = true;
-            songCtrlButton.setImageResource(R.drawable.ic_pause);
-        } else {
-            musicBound = false;
-            songCtrlButton.setImageResource(R.drawable.ic_play);
-        }
-
-        // Setup play button
-        songCtrlButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Log.d(TAG, "Detected click on play button.");
-                if (musicBound) {
-                    sendMusicPauseIntent();
-                    songCtrlButton.setImageResource(R.drawable.ic_play);
-                    musicBound = false;
-                } else {
-                    sendMusicStartIntent();
-                    songCtrlButton.setImageResource(R.drawable.ic_pause);
-                    musicBound = true;
-                }
-            }
-        });
-
-        // Setup progress manager
-        songProgressManager.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar sb, int position, boolean userPressed) {
-                if (userPressed) {
-                    sendMusicChangeIntent(position);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // Prevents broken music during time change
-                sendMusicPauseIntent();
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // Resumes regular music from pause
-                sendMusicStartIntent();
-                songCtrlButton.setBackgroundResource(R.drawable.ic_pause);
-            }
-        });
-
-        // Setup time manager
-        songBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                int songPosition = intent.getIntExtra(PlayMediaService.MUSIC_POSITION, 0);
-                int songDuration = intent.getIntExtra(PlayMediaService.MUSIC_DURATION, 0);
-
-                // Set location based on position/duration
-                songProgressManager.setMax(songDuration);
-                songProgressManager.setProgress(songPosition);
-
-                // Set new text in time
-                String songPositionTime = String.format(
-                        Locale.US, "%02d:%02d",
-                        TimeUnit.MILLISECONDS.toMinutes(songPosition),
-                        TimeUnit.MILLISECONDS.toSeconds(songPosition) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(songPosition))
-                );
-
-                String songDurationTime = String.format(
-                        Locale.US, "%02d:%02d",
-                        TimeUnit.MILLISECONDS.toMinutes(songDuration),
-                        TimeUnit.MILLISECONDS.toSeconds(songDuration) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(songDuration))
-                );
-
-                String totalSongTime = songPositionTime + "/" + songDurationTime;
-                TextView songTimeView = (TextView) findViewById(R.id.time_info);
-                songTimeView.setText(totalSongTime);
-            }
-        };
     }
 
     @Override
@@ -196,6 +79,52 @@ public class PlaylistActivity extends BasePlayerActivity {
 
         // Large name
         playlistViewName = (TextView) findViewById(R.id.playlist_name);
+
+        // Get play button
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                songCtrlButton.setImageResource(R.drawable.ic_pause);
+                sendMusicPauseIntent();
+                sendListCreateIntent(playlistData.getSongList());
+                musicBound = true;
+            }
+        });
+
+        // Just for feeling
+        playlistView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                //showChoiceMenu(view, position);
+                return true;
+            }
+        });
+    }
+
+    @Override
+    protected void initSongbar() {
+
+        // Setup song bar
+        am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        songProgressManager = (SeekBar) findViewById(R.id.progress_bar);
+        songProgressManager.getProgressDrawable().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
+        songProgressManager.getThumb().setColorFilter(getResources().getColor(R.color.red), PorterDuff.Mode.SRC_IN);
+        songCtrlButton = (ImageView) findViewById(R.id.play_button);
+        musicBound = true;
+
+        // Setup play button
+        songCtrlButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (musicBound) {
+                    sendMusicPauseIntent();
+                    songCtrlButton.setImageResource(R.drawable.ic_play);
+                } else {
+                    sendMusicStartIntent();
+                    songCtrlButton.setImageResource(R.drawable.ic_pause);
+                }
+            }
+        });
     }
 
     @Override
@@ -222,7 +151,6 @@ public class PlaylistActivity extends BasePlayerActivity {
 
     @Override
     protected void showDispData() {
-        // Log.d(TAG, "Resetting main view for playlist controller activity.");
 
         // Set opaque background
         playlistBackground.getBackground().setAlpha(150);
@@ -244,7 +172,6 @@ public class PlaylistActivity extends BasePlayerActivity {
         // Set center icon image
         if (playlistBackground != null) {
             if (playlistData.getPlaylistIcon() == null) {
-                // Log.d(TAG, "No default playlist icon found.");
 
                 // Try with song icon
                 List<SongData> songList = playlistData.getSongList();
