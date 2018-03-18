@@ -45,27 +45,31 @@ public class SongFixedAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, final View convertView, ViewGroup parentView) {
-        final RelativeLayout songListLayout = (RelativeLayout) songListInflater.inflate(R.layout.list_item_song_fixed, parentView, false);
-        if (position % 2 - 1 == 0) {
-            songListLayout.setBackgroundResource(R.color.gray_2);
-        } else {
-            songListLayout.setBackgroundResource(R.color.gray_3);
+    public View getView(final int position, View convertView, ViewGroup parentView) {
+        if (convertView == null) {
+            convertView = songListInflater.inflate(R.layout.list_item_song_fixed, parentView, false);
+            if (position % 2 - 1 == 0) {
+                convertView.setBackgroundResource(R.color.gray_2);
+            } else {
+                convertView.setBackgroundResource(R.color.gray_3);
+            }
+
+            // Get the parts of a song layout
+            //ImageView songItemIcon = (ImageView) convertView.findViewById(R.id.song_icon);
+            TextView songItemName = (TextView) convertView.findViewById(R.id.song_name);
+            TextView songItemArtist = (TextView) convertView.findViewById(R.id.song_composer);
+
+            // Set the parts equal to the corresponding song
+            SongData songItem = songDataList.get(position);
+            //songItemIcon.setImageDrawable(songItem.getSongCover());
+            songItemName.setText(songItem.getSongName());
+            songItemArtist.setText(songItem.getSongArtist());
+
+            // Set position as tag
+            convertView.setTag(position);
+            return convertView;
         }
 
-        // Get the parts of a song layout
-        //ImageView songItemIcon = (ImageView) songListLayout.findViewById(R.id.song_icon);
-        TextView songItemName = (TextView) songListLayout.findViewById(R.id.song_name);
-        TextView songItemArtist = (TextView) songListLayout.findViewById(R.id.song_composer);
-
-        // Set the parts equal to the corresponding song
-        SongData songItem = songDataList.get(position);
-        //songItemIcon.setImageDrawable(songItem.getSongCover());
-        songItemName.setText(songItem.getSongName());
-        songItemArtist.setText(songItem.getSongArtist());
-
-        // Set position as tag
-        songListLayout.setTag(position);
-        return songListLayout;
+        return convertView;
     }
 }

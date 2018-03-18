@@ -40,40 +40,42 @@ public class PlaylistSelectionAdapter extends ArrayAdapter<PlaylistData> {
     @Override
     public View getView(final int position, View convertView, ViewGroup parentView) {
 
-        // Base color on selection
-        boolean selected = selectedPlaylists.contains(position);
-        final RelativeLayout playlistLayout;
-        if (selected) {
-            playlistLayout = (RelativeLayout) playlistInflater.inflate(R.layout.list_item_playlist_selected, parentView, false);
-        } else {
-            playlistLayout = (RelativeLayout) playlistInflater.inflate(R.layout.list_item_playlist, parentView, false);
+        if (convertView == null) {
+            // Base color on selection
+            boolean selected = selectedPlaylists.contains(position);
+            if (selected) {
+                convertView = playlistInflater.inflate(R.layout.list_item_playlist_selected, parentView, false);
+            } else {
+                convertView = playlistInflater.inflate(R.layout.list_item_playlist, parentView, false);
+            }
+
+            // Get the parts of a playlist layout
+            ImageView playlistOverflowIcon = (ImageView) convertView.findViewById(R.id.playlist_overflow);
+            TextView playlistItemName = (TextView) convertView.findViewById(R.id.playlist_name);
+            TextView playlistItemSize = (TextView) convertView.findViewById(R.id.playlist_size);
+
+            // Set the parts equal to the corresponding playlist
+            PlaylistData playlistItem = playlistDataList.get(position);
+            playlistItemName.setText(playlistItem.getPlaylistName());
+            playlistItemSize.setText(playlistItem.getNumSongs());
+
+            // Set listener if not selected
+            if (!selected) {
+                // Set on click listener for overflow
+                playlistOverflowIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((PlaylistMenuActivity) activity).showChoiceMenu(v, position);
+                    }
+                });
+            }
+
+            // Set position as tag
+            convertView.setTag(position);
+            return convertView;
         }
-        final RelativeLayout playlistListLayout = playlistLayout;
-        
-        // Get the parts of a playlist layout
-        ImageView playlistOverflowIcon = (ImageView) playlistLayout.findViewById(R.id.playlist_overflow);
-        TextView playlistItemName = (TextView) playlistLayout.findViewById(R.id.playlist_name);
-        TextView playlistItemSize = (TextView) playlistLayout.findViewById(R.id.playlist_size);
 
-        // Set the parts equal to the corresponding playlist
-        PlaylistData playlistItem = playlistDataList.get(position);
-        playlistItemName.setText(playlistItem.getPlaylistName());
-        playlistItemSize.setText(playlistItem.getNumSongs());
-
-        // Set listener if not selected
-        if (!selected) {
-            // Set on click listener for overflow
-            playlistOverflowIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((PlaylistMenuActivity) activity).showChoiceMenu(playlistLayout, position);
-                }
-            });
-        }
-
-        // Set position as tag
-        playlistLayout.setTag(position);
-        return playlistLayout;
+        return convertView;
     }
 
     @Override

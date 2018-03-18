@@ -150,6 +150,7 @@ public class PlayMediaService extends Service {
             @Override
             public void onPause() {
                 if (mp.isPlaying()) {
+                    musicUpdaterThread.interrupt();
                     mp.pause();
                     buildNotification(MUSIC_PLAY);
                 } else {

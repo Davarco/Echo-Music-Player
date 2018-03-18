@@ -27,7 +27,6 @@ public class ArtistAdapter extends BaseAdapter {
     private HashMap<String, List<SongData>> songArtistList;
     private List<String> keyList;
     private LayoutInflater layoutInflater;
-    private RelativeLayout relativeLayout;
     private Activity activity;
 
     public ArtistAdapter(Activity activity, HashMap<String, List<SongData>> songList, List<String> keys) {
@@ -55,32 +54,36 @@ public class ArtistAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, final View convertView, ViewGroup parentView) {
-        relativeLayout = (RelativeLayout) layoutInflater.inflate(R.layout.list_item_artist, parentView, false);
-        if (position % 2 - 1 == 0) {
-            relativeLayout.setBackgroundResource(R.color.gray_2);
-        } else {
-            relativeLayout.setBackgroundResource(R.color.gray_3);
+    public View getView(final int position, View convertView, ViewGroup parentView) {
+        if (convertView == null) {
+            convertView = layoutInflater.inflate(R.layout.list_item_artist, parentView, false);
+            if (position % 2 - 1 == 0) {
+                convertView.setBackgroundResource(R.color.gray_2);
+            } else {
+                convertView.setBackgroundResource(R.color.gray_3);
+            }
+
+            // Get parts of layout
+            TextView artistName = (TextView) convertView.findViewById(R.id.artist_name);
+            TextView artistSize = (TextView) convertView.findViewById(R.id.artist_size);
+
+            // Get values
+            String name = keyList.get(position);
+            int size = songArtistList.get(name).size();
+
+            // Set values
+            artistName.setText(name);
+            if (size == 1) {
+                artistSize.setText("1 song");
+            } else {
+                artistSize.setText(Integer.toString(size) + " songs");
+            }
+
+            // Return
+            convertView.setTag(position);
+            return convertView;
         }
 
-        // Get parts of layout
-        TextView artistName = (TextView) relativeLayout.findViewById(R.id.artist_name);
-        TextView artistSize = (TextView) relativeLayout.findViewById(R.id.artist_size);
-
-        // Get values
-        String name = keyList.get(position);
-        int size = songArtistList.get(name).size();
-
-        // Set values
-        artistName.setText(name);
-        if (size == 1) {
-            artistSize.setText("1 song");
-        } else {
-            artistSize.setText(Integer.toString(size) + " songs");
-        }
-
-        // Return
-        relativeLayout.setTag(position);
-        return relativeLayout;
+        return convertView;
     }
 }

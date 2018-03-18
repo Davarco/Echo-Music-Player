@@ -53,18 +53,22 @@ public class MenuDrawerAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parentView) {
 
         // Get the parts
-        menuItemLayout = (RelativeLayout) layoutInflater.inflate(R.layout.list_item_menu_drawer, parentView, false);
-        ImageView imageView = (ImageView) menuItemLayout.findViewById(R.id.menu_icon);
-        TextView textView = (TextView) menuItemLayout.findViewById(R.id.menu_title);
+        if (convertView == null) {
+            convertView = layoutInflater.inflate(R.layout.list_item_menu_drawer, parentView, false);
+            ImageView imageView = (ImageView) convertView.findViewById(R.id.menu_icon);
+            TextView textView = (TextView) convertView.findViewById(R.id.menu_title);
 
-        // Set the parts equal to the corresponding part
-        Drawable icon = activity.getResources().getDrawable(iconIdList[position]);
-        String title = titleList[position];
-        imageView.setImageDrawable(icon);
-        textView.setText(title);
+            // Set the parts equal to the corresponding part
+            Drawable icon = activity.getResources().getDrawable(iconIdList[position]);
+            String title = titleList[position];
+            imageView.setImageDrawable(icon);
+            textView.setText(title);
 
-        // Set position as tag
-        menuItemLayout.setTag(position);
-        return menuItemLayout;
+            // Set position as tag
+            convertView.setTag(position);
+            return convertView;
+        }
+
+        return convertView;
     }
 }

@@ -39,46 +39,47 @@ public class SongSelectionAdapter extends ArrayAdapter<SongData> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parentView) {
-
-        // Base color on selection
-        boolean selected = selectedSongs.contains(position);
-        RelativeLayout songLayout;
-        if (selected) {
-            songLayout = (RelativeLayout) songListInflater.inflate(R.layout.list_item_song_selected, parentView, false);
-            if (position % 2 - 1 == 0) {
-                songLayout.setBackgroundResource(R.color.gray_2);
-            } else {
-                songLayout.setBackgroundResource(R.color.gray_3);
-            }
-        } else {
-            songLayout = (RelativeLayout) songListInflater.inflate(R.layout.list_item_song, parentView, false);
-        }
-        final RelativeLayout songListLayout = songLayout;
-
-        // Get the parts of a song layout
-        ImageView songOverflowIcon = (ImageView) songListLayout.findViewById(R.id.song_overflow);
-        TextView songItemName = (TextView) songListLayout.findViewById(R.id.song_name);
-        TextView songItemArtist = (TextView) songListLayout.findViewById(R.id.song_composer);
-
-        // Set the parts equal to the corresponding song
-        SongData songItem = songDataList.get(position);
-        songItemName.setText(songItem.getSongName());
-        songItemArtist.setText(songItem.getSongArtist());
-
-        // Set listener if not selected
-        if (!selected) {
-            // Set on click listener for overflow
-            songOverflowIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((MainActivity) activity).showChoiceMenu(songListLayout, position);
+        if (convertView == null) {
+            // Base color on selection
+            boolean selected = selectedSongs.contains(position);
+            if (selected) {
+                convertView = songListInflater.inflate(R.layout.list_item_song_selected, parentView, false);
+                if (position % 2 - 1 == 0) {
+                    convertView.setBackgroundResource(R.color.gray_2);
+                } else {
+                    convertView.setBackgroundResource(R.color.gray_3);
                 }
-            });
+            } else {
+                convertView = songListInflater.inflate(R.layout.list_item_song, parentView, false);
+            }
+
+            // Get the parts of a song layout
+            ImageView songOverflowIcon = (ImageView) convertView.findViewById(R.id.song_overflow);
+            TextView songItemName = (TextView) convertView.findViewById(R.id.song_name);
+            TextView songItemArtist = (TextView) convertView.findViewById(R.id.song_composer);
+
+            // Set the parts equal to the corresponding song
+            SongData songItem = songDataList.get(position);
+            songItemName.setText(songItem.getSongName());
+            songItemArtist.setText(songItem.getSongArtist());
+
+            // Set listener if not selected
+            if (!selected) {
+                // Set on click listener for overflow
+                songOverflowIcon.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((MainActivity) activity).showChoiceMenu(v, position);
+                    }
+                });
+            }
+
+            // Set position as tag
+            convertView.setTag(position);
+            return convertView;
         }
 
-        // Set position as tag
-        songListLayout.setTag(position);
-        return songListLayout;
+        return convertView;
     }
 
     @Override
