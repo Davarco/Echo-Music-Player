@@ -1,36 +1,29 @@
-# Echo
+# Echo Music
+Android music player with YouTube to MP3 conversion and 10k+ downloads on the Google Play Store.
+Copyright (C) 2019 David Zhang
+[Link on Google Play Store](https://play.google.com/store/apps/details?id=com.lunchareas.echomp)
 
-Echo Music Player is an Android application which uses the YoutubeInMP3 API to convert youtube videos into mp3 files on your Android device. It is also functions as a standard MP3 player, and is able to search for MP3 files to use on your device. 
+## Introduction
+Echo Music Player is an elegant ad-free music player, with powerful tools that are unique to the app and support for all standard audio files. It is crafted using modern Material Design principles, and features both an intuitive and beautiful UI. 
 
-## Installation and Usage
+Quick search allows you to locate any type of media instantaneously, including tracks, playlists, artists, and albums.
 
-**Requirements:**
+The equalizer gives you control over the audio configuration, and contains a set of 10 default audio settings. 
 
- - An Android device (pref running 4.0+)
- - Android Studio to upload the app onto your phone
+Smart playlists create a set of default playlists based on your listening habits and artificial intelligence. 
 
-In order to download Youtube videos and convert them to MP3 files, you will need an internet connection. However, most of the app, including standard MP3 player functions, will work without an internet connection. 
+## Features
++ Completely ad-free
++ Supports all standard audio formats
++ Quick search for instantaneous locating of media
++ Powerful equalizer with 10 presets, bassboost, and 3D surround virtualizer 
++ Smart playlists built using listening habits and AI
++ Metadata editor for tracks, albums, and artists
++ Modern and intuitive user interface and controls
++ Notification controls 
++ Built-in sharing of audio files
++ Optional sorting of tracks, playlists, albums, and artists
++ Automatic scanning for audio files
++ Controllable playing queue
 
-**Usage:**
 
-Click the overflow button on the home page to open up a window that will direct you in converting Youtube videos. The MP3 player functions are self-explanatory.
-
-## License
-
-    Echo - MP3 app with built-in Youtube2MP3 conversion.
-    Copyright (C) 2017 by David Zhang
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
-For more information, see [LICENSE](https://github.com/Davarco/Echo/blob/master/LICENSE).
