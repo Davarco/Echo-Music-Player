@@ -1,6 +1,8 @@
 # Echo Music
 Android music player with YouTube to MP3 conversion and 10k+ downloads on the Google Play Store.
+
 Copyright (C) 2019 David Zhang
+
 [Link on Google Play Store](https://play.google.com/store/apps/details?id=com.lunchareas.echomp)
 
 ## Introduction
