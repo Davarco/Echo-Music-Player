@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/search"
+        android:title=""
+        android:icon="@drawable/ic_action_search"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/overflow"
+        android:title=""
+        android:icon="@drawable/ic_overflow_bar"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/delete"
+                android:title="@string/delete"
+                app:showAsAction="never"/>
+            <item
+                android:id="@+id/play_all"
+                android:title="@string/play_all_title"
+                app:showAsAction="never"/>
+            <item
+                android:id="@+id/add_to_queue"
+                android:title="@string/to_queue_title"
+                app:showAsAction="never"/>
+        </menu>
+    </item>
+</menu>

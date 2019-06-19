@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Drawer list -->
+    <android.support.v4.widget.DrawerLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/menu_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!-- Container -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Toolbar -->
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/black"
+                android:elevation="4dp"
+                app:titleTextColor="@color/white"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                app:contentInsetStartWithNavigation="0dp">
+            </android.support.v7.widget.Toolbar>
+
+            <!-- Fragment holding frame -->
+            <ListView
+                android:id="@+id/songlist"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:dividerHeight="0dp"
+                android:divider="#000000"/>
+
+            <!-- Song bar -->
+            <LinearLayout
+                android:id="@+id/songbar"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:elevation="4dp"
+                android:orientation="horizontal"
+                android:background="@android:color/black">
+                <ImageSwitcher
+                    android:id="@+id/songbar_play"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_play"/>
+                <SeekBar
+                    android:id="@+id/songbar_progress"
+                    android:gravity="center_vertical"
+                    android:layout_height="48dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+                <TextView
+                    android:id="@+id/songbar_time"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical|end"
+                    android:textColor="@color/white"
+                    android:text="@string/song_default_time"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Drawer list styling -->
+        <android.support.design.widget.NavigationView
+            android:id="@+id/menu_drawer_list"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            android:background="@color/gray"
+            app:menu="@menu/nav_menu"
+            app:headerLayout="@layout/nav_header"
+            app:itemTextColor="@color/white"
+            app:itemIconTint="@color/white" />
+
+    </android.support.v4.widget.DrawerLayout>
+
+</LinearLayout>

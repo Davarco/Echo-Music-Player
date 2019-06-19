@@ -1,0 +1,35 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/library"
+            android:icon="@drawable/ic_library"
+            android:title="@string/library" />
+        <item
+            android:id="@+id/queue"
+            android:icon="@drawable/ic_playing_queue"
+            android:title="@string/queue"/>
+        <item
+            android:id="@+id/now_playing"
+            android:icon="@drawable/ic_now_playing"
+            android:title="@string/now_playing"/>
+        <item
+            android:id="@+id/equalizer"
+            android:icon="@drawable/ic_equalizer"
+            android:title="@string/equalizer"/>
+    </group>
+    <group
+        android:id="@+id/id"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/info"
+            android:icon="@drawable/ic_about"
+            android:title="@string/about"/>
+        <!--
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/settings"/>
+            -->
+    </group>
+</menu>

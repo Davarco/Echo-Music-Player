@@ -1,90 +1,177 @@
 <resources>
 
     <!-- Universal strings -->
-    <string name="app_name">Divertio</string>
-    <string name="playlist_name">Playlists</string>
-    <string name="playlist_modifier_name">Playlist (Unnamed)</string>
+    <string name="app_name">Echo Music</string>
+    <string name="app_version">Version 1.0</string>
+    <string name="font_path">fonts/Raleway-Regular.ttf</string>
+    <string name="search_hint">Search</string>
 
-    <!-- Song default strings -->
-    <string name="song_default_name">(No name)</string>
-    <string name="song_default_composer">(No Name)</string>
-    <string name="default_time_text">0:00/0:00</string>
+    <!-- Generic actions -->
+    <string name="confirm">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="default_name">Unknown</string>
+    <string name="optional">Optional</string>
+    <string name="name_hint">Name</string>
+    <string name="go_to_artist">Go to Artist</string>
+    <string name="go_to_album">Go to Album</string>
 
-    <!-- Main menu strings -->
-    <string name="overflow_add_title">Import</string>
-    <string name="overflow_upload_title">Download</string>
-    <string name="overflow_delete_title">Delete</string>
+    <!-- Sort strings -->
+    <string name="sort_by">Sort By</string>
+    <string name="sort_a_to_z">A to Z</string>
+    <string name="sort_z_to_a">Z to A</string>
+    <string name="sort_by_album">Album</string>
+    <string name="sort_by_artist">Artist</string>
+    <string name="sort_by_duration">Duration</string>
+    <string name="sort_by_count">Count</string>
 
-    <!-- Playlist menu strings -->
-    <string name="playlist_create_title">Create</string>
-    <string name="playlist_delete_title">Delete</string>
+    <!-- Queue strings -->
+    <string name="remove_from_queue">Remove from Queue</string>
 
-    <!-- Song choice menu strings -->
-    <string name="song_play_title">Play</string>
-    <string name="song_share_title">Share</string>
-    <string name="song_rename_title">Rename Song</string>
-    <string name="song_delete_title">Delete Song</string>
-    <string name="song_change_artist">Change Artist</string>
-    <string name="song_to_playlist">Add to Playlist</string>
-    <string name="song_change_title">New Title</string>
-    <string name="song_change_title_hint">Title</string>
-    <string name="song_change_artist_title">New Artist</string>
-    <string name="song_change_artist_hint">Name</string>
-    <string name="song_to_playlist_title">Playlists</string>
-    <string name="song_to_playlist_confirm">Add</string>
+    <!-- Music actions -->
+    <string name="play_title">Play</string>
+    <string name="play_next_title">Play Next</string>
+    <string name="play_all_title">Play All</string>
+    <string name="shuffle_all_title">Shuffle All</string>
+    <string name="pause_title">Pause</string>
 
-    <!-- Song selection menu strings -->
-    <string name="song_selection_delete_title">Delete</string>
-    <string name="song_selection_create_playlist_title">Create Playlist</string>
-    <string name="song_selection_add_to_playlist_title">Add to Playlist</string>
-    <string name="song_selection_reset_title">Reset Selections</string>
+    <!-- File actions -->
+    <string name="download">Download</string>
+    <string name="rename">Rename</string>
+    <string name="delete">Delete</string>
+    <string name="create">Create</string>
+    <string name="reset">Reset</string>
 
-    <!-- Playlist modifier menu strings -->
-    <string name="playlist_rename_title">Rename Playlist</string>
-    <string name="playlist_remove_title">Delete Playlist</string>
-    <string name="playlist_add_songs_title">Add Music</string>
-    <string name="playlist_delete_songs_title">Delete Music</string>
-    <string name="playlist_play_next_title">Play Next</string>
-    <string name="playlist_change_title">New Title</string>
-    <string name="playlist_change_title_hint">Title</string>
+    <!-- Bottom navigation strings -->
+    <string name="bottom_nav_library">Tracks</string>
+    <string name="bottom_nav_playlists">Playlists</string>
+    <string name="bottom_nav_albums">Albums</string>
+    <string name="bottom_nav_artists">Artists</string>
 
-    <!-- Universal dialog strings -->
-    <string name="dialog_confirm">OK</string>
-    <string name="dialog_cancel">Cancel</string>
-    <string name="dialog_change">Change</string>
-    <string name="dialog_yes">Yes</string>
-    <string name="dialog_no">No</string>
+    <!-- Song strings -->
+    <string name="change_album_title">Change Album</string>
+    <string name="change_artist_title">Change Artist</string>
+    <string name="create_playlist_title">Create Playlist</string>
+    <string name="to_playlist_title">Add To Playlist</string>
+    <string name="to_queue_title">Add To Queue</string>
+    <string name="song_default_time">0:00/0:00</string>
+    <string name="song_default_duration">0:00</string>
 
-    <!-- Download song dialog strings -->
-    <string name="download_confirm">Download</string>
-    <string name="download_name_title">File Name</string>
-    <string name="download_name_hint">(Optional)</string>
-    <string name="download_link_title">Via Youtube</string>
-    <string name="download_link_hint">Youtube Link</string>
-    <string name="download_composer_title">Composer</string>
-    <string name="download_composer_hint">(Optional)</string>
-    <string name="download_failure_message">Failed to download.\nCheck internet status and link?</string>
-    <string name="download_name_failure_msg">The song name is either empty or already in use.</string>
+    <!-- Dialog strings -->
+    <string name="download_name_title">Name</string>
+    <string name="download_link_title">From Youtube</string>
+    <string name="download_link_hint">Link</string>
+    <string name="song_create_title">Song Name</string>
+    <string name="playlist_create_title">Playlist Name</string>
+    <string name="album_create_title">Album Name</string>
+    <string name="artist_create_title">Artist Name</string>
 
-    <!-- Delete song dialog strings -->
-    <string name="delete_dialog_title">Songs to Delete</string>
-    <string name="delete_confirm">Delete</string>
+    <!-- Menu strings -->
+    <string name="change_cover_title">Change Cover</string>
 
-    <!-- Create playlist dialog strings -->
-    <string name="create_playlist_title">Playlist Name</string>
-    <string name="create_playlist_song_list_title">Song List</string>
-    <string name="create_playlist_hint">Name</string>
-    <string name="create_playlist_confirm">Next</string>
-    <string name="create_playlist_finish">Finish</string>
-    <string name="create_playlist_name_failure_msg">The playlist name has already been used, please pick another.</string>
+    <!-- Media Service strings -->
+    <string name="media_service_error">Unfortunately, the requested song could not be played. This is usually caused by a corrupted MP3 file.</string>
 
-    <!-- Delete playlist dialog strings -->
-    <string name="delete_playlist_title">Playlists to Delete</string>
+    <!-- Equalizer strings -->
+    <string name="bass_boost">Bass Boost</string>
+    <string name="equalizer">Equalizer</string>
+    <string name="virtualizer">Virtualizer</string>
 
-    <!-- Add songs dialog strings -->
-    <string name="add_songs_dialog_title">Songs Found</string>
+    <!-- Navigation strings -->
+    <string name="library">Library</string>
+    <string name="queue">Playing Queue</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="about">About</string>
+    <string name="settings">Settings</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
 
-    <!-- Import prompt dialog strings -->
-    <string name="import_prompt_dialog_msg">Import MP3 files on device?</string>
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
+        "technologically advanced and open to imagination and magic.\n"
+        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
+        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
+        "flexibility of the material creates new affordances that supercede those in the physical "
+        "world, without breaking the rules of physics.\n"
+        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
+        "interact, and exist in space and in relation to each other. Realistic lighting shows "
+        "seams, divides space, and indicates moving parts.\n\n"
+
+        "Bold, graphic, intentional.\n\n"
+
+        "The foundational elements of print based design typography, grids, space, scale, color, "
+        "and use of imagery guide visual treatments. These elements do far more than please the "
+        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
+        "imagery, large scale typography, and intentional white space create a bold and graphic "
+        "interface that immerse the user in the experience.\n"
+        "An emphasis on user actions makes core functionality immediately apparent and provides "
+        "waypoints for the user.\n\n"
+
+        "Motion provides meaning.\n\n"
+
+        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
+        "inflection points that initiate motion, transforming the whole design.\n"
+        "All action takes place in a single environment. Objects are presented to the user without "
+        "breaking the continuity of experience even as they transform and reorganize.\n"
+        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
+        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
+
+        "3D world.\n\n"
+
+        "The material environment is a 3D space, which means all objects have x, y, and z "
+        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
+        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
+        "position along the z-axis and has a standard 1dp thickness.\n"
+        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
+        "emulated by manipulating the y-axis.\n\n"
+
+        "Light and shadow.\n\n"
+
+        "Within the material environment, virtual lights illuminate the scene. Key lights create "
+        "directional shadows, while ambient light creates soft shadows from all angles.\n"
+        "Shadows in the material environment are cast by these two light sources. In Android "
+        "development, shadows occur when light sources are blocked by sheets of material at "
+        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
+        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
+
+        "Resting elevation.\n\n"
+
+        "All material objects, regardless of size, have a resting elevation, or default elevation "
+        "that does not change. If an object changes elevation, it should return to its resting "
+        "elevation as soon as possible.\n\n"
+
+        "Component elevations.\n\n"
+
+        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
+        "does not vary from 6dp in one app to 16dp in another app).\n"
+        "Components may have different resting elevations across platforms, depending on the depth "
+        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
+
+        "Responsive elevation and dynamic elevation offsets.\n\n"
+
+        "Some component types have responsive elevation, meaning they change elevation in response "
+        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
+        "changes are consistently implemented using dynamic elevation offsets.\n"
+        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
+        "to the component’s resting state. They ensure that elevation changes are consistent "
+        "across actions and component types. For example, all components that lift on press have "
+        "the same elevation change relative to their resting elevation.\n"
+        "Once the input event is completed or cancelled, the component will return to its resting "
+        "elevation.\n\n"
+
+        "Avoiding elevation interference.\n\n"
+
+        "Components with responsive elevations may encounter other components as they move between "
+        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
+        "through other material, components avoid interfering with one another any number of ways, "
+        "whether on a per component basis or using the entire app layout.\n"
+        "On a component level, components can move or be removed before they cause interference. "
+        "For example, a floating action button (FAB) can disappear or move off screen before a "
+        "user picks up a card, or it can move if a snackbar appears.\n"
+        "On the layout level, design your app layout to minimize opportunities for interference. "
+        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
+        "when a user tries to pick up one of cards.\n\n"
+    </string>
+    <string name="action_settings">Settings</string>
 
 </resources>

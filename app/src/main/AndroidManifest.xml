@@ -1,71 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.lunchareas.divertio">
+    package="com.lunchareas.echomp">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
 
     <application
-        android:allowBackup="false"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name="com.lunchareas.divertio.activities.MainActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleInstance">
+
+        <!-- Activities -->
+        <activity android:name="com.lunchareas.echomp.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.lunchareas.echomp.activities.EqualizerActivity"
+            android:noHistory="true" />
+        <activity
+            android:name="com.lunchareas.echomp.activities.QueueActivity"
+            android:noHistory="true" />
+        <activity
+            android:name="com.lunchareas.echomp.activities.MusicPlayerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.lunchareas.echomp.activities.PlaylistPlayerActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.lunchareas.echomp.activities.AlbumPlayerActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.lunchareas.echomp.activities.ArtistPlayerActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.lunchareas.echomp.activities.SearchActivity"
+            android:noHistory="true" />
 
+        <!-- Services -->
         <service
-            android:name="com.lunchareas.divertio.activities.PlayMediaService"
+            android:name="com.lunchareas.echomp.services.MediaService"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false" />
-
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
-        <activity
-            android:name="com.lunchareas.divertio.activities.PlaylistMenuActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize">
-        </activity>
-
-        <activity
-            android:name="com.lunchareas.divertio.activities.AlbumMenuActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize">
-        </activity>
-
-        <activity
-            android:name="com.lunchareas.divertio.activities.ArtistMenuActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize">
-        </activity>
-
-        <activity
-            android:name="com.lunchareas.divertio.activities.GenreMenuActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize">
-        </activity>
-
-        <activity
-            android:name="com.lunchareas.divertio.activities.PlaylistActivity"
-            android:configChanges="keyboardHidden|screenSize">
-        </activity>
-
-        <activity
-            android:name="com.lunchareas.divertio.activities.MusicActivity"
-            android:configChanges="keyboardHidden|screenSize">
-        </activity>
-
     </application>
-
 
 </manifest>

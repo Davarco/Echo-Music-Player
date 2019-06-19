@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:src="@color/white">
+    <item
+        android:id="@+id/search"
+        android:title=""
+        android:icon="@drawable/ic_action_search"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/play_all"
+        android:title="@string/shuffle_all_title"/>
+    <item
+        android:id="@+id/sort"
+        android:title="@string/sort_by">
+        <menu>
+            <item
+                android:id="@+id/a_to_z"
+                android:title="@string/sort_a_to_z" />
+            <item
+                android:id="@+id/z_to_a"
+                android:title="@string/sort_z_to_a" />
+            <item
+                android:id="@+id/count"
+                android:title="@string/sort_by_count" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/equalizer"
+        android:title="@string/equalizer"/>
+</menu>

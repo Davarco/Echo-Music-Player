@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:src="@color/white">
+    <item
+        android:id="@+id/share"
+        android:title=""
+        android:icon="@drawable/ic_action_share"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/equalizer"
+        android:title=""
+        android:icon="@drawable/ic_action_equalizer"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/change_cover"
+        android:title="@string/change_cover_title"/>
+    <item
+        android:id="@+id/add_to_playlist"
+        android:title="@string/to_playlist_title"/>
+    <item
+        android:id="@+id/go_to_artist"
+        android:title="@string/go_to_artist"/>
+    <item
+        android:id="@+id/go_to_album"
+        android:title="@string/go_to_album"/>
+</menu>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:background="@android:color/transparent">
+
+    <TextView
+        android:id="@+id/playlist_name"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:textSize="14sp"
+        android:gravity="bottom"
+        android:text="@string/default_name"
+        android:textColor="@color/white"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_toLeftOf="@+id/playlist_default_icon"
+        android:layout_toStartOf="@+id/playlist_default_icon"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
+
+    <TextView
+        android:id="@+id/playlist_count"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_below="@id/playlist_name"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="2dp"
+        android:textSize="12sp"
+        android:gravity="top"
+        android:text="@string/default_name"
+        android:textColor="@color/white"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_toLeftOf="@+id/playlist_default_icon"
+        android:layout_toStartOf="@+id/playlist_default_icon"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
+
+    <ImageView
+        android:id="@+id/playlist_default_icon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_playlist_play"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
+
+</RelativeLayout>

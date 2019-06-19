@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content">
+    <item
+        android:id="@+id/album_play_next"
+        android:title="@string/play_next_title"/>
+    <item
+        android:id="@+id/album_rename"
+        android:title="@string/rename"/>
+    <item
+        android:id="@+id/album_cover_change"
+        android:title="@string/change_cover_title"/>
+    <item
+        android:id="@+id/add_to_queue"
+        android:title="@string/to_queue_title"/>
+</menu>

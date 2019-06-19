@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/gray">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="48dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
+
+                <!-- Background image -->
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/background"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:alpha="0.6"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <!-- Toolbar -->
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="@android:color/transparent">
+                    </android.support.v7.widget.Toolbar>
+
+                    <!-- Text -->
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:layout_alignParentBottom="true"
+                        android:text="@string/default_name"
+                        android:shadowColor="@android:color/black"
+                        android:shadowDx="3"
+                        android:shadowDy="3"
+                        android:shadowRadius="3"
+                        android:textSize="24sp"
+                        android:textColor="@color/white"/>
+                </RelativeLayout>
+
+
+            </FrameLayout>
+
+            <!-- Song list -->
+            <ListView
+                android:id="@+id/song_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:divider="#000000"
+                android:dividerHeight="0dp" />
+
+        </LinearLayout>
+
+        <!-- Controller -->
+        <ImageView
+            android:id="@+id/controller"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:clickable="true"
+            android:foreground="@drawable/circular_ripple"
+            android:src="@drawable/ic_shuffle_player"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
+
+    </FrameLayout>
+
+    <!-- Song bar -->
+    <LinearLayout
+        android:id="@+id/songbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:elevation="4dp"
+        android:orientation="horizontal"
+        android:background="@android:color/black"
+        android:layout_alignParentBottom="true">
+        <ImageSwitcher
+            android:id="@+id/songbar_play"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/ic_play"/>
+        <SeekBar
+            android:id="@+id/songbar_progress"
+            android:gravity="center_vertical"
+            android:layout_height="48dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+        <TextView
+            android:id="@+id/songbar_time"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:gravity="center_vertical|end"
+            android:textColor="@color/white"
+            android:text="@string/song_default_time"/>
+    </LinearLayout>
+
+</RelativeLayout>
