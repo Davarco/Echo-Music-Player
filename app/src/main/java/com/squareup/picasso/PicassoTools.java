@@ -1,6 +1,4 @@
-
 package com.squareup.picasso;
-
 
 public class PicassoTools {
 
