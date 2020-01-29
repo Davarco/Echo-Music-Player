@@ -3,7 +3,7 @@ Android music player with YouTube to MP3 conversion and 10k+ downloads on the Go
 
 Copyright (C) 2019 David Zhang
 
-[Link on Google Play Store](https://play.google.com/store/apps/details?id=com.lunchareas.echomp)
+![Image](img1.png) | ![Image](img2.png) | ![Image](img3.png)
 
 ## Introduction
 Echo Music Player is an elegant ad-free music player, with powerful tools that are unique to the app and support for all standard audio files. It is crafted using modern Material Design principles, and features both an intuitive and beautiful UI. 
